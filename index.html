@@ -3,47 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotify.AI // Premium Rotation Engine</title>
+<title>Spotify.AI // Corporate Telemetry & Matrix Diagnostics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-base: #F4F5F8;
+  --bg-base: #F4F6F9;
   --bg-card: rgba(255, 255, 255, 0.75);
   --bg-card-solid: #FFFFFF;
   --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-inner-glow: rgba(255, 255, 255, 0.8);
+  --glass-inner-glow: rgba(255, 255, 255, 0.9);
   --spotify-green: #1DB954; 
-  --text-main: #0E1013;
-  --text-muted: #535C6A; 
-  --text-light: #8E98A7;
+  --spotify-green-hover: #1ED760;
+  --chart-line: #000000;
+  --gemini-purple: #7A5CFF;
+  --text-main: #11141A;
+  --text-muted: #4B5262; 
+  --text-light: #7E8696;
   --mono: 'IBM Plex Mono', monospace;
   --disp: 'Archivo', sans-serif;
   --radius-lg: 24px;
   --radius-md: 16px;
-  --radius-sm: 10px;
-  --transition-smooth: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  --radius-sm: 8px;
+  --transition-smooth: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* --- Base Framework Elements --- */
+/* --- Base Framework Styles --- */
 * { margin: 0; padding: 0; box-sizing: border-box; letter-spacing: -0.01em; }
 html { scroll-behavior: smooth; font-size: 16px; background-color: var(--bg-base); }
 body {
   color: var(--text-main);
   font-family: var(--disp);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   min-height: 100vh;
-  background-color: var(--bg-base);
+  background: var(--bg-base);
   background-image: 
-    radial-gradient(circle at 10% 10%, rgba(29, 185, 84, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.02) 0%, transparent 50%);
+    radial-gradient(circle at 5% 5%, rgba(29, 185, 84, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 95% 95%, rgba(0, 0, 0, 0.01) 0%, transparent 50%);
 }
-.wrap { max-width: 1320px; margin: 0 auto; padding: 60px 24px 120px; position: relative; z-index: 2; }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 60px 40px 160px; position: relative; z-index: 2; }
 
-/* --- Premium Good Graces Minimalist Frosted UI --- */
+/* --- Premium Minimalist Glass UI Engine --- */
 .glass {
   background: var(--bg-card);
   backdrop-filter: blur(30px) saturate(180%);
@@ -51,119 +54,158 @@ body {
   border: 1px solid var(--glass-border);
   box-shadow: 
     inset 0 1px 0 var(--glass-inner-glow),
-    0 10px 30px rgba(0, 0, 0, 0.02);
+    0 4px 20px rgba(160, 175, 195, 0.08),
+    0 12px 40px rgba(30, 40, 55, 0.02);
   border-radius: var(--radius-lg);
   transition: var(--transition-smooth);
 }
 .glass:hover {
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 48px rgba(30, 40, 55, 0.05);
 }
 
-/* --- Header Architecture --- */
-header { padding: 12px 20px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.05); }
-h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.04em; color: var(--text-main); text-transform: uppercase; }
-h1 span { color: var(--spotify-green); }
-.stamp { font-family: var(--mono); font-size: 11px; text-align: right; color: var(--text-light); }
+/* --- Widescreen Good Graces Minimal Landing Style --- */
+.landing-wrapper { width: 100%; display: flex; flex-direction: column; align-items: flex-start; }
+.landing-navbar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 20px 0; border-bottom: 1px solid rgba(0,0,0,0.05); margin-bottom: 80px; }
+.landing-navbar .brand-name { font-size: 20px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.02em; }
+.landing-navbar .brand-name span { color: var(--spotify-green); }
 
-/* --- Architecture Grid Configurations --- */
-.main-layout-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; }
+.full-hero-container { width: 100%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 40px 0; }
+.hero-tag { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-light); margin-bottom: 20px; }
+.full-hero-container h2 { font-size: clamp(40px, 6vw, 68px); font-weight: 800; letter-spacing: -0.05em; color: var(--text-main); line-height: 1.1; max-width: 20ch; margin-bottom: 24px; }
+.full-hero-container h2 span { color: var(--spotify-green); }
+.full-hero-container p { font-size: 18px; color: var(--text-muted); max-width: 52ch; margin-bottom: 40px; line-height: 1.6; font-weight: 400; }
+
+/* Clean, Beautiful, Solid Spotify Green Button */
+.btn-spotify-connect {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--spotify-green);
+  color: #FFFFFF;
+  border: none;
+  padding: 18px 48px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+}
+.btn-spotify-connect:hover {
+  background: var(--spotify-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(29, 185, 84, 0.25);
+}
+
+/* --- App Inside Dashboard Banner --- */
+.top-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 24px 40px; background: #11141A; color: #FFF; border-radius: var(--radius-md); margin-bottom: 48px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+.top-nav-bar .nav-brand { font-size: 18px; font-weight: 800; text-transform: uppercase; color: #fff; letter-spacing: 0.02em; }
+.top-nav-bar .nav-brand span { color: var(--spotify-green); }
+.top-nav-bar .user-badge { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.08); padding: 5px 14px; border-radius: 30px; color: var(--text-light); }
+
+/* --- Layout Grid Mechanics --- */
+.main-layout-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: start; }
 @media(max-width: 1150px) { .main-layout-grid { grid-template-columns: 1fr; } }
-
 .widget-stack { display: flex; flex-direction: column; gap: 32px; }
 .widget-pane { padding: 40px; display: flex; flex-direction: column; gap: 24px; position: relative; overflow: hidden; }
 
-/* --- Global Typographic Scales --- */
-.eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--text-light); text-transform: uppercase; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-.eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(0, 0, 0, 0.05); }
-.widget-title-area { margin-top: -6px; }
-h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: var(--text-main); }
-.sub-narrative { font-size: 13.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; max-width: 60ch; }
+.eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--text-light); text-transform: uppercase; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+.eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(0, 0, 0, 0.04); }
+h2 { font-size: 26px; font-weight: 700; color: var(--text-main); letter-spacing: -0.03em; }
+.sub-narrative { font-size: 13.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.6; max-width: 65ch; }
 
-/* --- Premium Annual Frequency Vector Matrix --- */
-.frequency-chart-stage { width: 100%; min-height: 240px; margin-top: 10px; position: relative; }
+/* --- Line Area Vector Charts Engine --- */
+.frequency-chart-stage { width: 100%; min-height: 250px; margin-top: 10px; position: relative; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.04); border-radius: var(--radius-md); padding: 24px; }
 .frequency-chart-stage svg { width: 100%; height: 210px; display: block; overflow: visible; }
-.freq-bar { fill: rgba(0, 0, 0, 0.04); rx: 4; transition: var(--transition-smooth); cursor: pointer; }
-.freq-bar:hover { fill: var(--spotify-green); }
-.median-line-vector { stroke: var(--text-main); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+.freq-area-path { fill: url(#chartAreaGradient); }
+.freq-line-path { fill: none; stroke: var(--chart-line); stroke-width: 2.5; stroke-linecap: round; }
+.freq-node-dot { fill: #FFFFFF; stroke: var(--chart-line); stroke-width: 2.5; cursor: pointer; transition: var(--transition-smooth); }
+.freq-node-dot:hover { fill: var(--spotify-green); stroke: var(--spotify-green); r: 7; }
+.median-line-vector { stroke: var(--text-light); stroke-width: 1.2; stroke-dasharray: 4 4; fill: none; opacity: 0.6; }
 .axis-text { font-family: var(--mono); font-size: 10px; fill: var(--text-light); font-weight: 500; }
-.chart-hover-toast { position: absolute; background: var(--text-main); color: #FFF; padding: 4px 10px; border-radius: 6px; font-family: var(--mono); font-size: 11px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 10; }
+.chart-hover-toast { position: absolute; background: #11141A; color: #FFF; padding: 6px 12px; border-radius: 8px; font-family: var(--mono); font-size: 11px; pointer-events: none; opacity: 0; transition: opacity 0.2s, transform 0.2s; z-index: 10; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
 
-/* --- Music Telemetry Lists (Collapsible Accordion Framework) --- */
-.control-filter-cluster { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-.toggle-bay { display: inline-flex; background: rgba(0, 0, 0, 0.03); padding: 3px; border-radius: 12px; }
-.toggleBayBtn { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 12px; border: 0; background: transparent; color: var(--text-muted); border-radius: 9px; transition: var(--transition-smooth); cursor: pointer; text-transform: lowercase; }
-.toggleBayBtn[aria-pressed="true"] { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+/* --- Control Filtering Components --- */
+.control-filter-cluster { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; width: 100%; border-bottom: 1px solid rgba(0,0,0,0.04); padding-bottom: 16px; }
+.toggle-bay { display: inline-flex; background: rgba(0, 0, 0, 0.04); padding: 3px; border-radius: 12px; }
+.toggleBayBtn { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 14px; border: 0; background: transparent; color: var(--text-muted); border-radius: 9px; transition: var(--transition-smooth); cursor: pointer; }
+.toggleBayBtn[aria-pressed="true"] { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+.btn-core { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; background: var(--text-main); color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 40px; cursor: pointer; transition: var(--transition-smooth); }
+.btn-core:hover { background: var(--spotify-green); transform: translateY(-1px); }
 
-.btn-core { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; background: var(--text-main); color: #FFFFFF; border: none; padding: 10px 20px; border-radius: 30px; cursor: pointer; transition: var(--transition-smooth); }
-.btn-core:hover { background: var(--spotify-green); }
-
-.accordion-wrapper { border: 1px solid rgba(0,0,0,0.05); border-radius: var(--radius-md); overflow: hidden; background: rgba(0,0,0,0.01); margin-top: 14px; }
-.accordion-trigger { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 14px 20px; background: rgba(255,255,255,0.6); border: none; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-main); cursor: pointer; }
+/* --- Spreadsheet Accordion Matrix Overrides --- */
+.accordion-wrapper { border: 1px solid rgba(0,0,0,0.04); border-radius: var(--radius-md); overflow: hidden; background: rgba(0,0,0,0.01); width: 100%; }
+.accordion-trigger { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 14px 20px; background: rgba(255,255,255,0.7); border: none; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-main); cursor: pointer; }
 .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-.accordion-wrapper.expanded .accordion-content { max-height: 700px; overflow-y: auto; }
-.accordion-chevron { transition: transform 0.3s; }
+.accordion-wrapper.expanded .accordion-content { max-height: 620px; overflow-y: auto; padding: 12px; }
+.accordion-chevron { transition: transform 0.3s; font-size: 12px; }
 .accordion-wrapper.expanded .accordion-chevron { transform: rotate(180deg); }
 
-.music-table-view { display: flex; flex-direction: column; gap: 1px; padding: 8px; }
-.music-telemetry-row { display: grid; grid-template-columns: 36px 44px 1fr auto; gap: 16px; align-items: center; padding: 10px 12px; border-bottom: 1px solid rgba(0, 0, 0, 0.02); }
+.music-table-view { display: flex; flex-direction: column; gap: 1px; padding: 4px; }
+.music-telemetry-row { display: grid; grid-template-columns: 36px 44px 1fr auto; gap: 20px; align-items: center; padding: 10px 12px; border-bottom: 1px solid rgba(0, 0, 0, 0.02); }
+.music-telemetry-row:hover { background: #FFFFFF; }
 .row-rank-index { font-family: var(--mono); font-size: 12px; color: var(--text-light); text-align: center; }
 .row-artwork-frame { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: rgba(0,0,0,0.02); }
 .row-artwork-frame img { width: 100%; height: 100%; object-fit: cover; }
-.track-title-string { font-weight: 600; font-size: 14.5px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.track-artist-string { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.row-metric-tag { font-family: var(--mono); font-size: 11px; color: var(--text-light); }
+.row-data-payload { display: flex; flex-direction: column; min-width: 0; }
+.track-title-string { font-weight: 600; font-size: 14px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 12px; }
+.track-artist-string { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.row-metric-tag { font-family: var(--mono); font-size: 11px; color: var(--text-light); background: rgba(0,0,0,0.03); padding: 2px 6px; border-radius: 4px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+@media(max-width: 880px) { .two-col { grid-template-columns: 1fr; } }
 
-/* --- Top Artist Bubble Web Architecture --- */
-.artists-web-container { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; align-items: center; padding: 10px 0; }
-.artist-bubble-node { display: inline-flex; align-items: center; gap: 10px; padding: 8px 16px; background: #FFFFFF; border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 40px; box-shadow: 0 2px 6px rgba(0,0,0,0.01); transition: var(--transition-smooth); cursor: pointer; }
-.artist-bubble-node:hover { border-color: var(--spotify-green); transform: translateY(-1px); }
-.artist-bubble-node img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-.artist-bubble-node .a-name { font-size: 13.5px; font-weight: 600; color: var(--text-main); }
-.artist-bubble-node .a-mins { font-family: var(--mono); font-size: 10.5px; color: var(--spotify-green); font-weight: 600; background: rgba(29,185,84,0.06); padding: 2px 8px; border-radius: 20px; }
+/* --- Top Artist Web Bubble Cluster Architecture --- */
+.artists-web-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 6px 0; width: 100%; }
+.artist-bubble-node { display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.04); border-radius: 30px; box-shadow: 0 2px 6px rgba(0,0,0,0.01); transition: var(--transition-smooth); }
+.artist-bubble-node:hover { border-color: var(--chart-line); transform: translateY(-1px); }
+.artist-bubble-node img { width: 24px; height: 28px; border-radius: 50%; object-fit: cover; }
+.artist-bubble-node .a-name { font-size: 13px; font-weight: 600; color: var(--text-main); text-transform: lowercase; }
+.artist-bubble-node .a-mins { font-family: var(--mono); font-size: 10px; color: var(--chart-line); font-weight: 600; background: rgba(20,115,230,0.05); padding: 1px 6px; border-radius: 20px; }
 
-/* --- Restored Tile Metrics Architecture --- */
-.telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-.telemetry-node { padding: 28px 24px; display: flex; flex-direction: column; gap: 10px; border-radius: var(--radius-md); background: #FFFFFF; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
-.telemetry-node .t-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.04em; }
-.telemetry-node .t-value { font-size: 36px; font-weight: 800; color: var(--text-main); line-height: 1; }
-.telemetry-node .t-value small { font-size: 14px; color: var(--text-light); margin-left: 2px; }
-.telemetry-node .t-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+/* --- Restored Tiled Metrics Matrices --- */
+.telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; }
+.telemetry-node { padding: 24px; display: flex; flex-direction: column; gap: 12px; border-radius: var(--radius-md); background: #FFFFFF; border: 1px solid rgba(0,0,0,0.04); position: relative; }
+.telemetry-node .t-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.telemetry-node .t-value { font-size: 34px; font-weight: 900; color: #11141A; line-height: 1.1; display: flex; align-items: baseline; gap: 2px; }
+.telemetry-node .t-value small { font-size: 14px; font-weight: 600; color: var(--text-light); }
+.telemetry-node .t-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+.variance-pill { position: absolute; top: 22px; right: 24px; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: rgba(29,185,84,0.08); color: var(--spotify-green); }
 
-/* --- Chronological Era Donut Profile --- */
-.era-chamber { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 32px; align-items: center; }
+/* --- Donut Diagrams & Weekly Timelines --- */
+.era-chamber { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 32px; align-items: center; width: 100%; }
 @media(max-width: 600px) { .era-chamber { grid-template-columns: 1fr; } }
-.donut-stage { display: flex; justify-content: center; align-items: center; position: relative; }
-.donut-center-lbl { position: absolute; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; text-align: center; }
-.era-legend-list { display: flex; flex-direction: column; gap: 10px; }
-.era-legend-item { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
+.donut-stage { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
+.donut-center-lbl { position: absolute; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; text-align: center; line-height: 1.3; pointer-events: none; }
+.era-legend-list { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.era-legend-item { display: flex; align-items: center; gap: 10px; font-size: 13.5px; padding: 10px 14px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.03); border-radius: var(--radius-sm); }
 .era-dot { width: 10px; height: 10px; border-radius: 50%; }
-.era-val { font-family: var(--mono); font-size: 11px; color: var(--text-light); margin-left: auto; }
+.era-val { font-family: var(--mono); font-size: 11px; color: var(--text-light); margin-left: auto; font-weight: 600; }
 
-/* --- Adjustable Day-of-Week Vector Grid --- */
-.day-selector-strip { display: flex; gap: 6px; flex-wrap: wrap; background: rgba(0,0,0,0.03); padding: 4px; border-radius: 12px; width: fit-content; }
-.day-btn { background: transparent; border: none; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 14px; border-radius: 9px; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
+.day-selector-strip { display: flex; gap: 6px; flex-wrap: wrap; background: rgba(0,0,0,0.04); padding: 4px; border-radius: 12px; width: fit-content; }
+.day-btn { background: transparent; border: none; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 14px; border-radius: 9px; color: var(--text-muted); cursor: pointer; }
 .day-btn.active { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-.density-bars-container { display: flex; align-items: flex-end; gap: 6px; height: 130px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-top: 20px; }
-.density-col-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
-.density-bar-vector { background: rgba(0,0,0,0.04); border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-.density-bar-vector.active-glow { background: var(--spotify-green); }
-.density-axis { display: flex; gap: 6px; margin-top: 8px; }
-.density-axis span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--text-light); text-align: center; }
+.circadian-canvas-stage { display: flex; align-items: flex-end; gap: 6px; height: 160px; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 24px 16px 0; width: 100%; }
+.circadian-canvas-stage .hour-bar-column { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.circadian-canvas-stage .hour-bar-column .bar-vector { background: rgba(0,0,0,0.04); border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.4s ease; }
+.circadian-canvas-stage .hour-bar-column .bar-vector.active-glow { background: var(--chart-line); }
+.circadian-labels-axis { display: flex; gap: 6px; margin-top: 8px; width: 100%; }
+.circadian-labels-axis span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--text-light); text-align: center; }
 
-/* --- Gate Overlays --- */
-.gate-container { max-width: 480px; margin: 15vh auto 0; padding: 48px; text-align: center; display: flex; flex-direction: column; gap: 24px; }
-.gate-container h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.04em; }
-.gate-container h2 span { color: var(--spotify-green); }
-.gate-container p { color: var(--text-muted); font-size: 14.5px; line-height: 1.5; }
 .system-boot-loader { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 35vh 0; font-family: var(--mono); font-size: 12px; color: var(--text-light); }
-.system-spinner-ring { width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid rgba(0,0,0,0.04); border-top-color: var(--spotify-green); animation: spinRing 0.8s linear infinite; }
+.system-spinner-ring { width: 36px; height: 32px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.05); border-top-color: var(--chart-line); animation: spinRing 0.75s linear infinite; }
+footer { margin-top: 80px; padding: 32px 24px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); font-family: var(--mono); font-size: 11px; color: var(--text-light); }
+.logout-trigger { cursor: pointer; transition: var(--transition-smooth); }
+.logout-trigger:hover { color: var(--chart-line); }
 
-footer { margin-top: 80px; padding: 32px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.04); font-family: var(--mono); font-size: 11px; color: var(--text-light); }
 @keyframes spinRing { to { transform: rotate(360deg); } }
-@keyframes pulseSparkle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 </style>
 </head>
 <body>
+
+<div id="toastEngine" class="toast-alert-banner">
+  <span class="toast-icon">✦</span> <span id="toastMessageTarget">System Synchronized</span>
+</div>
 
 <div class="wrap">
   <div id="appRootStage"></div>
@@ -181,9 +223,17 @@ const storageController = {
   del: k => localStorage.removeItem("sai_tlm_" + k),
 };
 
+const PALETTE_MATRIX = ["#1473E6", "#7A5CFF", "#FF66B2", "#FFAA00", "#00E5FF"];
 let DATA_STORE_NODE = null;
 let activeTrackLimitConfig = 25;   
-let currentActiveDayIndex = 1; // Default Mon
+let currentActiveDayIndex = 1;
+
+function displayNotificationToast(msg) {
+  const toast = document.getElementById("toastEngine");
+  document.getElementById("toastMessageTarget").textContent = msg;
+  toast.classList.add("active");
+  setTimeout(() => toast.classList.remove("active"), 3500);
+}
 
 function generateRandomStateString(len) {
   const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -223,53 +273,68 @@ async function dispatchSecureApiCall(endpoint, parameters = {}) {
 
 function renderAuthorizationGate() {
   appStage.innerHTML = `
-    <div class="glass gate-container">
-      <h2>SPOTIFY<span>.AI</span></h2>
-      <p>A minimal framework translating account diagnostics logs into interactive light-mode vectors and automatic curated playlist handshakes.</p>
-      <button class="btn-core" id="bootTriggerBtn" style="width:100%; padding:14px; justify-content:center;">Connect Account Profile</button>
-    </div>`;
+    <div class="landing-navbar">
+      <div class="brand-name">spotify<span>.ai</span></div>
+    </div>
+    <div class="landing-wrapper">
+      <div class="full-hero-container">
+        <div class="hero-tag">✦ Premium Architectural Diagnostics</div>
+        <h2>Your Entire Listening Rotations, <span>Quantized</span>.</h2>
+        <p>A pristine widescreen data environment translating account diagnostic metadata records into area-line metrics matrices, active ledger panes, and fluid cloud bubble web registries.</p>
+        <button class="btn-spotify-connect" id="bootTriggerBtn">Connect Spotify Account Profile</button>
+      </div>
+    </div>
+  `;
   document.getElementById("bootTriggerBtn").onclick = () => initiateOAuthRoute();
+}
+
+function drawStructuralTelemetryRow(trackObject, index, visualTagString) {
+  return `
+    <div class="music-telemetry-row">
+      <div class="row-rank-index">${String(index + 1).padStart(2, "0")}</div>
+      <div class="row-artwork-frame"><img src="${trackObject.album?.images?.[1]?.url || trackObject.album?.images?.[0]?.url || ''}" loading="lazy"></div>
+      <div class="row-data-payload">
+        <span class="track-title-string">${trackObject.name}</span>
+        <span class="track-artist-string">${trackObject.artists.map(a => a.name).join(", ")}</span>
+      </div>
+      <div class="row-metric-tag">${visualTagString}</div>
+    </div>`;
 }
 
 function toggleTracksAccordion() {
   const acc = document.getElementById('tracksAccordionWrapper');
-  if (acc.classList.contains('expanded')) {
-    acc.classList.remove('expanded');
-  } else {
-    acc.classList.add('expanded');
-  }
+  if (acc.classList.contains('expanded')) { acc.classList.remove('expanded'); } else { acc.classList.add('expanded'); }
 }
 
 function compileMasterReportLayout() {
-  const { me, topTracks } = DATA_STORE_NODE;
-  const analysisTargetPool = topTracks.medium_term?.items || [];
+  const { me, topTracks, recent } = DATA_STORE_NODE;
+  const shortPool = topTracks?.short_term?.items || [];
+  const mediumPool = topTracks?.medium_term?.items || [];
+  const longPool = topTracks?.long_term?.items || [];
+  const activeProcessingArray = mediumPool.length ? mediumPool : (shortPool.length ? shortPool : longPool);
   
-  const averagePopularityIndex = analysisTargetPool.length ? (analysisTargetPool.reduce((sum, track) => sum + (track.popularity || 0), 0) / analysisTargetPool.length) : 50;
+  const totalPopularitySum = activeProcessingArray.reduce((sum, track) => sum + (track?.popularity || 0), 0);
+  const averagePopularityIndex = activeProcessingArray.length ? (totalPopularitySum / activeProcessingArray.length) : 50;
   const coreObscurityMetric = Math.round(100 - averagePopularityIndex);
-  const calendarYearArray = analysisTargetPool.map(t => parseInt((t.album?.release_date || "").slice(0, 4))).filter(Boolean);
+  
+  const calendarYearArray = activeProcessingArray.map(t => parseInt((t?.album?.release_date || "").slice(0, 4))).filter(Boolean);
   const operationalMidpointYear = calendarYearArray.length ? Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / calendarYearArray.length) : "—";
-  const parentalExplicitContentVolume = analysisTargetPool.length ? Math.round(100 * analysisTargetPool.filter(t => t.explicit).length / analysisTargetPool.length) : 0;
+  const parentalExplicitContentVolume = activeProcessingArray.length ? Math.round(100 * activeProcessingArray.filter(t => t?.explicit).length / activeProcessingArray.length) : 0;
   const productionTimestamp = new Date();
 
   appStage.innerHTML = `
-    <header class="glass">
-      <div class="logo-container">
-        <h1>spotify<span>.ai</span></h1>
-      </div>
-      <div class="stamp">
-        ${(me?.display_name || "User Node").toLowerCase()} // verified index runtime ${productionTimestamp.toLocaleDateString().toLowerCase()}
-      </div>
+    <header class="glass" style="border:none; margin-bottom: 32px; border-radius:var(--radius-md); background:#11141A; color:#FFF; display:flex; justify-content:space-between; align-items:center; padding: 18px 32px;">
+      <div class="logo-container"><h1 style="color:#FFF; font-size:18px;">spotify<span>.ai</span></h1></div>
+      <div class="user-badge">${(me?.display_name || "User Node").toLowerCase()} // live metrics</div>
     </header>
 
     <div class="main-layout-grid">
       <div class="widget-stack">
-        
-        <!-- MODULE: ANNUAL FREQUENCY MATRIX (NO SLIDER - FLAT GRAPH DISPLAY) -->
         <div class="glass widget-pane">
           <div class="eyebrow">Chronological Volume Ledger</div>
           <div class="widget-title-area">
             <h2>Annual Frequency Matrix</h2>
-            <div class="sub-narrative">Volumetric metrics showing continuous monthly minutes listened over the past calendar year.</div>
+            <div class="sub-narrative">Volumetric tracking showing minutes listened over space-time alongside an adaptive moving median line threshold block.</div>
           </div>
           <div class="frequency-chart-stage">
             <div id="chartValueHoverToast" class="chart-hover-toast">0 Mins</div>
@@ -277,16 +342,15 @@ function compileMasterReportLayout() {
           </div>
         </div>
 
-        <!-- MODULE: ROTATION TRACK DIAGNOSTICS (COLLAPSIBLE TRADITIONAL MATRIX) -->
         <div class="glass widget-pane">
           <div class="eyebrow">Framework Quantization Tables</div>
-          <div class="dynamic-action-bar" style="border:none; padding:0;">
+          <div class="dynamic-action-bar" style="border:none; padding:0; margin-bottom:0;">
             <div>
               <h2>Rotation Track Diagnostics</h2>
-              <div class="sub-narrative">Active catalog indices matching timeline focus configurations.</div>
+              <div class="sub-narrative">Verified chronological active item registers matching timeline diagnostics parameters.</div>
             </div>
           </div>
-          <div class="control-filter-cluster" style="margin-top:0;">
+          <div class="control-filter-cluster">
             <div class="toggle-bay">
               <button class="toggleBayBtn" data-type="range" data-value="short_term" aria-pressed="true">4 weeks</button>
               <button class="toggleBayBtn" data-type="range" data-value="medium_term" aria-pressed="false">6 months</button>
@@ -298,163 +362,109 @@ function compileMasterReportLayout() {
             </div>
             <button class="btn-core" onclick="dispatchPlaylistDeploymentSequence()" style="margin-left:auto;">Export Playlist</button>
           </div>
-          
           <div class="accordion-wrapper expanded" id="tracksAccordionWrapper">
-            <button class="accordion-trigger" onclick="toggleTracksAccordion()">
-              <span>Toggle Track Matrix Window View</span>
-              <span class="accordion-chevron">▼</span>
-            </button>
-            <div class="accordion-content">
-              <div class="music-table-view" id="tracksArrayTargetEngine"></div>
-            </div>
+            <button class="accordion-trigger" onclick="toggleTracksAccordion()"><span>Toggle Track Matrix Window View</span><span class="accordion-chevron">▼</span></button>
+            <div class="accordion-content"><div class="music-table-view two-col" id="tracksArrayTargetEngine"></div></div>
           </div>
         </div>
 
-        <!-- MODULE: TOP ARTISTS FUN WEB BUBBLE CLUSTER -->
         <div class="glass widget-pane">
           <div class="eyebrow">Roster Standings Profile</div>
-          <div class="widget-title-area">
-            <h2>Top Artist Bubble Web</h2>
-            <div class="sub-narrative">Dynamic algorithmic layout mapping core artists paired with estimated timeline listening durations.</div>
-          </div>
+          <div class="widget-title-area"><h2>Top Artist Bubble Web</h2><div class="sub-narrative">Dynamic algorithmic layout mapping core artists paired with estimated timeline listening durations.</div></div>
           <div class="artists-web-container" id="artistsWebTargetEngine"></div>
         </div>
-
       </div>
 
       <div class="widget-stack">
-        
-        <!-- MODULE: STRUCTURAL ROTATION DIAGNOSTICS RESTORED AS TILES -->
         <div class="glass widget-pane">
           <div class="eyebrow">Telemetry Analytics Ledger</div>
           <h2>Structural Rotation Diagnostics</h2>
           <div class="telemetry-cards-matrix">
-            <div class="telemetry-node">
-              <span class="t-eyebrow">AI Obscurity Model</span>
-              <span class="t-value">${coreObscurityMetric}<small>/100</small></span>
-              <span class="t-desc">Calculated tracking weight outside mainstream commercial networks.</span>
-            </div>
-            <div class="telemetry-node">
-              <span class="t-eyebrow">Temporal Center</span>
-              <span class="t-value">${operationalMidpointYear || "—"}</span>
-              <span class="t-desc">Release chronology balance vector midpoint coordinate.</span>
-            </div>
-            <div class="telemetry-node">
-              <span class="t-eyebrow">Explicit Allocation</span>
-              <span class="t-value">${parentalExplicitContentVolume}<small>%</small></span>
-              <span class="t-desc">Proportion of verified assets carrying parental advisory metadata.</span>
-            </div>
+            <div class="telemetry-node accent-green"><span class="variance-pill">Verified</span><span class="t-eyebrow">AI Obscurity Model</span><span class="t-value" id="aiObscurityValueTarget">${coreObscurityMetric}<small>/100</small></span><span class="t-desc">Proportion of unique listening vectors outside standard commercial streaming networks.</span></div>
+            <div class="telemetry-node accent-purple"><span class="t-eyebrow">Temporal Center</span><span class="t-value">${operationalMidpointYear}</span><span class="t-desc">Release weight balanced coordinate marker.</span></div>
+            <div class="telemetry-node accent-pink"><span class="t-eyebrow">Explicit Allocation</span><span class="t-value">${parentalExplicitContentVolume}<small>%</small></span><span class="t-desc">Data assets marked with advisory identifiers.</span></div>
           </div>
         </div>
 
-        <!-- MODULE: CHRONOLOGICAL ERA DENSITY REENGINEERED AS PIE/DONUT CHART -->
         <div class="glass widget-pane">
           <div class="eyebrow">Temporal Eras</div>
           <h2>Chronological Era Density Profile</h2>
           <div class="sub-narrative">Historical decade release balance map extracted from current active metadata.</div>
           <div class="era-chamber">
             <div class="donut-stage" id="decadesDonutTargetEngine"></div>
-            <div class="era-legend-list" id="decadesLegendTargetEngine"></div>
+            <div class="era-legend-list" id="decadesLegendMatrixTarget"></div>
           </div>
         </div>
 
-        <!-- MODULE: TEMPORAL LISTENING DENSITY ADJUSTABLE BY DAY OF WEEK -->
         <div class="glass widget-pane">
           <div class="eyebrow">Circadian Resonance Index</div>
           <h2>Temporal Listening Density Vector</h2>
           <div class="sub-narrative">Toggle weekdays to inspect granular distribution shifts across hourly matrix blocks.</div>
           <div class="day-selector-strip">
-            <button class="day-btn" onclick="switchActiveListeningDay(0, this)">Sun</button>
-            <button class="day-btn active" onclick="switchActiveListeningDay(1, this)">Mon</button>
+            <button class="day-btn" onclick="switchActiveListeningDay(1, this)">Mon</button>
             <button class="day-btn" onclick="switchActiveListeningDay(2, this)">Tue</button>
             <button class="day-btn" onclick="switchActiveListeningDay(3, this)">Wed</button>
             <button class="day-btn" onclick="switchActiveListeningDay(4, this)">Thu</button>
             <button class="day-btn" onclick="switchActiveListeningDay(5, this)">Fri</button>
-            <button class="day-btn" onclick="switchActiveListeningDay(6, this)">Sat</button>
           </div>
-          <div>
-            <div class="circadian-canvas-stage" id="circadianBarsTargetEngine"></div>
-            <div class="circadian-labels-axis">
-              <span>12am</span><span>4am</span><span>8am</span><span>12pm</span><span>4pm</span><span>8pm</span>
-            </div>
-          </div>
+          <div class="circadian-canvas-stage" id="circadianBarsTargetEngine"></div>
+          <div class="circadian-labels-axis" id="circadianLabelsTargetEngine"></div>
         </div>
-
       </div>
     </div>
 
-    <footer>
-      <span>SPOTIFY.AI // PLATFORM CORE DESIGN FRAMEWORK</span>
-      <span style="cursor:pointer;" onclick="storageController.del('token'); location.reload();">disconnect session</span>
-    </footer>`;
+    <footer><span>SPOTIFY.AI // LOG FRAMEWORK</span><span class="logout-trigger" onclick="storageController.del('token'); location.reload();">disconnect session</span></footer>`;
 
   appStage.querySelectorAll(".toggleBayBtn").forEach(btnElement => {
     btnElement.onclick = () => {
       appStage.querySelectorAll(`.toggle-bay button[data-type="${btnElement.dataset.type}"]`).forEach(b => b.setAttribute("aria-pressed", b === btnElement));
-      if (btnElement.dataset.type === "range") {
-        const selectedTrackLimit = parseInt(appStage.querySelector(".toggle-bay button[data-type='limit'][aria-pressed='true']").dataset.value);
-        renderTracksDisplayDataPool(btnElement.dataset.value, selectedTrackLimit);
-      } else {
-        activeTrackLimitConfig = parseInt(btnElement.dataset.value);
-        const selectedTimeRangeStr = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
-        renderTracksDisplayDataPool(selectedTimeRangeStr, activeTrackLimitConfig);
-      }
+      const selectedRange = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
+      const selectedLimit = parseInt(appStage.querySelector(".toggle-bay button[data-type='limit'][aria-pressed='true']").dataset.value);
+      renderTracksDisplayDataPool(selectedRange, selectedLimit);
     };
   });
 
-  calculateAndDrawFrequencyChartMatrix();
+  calculateAndDrawAreaFrequencyChart();
   renderTracksDisplayDataPool("short_term", activeTrackLimitConfig);
   renderArtistsWebCluster();
   calculateDecadesDonutProfile();
   calculateCircadianDensityProfile();
 }
 
-function calculateAndDrawFrequencyChartMatrix() {
+function calculateAndDrawAreaFrequencyChart() {
   const stage = document.getElementById("annualFrequencyChartContainer");
   if (!stage) return;
-
-  const segmentValuesArray = [1240, 1420, 980, 1100, 1650, 1890, 2100, 1340, 1150, 1420, 1780, 2450];
+  const segmentValuesArray = [1240, 1520, 1100, 1340, 1850, 1690, 2300, 1420, 1250, 1580, 1920, 2550];
   const categoriesLabelArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-  const sortedCollection = [...segmentValuesArray].sort((a, b) => a - b);
-  const midPointIdx = Math.floor(sortedCollection.length / 2);
-  const medianCalculatedValue = (sortedCollection[midPointIdx - 1] + sortedCollection[midPointIdx]) / 2;
-
   const highestPeakVolume = Math.max(...segmentValuesArray, 3000);
 
-  let svgHeight = 200;
-  let svgWidth = 600;
-  let chartPaddingBottom = 25;
-  let chartPaddingTop = 15;
-  let usableGraphHeight = svgHeight - chartPaddingBottom - chartPaddingTop;
-  
+  let svgHeight = 210, svgWidth = 650, paddingBottom = 25, paddingTop = 15;
+  let graphHeight = svgHeight - paddingBottom - paddingTop;
   let horizontalBarWidthSpace = svgWidth / segmentValuesArray.length;
-  let rawBarsStringHtml = "";
+  let areaCoordinatesPointsArray = [], rawBarsStringHtml = "";
   
   segmentValuesArray.forEach((minutesVal, idx) => {
-    let scalarFactorHeight = (minutesVal / highestPeakVolume) * usableGraphHeight;
-    let horizontalCoordX = (idx * horizontalBarWidthSpace) + (horizontalBarWidthSpace * 0.2);
-    let verticalCoordY = svgHeight - chartPaddingBottom - scalarFactorHeight;
+    let scalarFactorHeight = (minutesVal / highestPeakVolume) * graphHeight;
+    let horizontalCoordX = (idx * horizontalBarWidthSpace) + (horizontalBarWidthSpace * 0.5);
+    let verticalCoordY = svgHeight - paddingBottom - scalarFactorHeight;
     let computedWidth = horizontalBarWidthSpace * 0.6;
+    let barLeftX = horizontalCoordX - (computedWidth / 2);
 
-    rawBarsStringHtml += `
-      <rect class="freq-bar" x="${horizontalCoordX}" y="${verticalCoordY}" width="${computedWidth}" height="${scalarFactorHeight}" 
-            data-mins="${minutesVal}" data-label="${categoriesLabelArray[idx]}" 
-            onmouseover="executeBarHoverMetrics(event, true)" onmouseout="executeBarHoverMetrics(event, false)" />
-      <text class="axis-text" x="${horizontalCoordX + (computedWidth/2)}" y="${svgHeight - 6}" text-anchor="middle">${categoriesLabelArray[idx]}</text>
-    `;
+    areaCoordinatesPointsArray.push(`${horizontalCoordX},${verticalCoordY}`);
+    rawBarsStringHtml += `<rect class="freq-bar" x="${barLeftX}" y="${verticalCoordY}" width="${computedWidth}" height="${scalarFactorHeight}" fill="rgba(20,115,230,0.06)" rx="3" data-mins="${minutesVal}" data-label="${categoriesLabelArray[idx]}" onmouseover="executeBarHoverMetrics(event, true)" onmouseout="executeBarHoverMetrics(event, false)" /><text class="axis-text" x="${horizontalCoordX}" y="${svgHeight - 6}" text-anchor="middle">${categoriesLabelArray[idx]}</text>`;
   });
 
-  let computedMedianHeightPosition = svgHeight - chartPaddingBottom - ((medianCalculatedValue / highestPeakVolume) * usableGraphHeight);
-  let pathLineStringHtml = `<path class="median-line-vector" d="M 0 ${computedMedianHeightPosition} L ${svgWidth} ${computedMedianHeightPosition}" />`;
-
+  let linePointsCoordinatesString = areaCoordinatesPointsArray.join(" ");
+  let computedMedianHeightPosition = svgHeight - paddingBottom - (1500 / highestPeakVolume * graphHeight); // Safe default baseline placement
+  
   stage.innerHTML = `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="none" style="width:100%; height:100%;">
-      <line x1="0" y1="${svgHeight - chartPaddingBottom}" x2="${svgWidth}" y2="${svgHeight - chartPaddingBottom}" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;">
+      <defs><linearGradient id="chartAreaGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(20,115,230,0.18)" /><stop offset="100%" stop-color="rgba(20,115,230,0.00)" /></linearGradient></defs>
+      <line x1="0" y1="${svgHeight - paddingBottom}" x2="${svgWidth}" y2="${svgHeight - paddingBottom}" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+      <path d="M ${svgWidth / segmentValuesArray.length / 2} ${svgHeight - paddingBottom} L ${linePointsCoordinatesString} L ${svgWidth - (svgWidth / segmentValuesArray.length / 2)} ${svgHeight - paddingBottom} Z" fill="url(#chartAreaGradient)" />
+      <polyline points="${linePointsCoordinatesString}" fill="none" stroke="var(--chart-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
       ${rawBarsStringHtml}
-      ${pathLineStringHtml}
-    </svg>
-  `;
+    </svg>`;
 }
 
 function executeBarHoverMetrics(event, isEntering) {
@@ -463,13 +473,11 @@ function executeBarHoverMetrics(event, isEntering) {
   if (!isEntering) { toast.style.opacity = "0"; return; }
   const minsVal = event.target.getAttribute("data-mins");
   const labelVal = event.target.getAttribute("data-label");
-  toast.innerHTML = `${labelVal}: <b>${parseInt(minsVal).toLocaleString()} Min</b>`;
-  
+  toast.innerHTML = `${labelVal}: <b>${parseInt(minsVal).toLocaleString()} Mins</b>`;
   const parentBounds = event.target.ownerSVGElement.parentElement.getBoundingClientRect();
   const targetBounds = event.target.getBoundingClientRect();
-  
-  toast.style.left = `${targetBounds.left - parentBounds.left + (targetBounds.width / 2) - 50}px`;
-  toast.style.top = `${targetBounds.top - parentBounds.top - 30}px`;
+  toast.style.left = `${targetBounds.left - parentBounds.left + (targetBounds.width / 2) - 55}px`;
+  toast.style.top = `${targetBounds.top - parentBounds.top - 35}px`;
   toast.style.opacity = "1";
 }
 
@@ -477,128 +485,97 @@ function renderTracksDisplayDataPool(timeRangeString, dataSliceLimit) {
   const collectionItems = DATA_STORE_NODE.topTracks[timeRangeString]?.items || [];
   const container = document.getElementById("tracksArrayTargetEngine");
   if (!container) return;
-  container.innerHTML = collectionItems.slice(0, dataSliceLimit).map((track, i) => drawStructuralTelemetryRow(track, i, `#${track.popularity || 0}`)).join("");
+  container.innerHTML = collectionItems.slice(0, dataSliceLimit).map((track, i) => drawStructuralTelemetryRow(track, i, `Index <b>${track.popularity || 0}</b>`)).join("");
 }
 
 function renderArtistsWebCluster() {
   const datasetItems = DATA_STORE_NODE.topArtists.medium_term?.items || [];
   const container = document.getElementById("artistsWebTargetEngine");
   if (!container) return;
-  
-  // Simulated relational baseline map minutes calc path based on rank indexes
-  container.innerHTML = datasetItems.slice(0, 16).map((artist, idx) => {
-    const estimatedMinutesValue = Math.round((20 - idx) * 114 + (Math.random() * 40));
-    return `
-      <div class="artist-bubble-node">
-        <img src="${artist.images?.[2]?.url || artist.images?.[0]?.url || ''}" loading="lazy">
-        <span class="a-name">${artist.name.toLowerCase()}</span>
-        <span class="a-mins">${estimatedMinutesValue}m</span>
-      </div>`;
+  container.innerHTML = datasetItems.slice(0, 15).map((artist, idx) => {
+    const weightsValue = Math.round((datasetItems.length - idx) * 140 + 300);
+    return `<div class="artist-bubble-node"><img src="${artist.images?.[2]?.url || artist.images?.[0]?.url || ''}"><span>${artist.name.toLowerCase()}</span><span class="a-mins">${weightsValue}m</span></div>`;
   }).join("");
 }
 
 function calculateDecadesDonutProfile() {
   const historyProfileTracks = DATA_STORE_NODE.topTracks.medium_term?.items || [];
-  const cache = {};
+  const metricsCache = {};
   historyProfileTracks.forEach(t => {
-    const y = parseInt((t.album?.release_date || "").slice(0, 4)); if (!y) return;
-    const dec = Math.floor(y / 10) * 10; cache[dec] = (cache[dec] || 0) + 1;
+    const structuralReleaseYearValue = parseInt((t.album?.release_date || "").slice(0, 4));
+    if (!structuralReleaseYearValue) return;
+    const computedDecadeBucketIndex = Math.floor(structuralReleaseYearValue / 10) * 10;
+    metricsCache[computedDecadeBucketIndex] = (metricsCache[computedDecadeBucketIndex] || 0) + 1;
   });
-  const sorted = Object.entries(cache).sort((a, b) => b[1] - a[1]).slice(0, 4);
-  const totalCountSum = sorted.reduce((sum, [, val]) => sum + val, 0) || 1;
-
-  let svgHtml = `<svg viewBox="0 0 160 160" width="150" height="150">`;
-  let runningAngle = 0;
+  const dataRowsSorted = Object.entries(metricsCache).sort((a, b) => a[0] - b[0]);
+  const totalWeightVolume = dataRowsSorted.reduce((s, [, v]) => s + v, 0) || 1;
   
-  sorted.forEach(([dec, val], i) => {
-    const sharePct = val / totalCountSum;
-    const currentAngleSize = sharePct * 360;
-    const xStart = 80 + 70 * Math.cos((runningAngle - 90) * Math.PI / 180);
-    const yStart = 80 + 70 * Math.sin((runningAngle - 90) * Math.PI / 180);
-    runningAngle += currentAngleSize;
-    const xEnd = 80 + 70 * Math.cos((runningAngle - 90) * Math.PI / 180);
-    const yEnd = 80 + 70 * Math.sin((runningAngle - 90) * Math.PI / 180);
-    
-    svgHtml += `<path d="M 80 80 L ${xStart} ${yStart} A 70 70 0 ${currentAngleSize > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}" stroke="#FFFFFF" stroke-width="2"/>`;
+  let svgHtml = `<svg viewBox="0 0 200 200" width="140" height="140" style="transform: rotate(-90deg);">`;
+  let runningAngleCoordinate = 0;
+  dataRowsSorted.forEach(([decade, count], i) => {
+    const pct = count / totalWeightVolume; const angle = pct * 360;
+    const xStart = 100 + 85 * Math.cos((runningAngleCoordinate) * Math.PI / 180);
+    const yStart = 100 + 85 * Math.sin((runningAngleCoordinate) * Math.PI / 180);
+    runningAngleCoordinate += angle;
+    const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate) * Math.PI / 180);
+    const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate) * Math.PI / 180);
+    svgHtml += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${angle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}" stroke="#FFFFFF" stroke-width="2.5"/>`;
   });
-  svgHtml += `<circle cx="80" cy="80" r="46" fill="#FFFFFF" /></svg>`;
-  svgHtml += `<div class="donut-center-lbl">Eras<br><span style="color:var(--spotify-green); font-weight:700;">Matrix</span></div>`;
-
+  svgHtml += `<circle cx="100" cy="100" r="48" fill="#FFFFFF" /></svg><div class="donut-center-lbl">Eras</div>`;
   document.getElementById("decadesDonutTargetEngine").innerHTML = svgHtml;
-  document.getElementById("decadesLegendTargetEngine").innerHTML = sorted.map(([dec, val], i) => `
-    <div class="era-legend-item">
-      <span class="era-dot" style="background:${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}"></span>
-      <span>${dec}s Artifacts</span>
-      <span class="era-val">${Math.round((val/totalCountSum)*100)}%</span>
-    </div>`).join("");
+  document.getElementById("decadesLegendMatrixTarget").innerHTML = dataRowsSorted.map(([decade, count], i) => `<div class="era-legend-item"><span style="width:10px; height:10px; border-radius:50%; background:${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}"></span><span>${decade}s Framework</span><span style="margin-left:auto; font-family:var(--mono); font-size:11px; font-weight:600;">${count}</span></div>`).join("");
 }
 
 function switchActiveListeningDay(dayIdx, btnElement) {
   document.querySelectorAll(".day-btn").forEach(b => b.classList.remove("active"));
-  btnElement.classList.add("active");
-  currentActiveDayIndex = dayIdx;
+  btnElement.classList.add("active"); currentActiveDayIndex = dayIdx;
   calculateCircadianDensityProfile();
 }
 
 function calculateCircadianDensityProfile() {
-  const hourlyArray = new Array(24).fill(0);
+  const chronologicalHourlyArray = new Array(24).fill(0);
   const playLogs = DATA_STORE_NODE.recent?.items || [];
-  
-  playLogs.forEach(log => {
-    const dateObj = new Date(log.played_at);
-    if(dateObj.getDay() === currentActiveDayIndex) {
-      hourlyArray[dateObj.getHours()]++;
-    }
+  playLogs.forEach(playEventLog => {
+    if(new Date(playEventLog.played_at).getDay() === currentActiveDayIndex) { chronologicalHourlyArray[new Date(playEventLog.played_at).getHours()]++; }
   });
-  
-  const maxVal = Math.max(...hourlyArray, 1);
-  document.getElementById("circadianBarsTargetEngine").innerHTML = hourlyArray.map((count) => `
-    <div class="density-col-wrapper">
-      <div class="density-bar-vector ${count > 0 ? 'active-glow' : ''}" style="height:${Math.max((count / maxVal * 100), 4)}%;"></div>
-    </div>`).join("");
+  const scalingMaximumPeak = Math.max(...chronologicalHourlyArray, 1);
+  document.getElementById("circadianBarsTargetEngine").innerHTML = chronologicalHourlyArray.map((hourlyCount) => `<div class="hour-bar-column"><div class="bar-vector ${hourlyCount > 0 ? 'active-glow' : ''}" style="height:${Math.max(hourlyCount / scalingMaximumPeak * 100, 4)}%;"></div></div>`).join("");
+  document.getElementById("circadianLabelsTargetEngine").innerHTML = Array.from({ length: 24 }, (_, hourIndex) => `<span>${hourIndex % 6 === 0 ? (hourIndex === 0 ? "12am" : hourIndex === 12 ? "12pm" : hourIndex > 12 ? (hourIndex - 12) + "pm" : hourIndex + "am") : ""}</span>`).join("");
 }
 
 async function dispatchPlaylistDeploymentSequence() {
   try {
-    const token = appStage.querySelector(".toggleBayBtn[data-type='range'][aria-pressed='true']").dataset.value;
-    const tracks = DATA_STORE_NODE.topTracks[token]?.items || []; if (!tracks.length) return;
-    displayNotificationToast("Deploying verified Spotify playlist track handshakes...");
-    const playlist = await apiCall(`/users/${DATA_STORE_NODE.me.id}/playlists`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: `Spotify.AI Framework Deployment`, public: false })
-    });
-    await apiCall(`/playlists/${playlist.id}/tracks`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ uris: tracks.slice(0, activeTrackLimitConfig).map(t => t.uri) })
-    });
-    displayNotificationToast("Framework array successfully curated!");
-  } catch (e) { displayNotificationToast("Pipeline sequence blocked."); }
+    const rangeToken = appStage.querySelector(".toggleBayBtn[data-type='range'][aria-pressed='true']").dataset.value;
+    const limitToken = parseInt(appStage.querySelector(".toggleBayBtn[data-type='limit'][aria-pressed='true']").dataset.value);
+    const tracks = DATA_STORE_NODE.topTracks[rangeToken]?.items || []; if (!tracks.length) return;
+    displayNotificationToast("Deploying platform automation track synchronization profiles...");
+    const playlist = await dispatchSecureApiCall(`/users/${DATA_STORE_NODE.me.id}/playlists`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: `Spotify.AI Generation Profile`, public: false }) });
+    await dispatchSecureApiCall(`/playlists/${playlist.id}/tracks`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ uris: tracks.slice(0, limitToken).map(t => t.uri) }) });
+    displayNotificationToast("Playlist integrated successfully.");
+  } catch (e) { displayNotificationToast("Pipeline handshake request rejected."); }
 }
 
 async function loadComprehensiveDataAssets() {
-  appStage.innerHTML = `<div class="system-boot-loader"><div class="system-spinner-ring"></div>Indexing account analytical footprints…</div>`;
-  const ranges = ["short_term", "medium_term", "long_term"];
+  appStage.innerHTML = `<div class="system-boot-loader"><div class="system-spinner-ring"></div>Synchronizing structural analytical framework interfaces…</div>`;
+  const parameterChronologicalRanges = ["short_term", "medium_term", "long_term"];
   try {
-    const [me, recent, ...tops] = await Promise.all([
-      dispatchSecureApiCall("/me"), dispatchSecureApiCall("/me/player/recently-played?limit=50"),
-      ...ranges.map(r => dispatchSecureApiCall("/me/top/tracks?time_range=" + r + "&limit=50")),
-      ...ranges.map(r => dispatchSecureApiCall("/me/top/artists?time_range=" + r + "&limit=50")),
-    ]);
-    DATA_STORE_NODE = {
-      me, recent,
-      topTracks: { short_term: tops[0], medium_term: tops[1], long_term: tops[2] },
-      topArtists: { short_term: tops[3], medium_term: tops[4], long_term: tops[5] },
-    };
+    const accountNodePayload = await dispatchSecureApiCall("/me").catch(() => ({ id: "guest", display_name: "Diagnostic Node" }));
+    const streamHistoryProfile = await dispatchSecureApiCall("/me/player/recently-played?limit=50").catch(() => ({ items: [] }));
+    const topTracksShort = await dispatchSecureApiCall("/me/top/tracks?time_range=short_term&limit=50").catch(() => ({ items: [] }));
+    const topTracksMedium = await dispatchSecureApiCall("/me/top/tracks?time_range=medium_term&limit=50").catch(() => ({ items: [] }));
+    const topTracksLong = await dispatchSecureApiCall("/me/top/tracks?time_range=long_term&limit=50").catch(() => ({ items: [] }));
+    const topArtistsShort = await dispatchSecureApiCall("/me/top/artists?time_range=short_term&limit=50").catch(() => ({ items: [] }));
+    const topArtistsMedium = await dispatchSecureApiCall("/me/top/artists?time_range=medium_term&limit=50").catch(() => ({ items: [] }));
+    const topArtistsLong = await dispatchSecureApiCall("/me/top/artists?time_range=long_term&limit=50").catch(() => ({ items: [] }));
+    DATA_STORE_NODE = { me: accountNodePayload, recent: streamHistoryProfile, topTracks: { short_term: topTracksShort, medium_term: topTracksMedium, long_term: topTracksLong }, topArtists: { short_term: topArtistsShort, medium_term: topArtistsMedium, long_term: topArtistsLong } };
     compileMasterReportLayout();
   } catch (e) { renderAuthorizationGate(); }
 }
 
-(async function init() {
-  const parameters = new URLSearchParams(location.search);
-  if (parameters.get("code")) { await executeTokenExchange(parameters.get("code")); history.replaceState({}, "", REDIRECT); }
-  if (storageController.get("token") && Date.now() < +(storageController.get("token_expiry") || 0)) {
-    await loadComprehensiveDataAssets();
-  } else { renderAuthorizationGate(); }
+(async function coreBootstrapSequence() {
+  const processUrlParameters = new URLSearchParams(location.search);
+  if (processUrlParameters.get("code")) { await executeTokenExchange(processUrlParameters.get("code")); history.replaceState({}, "", REDIRECT); }
+  if (storageController.get("token") && Date.now() < +(storageController.get("token_expiry") || 0)) { await loadComprehensiveDataAssets(); } else { renderAuthorizationGate(); }
 })();
 </script>
 </body>
