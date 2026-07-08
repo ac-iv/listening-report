@@ -10,7 +10,6 @@
 <style>
 :root {
   --bg-base: #E2E8F5;
-  /* Frosted up slightly from 0.45 to 0.65 to elegantly catch your vivid new Google colors */
   --bg-card: rgba(255, 255, 255, 0.65);
   --bg-card-solid: #FFFFFF;
   --glass-border: rgba(255, 255, 255, 0.8);
@@ -20,7 +19,7 @@
   --gemini-blue: #1563FF;
   --gemini-pink: #FF66B2;
   --text-main: #1A1D24;
-  --text-muted: #4A5260; /* Slightly deepened for crisp readability on bright glass */
+  --text-muted: #4A5260; 
   --text-light: #707C90;
   --mono: 'IBM Plex Mono', monospace;
   --disp: 'Archivo', sans-serif;
@@ -39,7 +38,7 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  min-height: 100vh; /* Ensures it never cuts off at the bottom */
+  min-height: 100vh;
   
   /* Your Custom Google Flagship Gradient Matrix */
   background-color: #E2E8F5;
@@ -131,20 +130,23 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .time-slider::-webkit-slider-thumb:hover { transform: scale(1.15); background: var(--spotify-green); box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); }
 .slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
-.visualization-chamber { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; min-height: 300px; }
+.visualization-chamber { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 32px; align-items: center; min-height: 300px; }
 @media(max-width: 680px) { .visualization-chamber { grid-template-columns: 1fr; } }
 .vector-pie-stage { display: flex; justify-content: center; align-items: center; position: relative; }
 .pie-center-node { position: absolute; width: 90px; height: 90px; background: #FFFFFF; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid var(--glass-border); text-align: center; pointer-events: none; }
 .pie-center-node .val { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 .pie-center-node .lbl { font-size: 15px; font-weight: 800; color: var(--text-main); margin-top: 2px; }
 
-.legend-matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-.legend-pill { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8); transition: var(--transition-smooth); }
-.legend-pill:hover { transform: translateY(-2px); background: #FFFFFF; border-color: var(--gemini-purple); }
-.legend-pill .color-node { width: 14px; height: 14px; border-radius: 5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-.legend-pill .metadata-stack { display: flex; flex-direction: column; overflow: hidden; }
-.legend-pill .metadata-stack .g-name { font-weight: 700; font-size: 13.5px; text-transform: capitalize; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.legend-pill .metadata-stack .g-pct { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.legend-matrix-grid { display: flex; flex-direction: column; gap: 12px; }
+.legend-pill { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8); transition: var(--transition-smooth); }
+.legend-pill .color-node { width: 14px; height: 14px; border-radius: 5px; flex-shrink: 0; }
+.legend-pill .metadata-stack { display: grid; grid-template-columns: 1fr auto; width: 100%; align-items: center; }
+.legend-pill .metadata-stack .g-name { font-weight: 700; font-size: 13.5px; text-transform: capitalize; color: var(--text-main); }
+.legend-pill .metadata-stack .g-pct { font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; }
+
+/* Dynamic Integrated Genre Bar Stack Layout */
+.genre-bar-track { height: 8px; width: 100%; background: rgba(0,0,0,0.04); border-radius: 10px; overflow: hidden; margin-top: 6px; grid-column: span 2; }
+.genre-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 
 /* --- Telemetry Metrics Cards Framework --- */
 .telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
@@ -154,10 +156,8 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .telemetry-node .t-value small { font-size: 14px; font-weight: 600; color: var(--text-light); }
 .telemetry-node .t-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
 
-/* Micro Variational States for Nodes */
 .telemetry-node.accent-green { border-left: 4px solid var(--spotify-green); }
 .telemetry-node.accent-purple { border-left: 4px solid var(--gemini-purple); }
-.telemetry-node.accent-blue { border-left: 4px solid var(--gemini-blue); }
 .telemetry-node.accent-pink { border-left: 4px solid var(--gemini-pink); }
 
 /* --- Control Bar Layout Modules --- */
@@ -252,8 +252,7 @@ footer { margin-top: 80px; padding: 32px 40px; display: flex; justify-content: s
 
 <div id="socialExportOverlay" class="export-modal-overlay">
   <div class="export-workspace-card">
-    <div class="canvas-aspect-viewport" id="canvasFrameContainer">
-      </div>
+    <div class="canvas-aspect-viewport" id="canvasFrameContainer"></div>
     <div style="display:flex; gap:12px; justify-content:center;">
       <button class="btn-core" onclick="triggerMotionExportSequence()">Download Motion MP4</button>
       <button class="btn-core ghost-variant" onclick="terminateExportOverlay()">Close</button>
@@ -262,12 +261,7 @@ footer { margin-top: 80px; padding: 32px 40px; display: flex; justify-content: s
 </div>
 
 <script>
-/* ============================================================================
-   SPOTIFY.AI PLATFORM CORE TELEMETRY ENGINE
-   PURE ARCHITECTURAL CLIENT IMPLEMENTATION — PKCE SECURE PROTOCOLS EXTENSION
-   ============================================================================ */
-
-const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27"; /* ◄ RESTORED THIS LINE */
+const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27"; 
 const SCOPES = "user-top-read user-read-recently-played playlist-modify-public playlist-modify-private";
 const REDIRECT = location.origin + location.pathname;
 const appStage = document.getElementById("appRootStage");
@@ -281,8 +275,8 @@ const storageController = {
 const PALETTE_MATRIX = ["#7A5CFF", "#1DB954", "#4B90FF", "#FF66B2", "#FFAA00", "#00E5FF"];
 
 let DATA_STORE_NODE = null;
-let activeGenreChronologyState = 1; // [1: Short/Medium blend, 2: 1 Year mid matrix, 3: Full Long Term era]
-let activeTrackLimitConfig = 25;   // Pivot array size [25, 50]
+let activeGenreChronologyState = 1; 
+let activeTrackLimitConfig = 25;   
 let canvasRenderLoopTracker = null;
 
 function displayNotificationToast(msg) {
@@ -292,7 +286,6 @@ function displayNotificationToast(msg) {
   setTimeout(() => toast.classList.remove("active"), 3500);
 }
 
-/* Cryptographic Security Layers for Account Handshakes */
 function generateRandomStateString(len) {
   const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const vals = crypto.getRandomValues(new Uint8Array(len));
@@ -335,7 +328,6 @@ async function dispatchSecureApiCall(endpoint, parameters = {}) {
   return res.json();
 }
 
-/* Client Side Machine Learning / Descriptive Predictive Data Translators */
 function processGenreWeightMatrices(artists) {
   const weightRegistry = {};
   artists.forEach((a, index) => {
@@ -365,19 +357,18 @@ function computeWeeklyPlaybackIntervals(historyLog) {
 }
 
 function synthesiseAIPersonaAnalysis(obscurityCoefficient, contextualTrackData) {
-  let structuralBaseModel = "Your structural rotation is verified to be highly dynamic. ";
-  if (obscurityCoefficient >= 52) {
-    structuralBaseModel = "AI Diagnosis reflects a niche-exclusive profile. You protect your sensory canvas by operating primarily outside high-velocity commercial pipelines, curating a highly calculated, structural alternative sonic architecture. ";
-  } else if (obscurityCoefficient <= 32) {
-    structuralBaseModel = "AI System registers an active synergy with global cultural vectors. Your acoustic preferences prioritize polished production methodologies, structural maximum energy dynamics, and anthemic design properties. ";
+  let structuralBaseModel = "AI Translation Model loaded: Your rotational baseline demonstrates deep structural complexity. ";
+  if (obscurityCoefficient >= 50) {
+    structuralBaseModel = "AI Persona Diagnostic: Independent Vanguard Signature. Your matrix paths avoid algorithmic cultural aggregation nodes. You intentionally prioritize underground releases, generating a highly obscure acoustic distribution coefficient. ";
+  } else if (obscurityCoefficient < 35) {
+    structuralBaseModel = "AI Persona Diagnostic: Cultural Synced Node. Your consumption trajectory matches prominent global distribution pipelines. Production signatures skew clean, bright, and hyper-optimized for massive stadium energy response profiles. ";
   }
   if (contextualTrackData && contextualTrackData.length > 0) {
-    structuralBaseModel += `The current operational velocity of your catalog is dictated heavily by properties present in projects like "${contextualTrackData[0].name}".`;
+    structuralBaseModel += `The current real-time atmospheric focus is grounded elegantly around projects like "${contextualTrackData[0].name}."`;
   }
   return structuralBaseModel;
 }
 
-/* UI View Assemblers */
 function renderAuthorizationGate() {
   appStage.innerHTML = `
     <div class="glass gate-container">
@@ -407,12 +398,10 @@ function compileMasterReportLayout() {
   const analysisTargetPool = topTracks.medium_term.items;
   const weeklyVelocityReport = computeWeeklyPlaybackIntervals(recent);
   
-  // Feature Engineering Calculations
   const averagePopularityIndex = analysisTargetPool.reduce((sum, track) => sum + track.popularity, 0) / (analysisTargetPool.length || 1);
   const coreObscurityMetric = Math.round(100 - averagePopularityIndex);
   const engineeredAIPrediction = synthesiseAIPersonaAnalysis(coreObscurityMetric, topTracks.short_term.items);
   
-  // Mathematical average timeline calibration
   const calendarYearArray = analysisTargetPool.map(t => parseInt((t.album.release_date || "").slice(0, 4))).filter(Boolean);
   const operationalMidpointYear = Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / (calendarYearArray.length || 1));
   const parentalExplicitContentVolume = Math.round(100 * analysisTargetPool.filter(t => t.explicit).length / (analysisTargetPool.length || 1));
@@ -434,7 +423,6 @@ function compileMasterReportLayout() {
 
     <div class="main-layout-grid">
       <div class="widget-stack">
-        
         <div class="glass widget-pane">
           <div class="eyebrow">Gemini Machine Interpretation Layer</div>
           <div class="widget-title-area">
@@ -442,7 +430,7 @@ function compileMasterReportLayout() {
             <div class="sub-narrative">Real-time analytical assessment of audio metadata footprint patterns.</div>
           </div>
           <div class="ai-insight-box">
-            <div class="ai-badge">✦ Predictive Model Output</div>
+            <div class="ai-badge">✦ Deep Learning Profile Interpretation</div>
             <p class="ai-stream-text" id="aiModelTextContainer">${engineeredAIPrediction}</p>
           </div>
         </div>
@@ -478,11 +466,9 @@ function compileMasterReportLayout() {
           </div>
           <div class="artists-matrix-grid" id="artistsArrayTargetEngine"></div>
         </div>
-
       </div>
 
       <div class="widget-stack">
-        
         <div class="glass widget-pane">
           <div class="eyebrow">Acoustic Timeline Chronology</div>
           <div class="widget-title-area">
@@ -490,7 +476,7 @@ function compileMasterReportLayout() {
               <h2>Dynamic Genre Continuum</h2>
               <button class="btn-core ghost-variant" onclick="initializeExportOverlayStage('genres')">Cinematic Share</button>
             </div>
-            <div class="sub-narrative">Scrub timeline registers to map historical genre evolution vector adjustments.</div>
+            <div class="sub-narrative">Scrub timeline registers to map historical genre evolution vector adjustments via integrated multi-chart frameworks.</div>
           </div>
           <div class="slider-control-center">
             <input type="range" min="1" max="3" value="${activeGenreChronologyState}" class="time-slider" id="chronologySliderInputDevice">
@@ -511,9 +497,9 @@ function compileMasterReportLayout() {
           <h2>Structural Rotation Diagnostics</h2>
           <div class="telemetry-cards-matrix">
             <div class="telemetry-node accent-purple">
-              <span class="t-eyebrow">Obscurity Rating</span>
-              <span class="t-value">${coreObscurityMetric}<small>/100</small></span>
-              <span class="t-desc">Proportion of unique listening vectors outside commercial standard grids.</span>
+              <span class="t-eyebrow">AI Obscurity Model</span>
+              <span class="t-value" id="aiObscurityVal">${coreObscurityMetric}<small>/100</small></span>
+              <span class="t-desc" id="aiObscurityDesc">Evaluating non-mainstream indexing values...</span>
             </div>
             <div class="telemetry-node accent-green">
               <span class="t-eyebrow">Temporal Center</span>
@@ -553,7 +539,6 @@ function compileMasterReportLayout() {
             <div class="circadian-labels-axis" id="circadianLabelsTargetEngine"></div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -562,7 +547,6 @@ function compileMasterReportLayout() {
       <button class="btn-core ghost-variant" id="terminateSessionBtn">Terminate Secure Connection</button>
     </footer>`;
 
-  /* Bind Dynamic User Interface Component Interactions */
   document.getElementById("chronologySliderInputDevice").oninput = (e) => {
     activeGenreChronologyState = parseInt(e.target.value);
     recalculateGenreStateEngine();
@@ -587,7 +571,6 @@ function compileMasterReportLayout() {
     renderAuthorizationGate();
   };
 
-  // Run initial sub-system calculation engines
   recalculateGenreStateEngine();
   renderTracksDisplayDataPool("short_term", activeTrackLimitConfig);
   renderArtistsDisplayDataPool();
@@ -609,8 +592,21 @@ function recalculateGenreStateEngine() {
 
   const calibratedGenres = processGenreWeightMatrices(computationalTargetPool);
   
+  // Dynamic AI Obscurity Calibration Matrix
+  const activeTracksSubset = DATA_STORE_NODE.topTracks[activeGenreChronologyState === 1 ? 'short_term' : activeGenreChronologyState === 2 ? 'medium_term' : 'long_term'].items;
+  const currentPopularityAverage = activeTracksSubset.reduce((sum, track) => sum + track.popularity, 0) / (activeTracksSubset.length || 1);
+  const computedObscurityIndex = Math.round(100 - currentPopularityAverage);
+
+  document.getElementById("aiObscurityVal").innerHTML = `${computedObscurityIndex}<small>/100</small>`;
+  document.getElementById("aiObscurityDesc").textContent = computedObscurityIndex >= 50 
+    ? "AI Model calculates a highly non-conformist sonic trajectory safely isolated from viral trends." 
+    : "AI Model establishes direct baseline consistency with standard mainstream programmatic metrics.";
+
+  // Dynamic text reassignment via simulated execution paths
+  document.getElementById("aiModelTextContainer").textContent = synthesiseAIPersonaAnalysis(computedObscurityIndex, activeTracksSubset);
+
   // Vector Graphic SVG Arc Rendering Pipeline
-  let svgStringPayload = `<svg viewBox="0 0 200 200" width="170" height="170">`;
+  let svgStringPayload = `<svg viewBox="0 0 200 200" width="160" height="160">`;
   let runningAngleCoordinate = 0;
   
   calibratedGenres.forEach(g => {
@@ -621,23 +617,28 @@ function recalculateGenreStateEngine() {
     const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
     const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
     
-    svgStringPayload += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${mechanicalSectorAngle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${g.color}" stroke="var(--bg-base)" stroke-width="2"/>`;
+    svgStringPayload += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${mechanicalSectorAngle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${g.color}" stroke="var(--bg-card-solid)" stroke-width="2.5"/>`;
   });
   
   svgStringPayload += `<circle cx="100" cy="100" r="42" fill="#FFFFFF" /></svg>`;
   svgStringPayload += `
     <div class="pie-center-node">
-      <span class="val">Timeline</span>
+      <span class="val">Chrono</span>
       <span class="lbl" style="font-size:11px; font-weight:700; text-align:center; padding:0 4px; color:var(--gemini-purple);">${activeGenreChronologyState === 1 ? '6 Mos' : activeGenreChronologyState === 2 ? '1 Year' : 'All-Time'}</span>
     </div>`;
   
   document.getElementById("pieGraphicVectorNodeCanvas").innerHTML = svgStringPayload;
+  
+  // Implementation of Simultaneous Horizontal Bar Charts along with Legend entries
   document.getElementById("pieLegendMatrixTarget").innerHTML = calibratedGenres.map(g => `
     <div class="legend-pill">
       <span class="color-node" style="background:${g.color}"></span>
       <div class="metadata-stack">
         <span class="g-name">${g.name}</span>
-        <span class="g-pct">${Math.round(g.pct * 100)}% weight value</span>
+        <span class="g-pct">${Math.round(g.pct * 100)}% density</span>
+        <div class="genre-bar-track">
+          <div class="genre-bar-fill" style="width: ${Math.round(g.pct * 100)}%; background: ${g.color};"></div>
+        </div>
       </div>
     </div>`).join("");
 }
@@ -690,7 +691,6 @@ function calculateCircadianDensityProfile() {
     <span>${hourIndex % 4 === 0 ? (hourIndex === 0 ? "12am" : hourIndex === 12 ? "12pm" : hourIndex > 12 ? (hourIndex - 12) + "pm" : hourIndex + "am") : ""}</span>`).join("");
 }
 
-/* API Execution Pipelines */
 async function dispatchPlaylistDeploymentSequence() {
   try {
     const selectedActiveRangeToken = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
@@ -708,7 +708,7 @@ async function dispatchPlaylistDeploymentSequence() {
       })
     });
 
-    await dispatchSecureApiCall(`/playlists/${targetPlaylistShell.id}/tracks`, {
+    await dispatchSecureApiCall(`/playlists/${targetPlaylistShell.id}/items`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uris: executionTracksPayload.map(trackItem => trackItem.uri) })
     });
@@ -720,7 +720,6 @@ async function dispatchPlaylistDeploymentSequence() {
   }
 }
 
-/* High-Performance Canvas Interactive Motion Cinema Engine Module */
 function initializeExportOverlayStage(type) {
   const overlay = document.getElementById("socialExportOverlay");
   const canvasViewport = document.getElementById("canvasFrameContainer");
@@ -739,11 +738,9 @@ function initializeExportOverlayStage(type) {
   function executionLoopFrame() {
     frameCounterOffset += 0.015;
     
-    // Clear and Draw complex linear background gradient waves
     ctx.fillStyle = "#F0F3F8";
     ctx.fillRect(0, 0, 720, 1280);
 
-    // Dynamic fluid decorative abstract aesthetic ambient nodes
     ctx.save();
     let gradientRadiusGrad1 = ctx.createRadialGradient(150 + Math.sin(frameCounterOffset) * 60, 250 + Math.cos(frameCounterOffset) * 40, 0, 150, 250, 450);
     gradientRadiusGrad1.addColorStop(0, "rgba(122, 92, 255, 0.12)");
@@ -760,7 +757,6 @@ function initializeExportOverlayStage(type) {
     ctx.fillRect(0, 0, 720, 1280);
     ctx.restore();
 
-    // Text & Branding Node Intersects
     ctx.fillStyle = "#1A1D24";
     ctx.font = "900 48px Archivo, sans-serif";
     ctx.fillText("spotify.ai", 80, 140);
@@ -778,27 +774,23 @@ function initializeExportOverlayStage(type) {
     ctx.font = "900 68px Archivo, sans-serif";
     ctx.fillText(`#${primaryGenreString}`, 80, 500);
 
-    // Interactive Animated Vector Matrix Bars Layout inside Canvas Rendering Space
     let layoutVerticalPlacementOffset = 640;
     primaryGenres.forEach((g, idx) => {
       ctx.fillStyle = "#5C6573";
       ctx.font = "600 22px 'IBM Plex Mono', monospace";
       ctx.fillText(g.name.toLowerCase(), 80, layoutVerticalPlacementOffset);
 
-      // Render Bar Background Channel
       ctx.fillStyle = "rgba(0,0,0,0.03)";
       ctx.beginPath();
       ctx.roundRect(80, layoutVerticalPlacementOffset + 12, 560, 16, 8);
       ctx.fill();
 
-      // Render Dynamic Bar Accent Filled Wave Vector Channel
       const targetPulseFillModifier = g.pct * (560 * Math.min(1, frameCounterOffset / 2));
       ctx.fillStyle = g.color === "#FFFFFF" ? "#1DB954" : g.color;
       ctx.beginPath();
       ctx.roundRect(80, layoutVerticalPlacementOffset + 12, targetPulseFillModifier, 16, 8);
       ctx.fill();
 
-      // Print dynamic text metrics percentage logs
       ctx.fillStyle = "#1A1D24";
       ctx.font = "700 22px 'IBM Plex Mono', monospace";
       ctx.fillText(`${Math.round(g.pct * 100)}%`, 580, layoutVerticalPlacementOffset);
@@ -806,7 +798,6 @@ function initializeExportOverlayStage(type) {
       layoutVerticalPlacementOffset += 90;
     });
 
-    // Draw Footer Identity Tags inside Export Canvas
     ctx.fillStyle = "rgba(0,0,0,0.04)";
     ctx.fillRect(80, 1100, 560, 2);
 
@@ -837,7 +828,6 @@ function triggerMotionExportSequence() {
   }, 2200);
 }
 
-/* System Initialization & Core Orchestration Pipeline Boot Sequence */
 async function loadComprehensiveDataAssets() {
   appStage.innerHTML = `
     <div class="system-boot-loader">
@@ -867,7 +857,6 @@ async function loadComprehensiveDataAssets() {
   }
 }
 
-/* Global Application Script Execution Gate Hooks */
 (async function coreBootstrapSequence() {
   const processUrlParameters = new URLSearchParams(location.search);
   if (processUrlParameters.get("code")) {
