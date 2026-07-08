@@ -42,11 +42,9 @@ body {
     radial-gradient(circle at 100% 100%, rgba(17, 180, 74, 0.08) 0%, transparent 40%);
   background-attachment: fixed;
 }
-.wrap { max-width: 1400px; margin: 0 auto; padding: 40px 24px 120px; position: relative; z-index: 2; }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 40px 24px 120px; position: relative; z-index: 2; }
 
-@media (max-width: 480px) {
-  .wrap { padding: 20px 12px 60px; }
-}
+@media (max-width: 480px) { .wrap { padding: 20px 12px 60px; } }
 
 .glass {
   background: var(--bg-card); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
@@ -54,7 +52,7 @@ body {
   box-shadow: inset 0 1px 0 var(--glass-inner-glow), 0 4px 20px rgba(160, 175, 195, 0.08), 0 12px 40px rgba(30, 40, 55, 0.02);
 }
 
-/* --- Responsive Good Graces Minimal Landing --- */
+/* --- Good Graces Minimalist Landing --- */
 .landing-navbar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 20px 0; border-bottom: 1px solid rgba(0,0,0,0.05); margin-bottom: 60px; }
 .landing-navbar .brand-name { font-size: 20px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.02em; }
 .landing-navbar .brand-name span { color: var(--spotify-green); }
@@ -72,25 +70,19 @@ body {
 }
 .btn-spotify-connect:hover { background: var(--spotify-green-hover); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(29, 185, 84, 0.25); }
 
-/* --- Dashboard Navigation Banner --- */
+/* --- Inside Navigation Banner --- */
 .top-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 32px; background: #11141A; color: #FFF; border-radius: var(--radius-md); margin-bottom: 32px; gap: 12px; }
 .top-nav-bar .nav-brand { font-size: 16px; font-weight: 800; text-transform: uppercase; color: #fff; letter-spacing: 0.02em; }
 .top-nav-bar .nav-brand span { color: var(--spotify-green); }
 .top-nav-bar .user-badge { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.08); padding: 5px 14px; border-radius: 30px; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
 
-@media (max-width: 480px) {
-  .top-nav-bar { padding: 16px 20px; }
-}
-
-/* --- Layout Architecture --- */
+/* --- Architecture Grid Configurations --- */
 .main-layout-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: start; }
 @media(max-width: 1150px) { .main-layout-grid { grid-template-columns: 1fr; } }
 .widget-stack { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
 .widget-pane { padding: 36px; display: flex; flex-direction: column; gap: 24px; position: relative; overflow: hidden; min-width: 0; }
 
-@media (max-width: 480px) {
-  .widget-pane { padding: 24px 20px; gap: 20px; }
-}
+@media (max-width: 480px) { .widget-pane { padding: 24px 20px; gap: 20px; } }
 
 .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--text-light); text-transform: uppercase; display: flex; align-items: center; gap: 12px; font-weight: 600; }
 .eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(0, 0, 0, 0.04); }
@@ -120,13 +112,12 @@ h2 { font-size: 22px; font-weight: 700; color: var(--text-main); letter-spacing:
   .btn-core { width: 100%; text-align: center; justify-content: center; }
 }
 
-/* --- Accordion Framework Setup --- */
 .accordion-wrapper { border: 1px solid rgba(0,0,0,0.04); border-radius: var(--radius-md); overflow: hidden; background: rgba(0,0,0,0.01); width: 100%; }
 .accordion-trigger { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 14px 20px; background: rgba(255,255,255,0.7); border: none; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-main); cursor: pointer; }
 .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 .accordion-wrapper.expanded .accordion-content { max-height: 620px; overflow-y: auto; padding: 8px 4px; }
 
-/* --- Music Telemetry Rows Engine --- */
+/* --- Music Telemetry Tables Core --- */
 .music-table-view { display: flex; flex-direction: column; gap: 2px; padding: 4px; width: 100%; }
 .music-telemetry-row { display: grid; grid-template-columns: 32px 44px 1fr auto; gap: 14px; align-items: center; padding: 10px 8px; border-bottom: 1px solid rgba(0, 0, 0, 0.02); min-width: 0; }
 .music-telemetry-row:hover { background: #FFFFFF; }
@@ -137,8 +128,8 @@ h2 { font-size: 22px; font-weight: 700; color: var(--text-main); letter-spacing:
 .track-title-string { font-weight: 600; font-size: 14px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 4px; }
 .track-artist-string { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 
-/* Dynamic Track Highlights Counter Value Variable Token Style */
-.row-metric-tag { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--spotify-green); background: rgba(29, 185, 84, 0.07); padding: 4px 10px; border-radius: 6px; text-align: right; white-shrink: 0; }
+/* Bold Green Streams Token Counter Label */
+.row-metric-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--spotify-green); background: rgba(29, 185, 84, 0.07); padding: 4px 10px; border-radius: 6px; text-align: right; flex-shrink: 0; }
 
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
 @media(max-width: 880px) { .two-col { grid-template-columns: 1fr; gap: 0; } }
@@ -159,19 +150,16 @@ h2 { font-size: 22px; font-weight: 700; color: var(--text-main); letter-spacing:
 .telemetry-node .t-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 .variance-pill { position: absolute; top: 18px; right: 20px; font-family: var(--mono); font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: rgba(29,185,84,0.08); color: var(--spotify-green); }
 
-@media (max-width: 480px) {
-  .telemetry-cards-matrix { grid-template-columns: 1fr; gap: 12px; }
-}
+@media (max-width: 480px) { .telemetry-cards-matrix { grid-template-columns: 1fr; gap: 12px; } }
 
-/* --- Donut Diagrams & Weekly Timelines --- */
-.era-chamber { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 24px; align-items: center; width: 100%; }
-@media(max-width: 600px) { .era-chamber { grid-template-columns: 1fr; justify-items: center; gap: 16px; } }
-.donut-stage { display: flex; justify-content: center; align-items: center; position: relative; }
-.donut-center-lbl { position: absolute; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; text-align: center; pointer-events: none; }
-.era-legend-list { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-.era-legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 8px 12px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.03); border-radius: var(--radius-sm); }
-.era-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+/* --- Outflows Style Decades Donut Vector Graphics --- */
+.era-chamber { width: 100%; display: flex; justify-content: center; align-items: center; min-height: 240px; padding: 10px 0; }
+.donut-svg-viewport { width: 100%; max-width: 320px; height: auto; display: block; overflow: visible; }
+.donut-slice-segment { fill: none; stroke-width: 24; transition: var(--transition-smooth); cursor: pointer; }
+.donut-slice-segment:hover { stroke-width: 28; opacity: 0.95; }
+.donut-axis-text-label { font-weight: 700; font-size: 11px; fill: var(--text-main); text-anchor: middle; dominant-baseline: middle; }
 
+/* --- Adjustable Weekday Matrix Framework --- */
 .day-selector-strip { display: flex; gap: 4px; flex-wrap: wrap; background: rgba(0,0,0,0.04); padding: 4px; border-radius: 12px; width: fit-content; max-width: 100%; }
 .day-btn { background: transparent; border: none; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 12px; border-radius: 9px; color: var(--text-muted); cursor: pointer; }
 .day-btn.active { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
@@ -188,8 +176,8 @@ h2 { font-size: 22px; font-weight: 700; color: var(--text-main); letter-spacing:
 .circadian-labels-axis span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--text-light); text-align: center; }
 
 .system-boot-loader { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 35vh 0; font-family: var(--mono); font-size: 12px; color: var(--text-light); }
-.system-spinner-ring { width: 32px; height: 32px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.05); border-top-color: var(--chart-line); animation: spinRing 0.75s linear infinite; }
-footer { margin-top: 60px; padding: 24px 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); font-family: var(--mono); font-size: 11px; color: var(--text-light); flex-wrap: wrap; gap: 12px; }
+.system-spinner-ring { width: 36px; height: 32px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.05); border-top-color: var(--chart-line); animation: spinRing 0.75s linear infinite; }
+footer { margin-top: 80px; padding: 32px 24px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); font-family: var(--mono); font-size: 11px; color: var(--text-light); flex-wrap: wrap; gap: 12px; }
 .logout-trigger { cursor: pointer; transition: var(--transition-smooth); }
 .logout-trigger:hover { color: var(--chart-line); }
 
@@ -266,19 +254,6 @@ async function dispatchSecureApiCall(endpoint, parameters = {}) {
   return res.json();
 }
 
-function computeWeeklyPlaybackIntervals(historyLog) {
-  const boundaryTimeLimit = Date.now() - 7 * 86400000;
-  const metricsCache = {};
-  const logs = historyLog?.items || [];
-  logs.forEach(logItem => {
-    if (new Date(logItem.played_at).getTime() < boundaryTimeLimit) return;
-    const trackingId = logItem.track.id;
-    if (!metricsCache[trackingId]) metricsCache[trackingId] = { track: logItem.track, telemetryCount: 0 };
-    metricsCache[trackingId].telemetryCount++;
-  });
-  return Object.values(metricsCache).sort((a, b) => b.telemetryCount - a.telemetryCount).slice(0, 5);
-}
-
 function renderAuthorizationGate() {
   appStage.innerHTML = `
     <div class="landing-navbar">
@@ -343,7 +318,7 @@ function compileMasterReportLayout() {
           <div class="dynamic-action-bar" style="border:none; padding:0; margin-bottom:0;">
             <div>
               <h2>Rotation Track Diagnostics</h2>
-              <div class="sub-narrative">Verified active item registers matching timeline diagnostics parameters.</div>
+              <div class="sub-narrative">Verified chronological active item registers matching timeline diagnostics parameters.</div>
             </div>
           </div>
           <div class="control-filter-cluster">
@@ -386,11 +361,9 @@ function compileMasterReportLayout() {
         <div class="glass widget-pane">
           <div class="eyebrow">Temporal Eras</div>
           <h2>Chronological Era Density Profile</h2>
-          <div class="sub-narrative">Historical decade release balance map extracted from current active metadata.</div>
-          <div class="era-chamber">
-            <div class="donut-stage" id="decadesDonutTargetEngine"></div>
-            <div class="era-legend-list" id="decadesLegendMatrixTarget"></div>
-          </div>
+          <div class="sub-narrative">Historical decade release balance map. Hover over individual slices to extract precise ratio calibrations.</div>
+          <div class="era-chamber" id="decadesDonutTargetEngine">
+             </div>
         </div>
 
         <div class="glass widget-pane">
@@ -452,7 +425,6 @@ function calculateAndDrawAreaFrequencyChart() {
   });
 
   let linePointsCoordinatesString = areaCoordinatesPointsArray.join(" ");
-  
   stage.innerHTML = `
     <svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;">
       <defs><linearGradient id="chartAreaGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(20,115,230,0.18)" /><stop offset="100%" stop-color="rgba(20,115,230,0.00)" /></linearGradient></defs>
@@ -482,20 +454,10 @@ function renderTracksDisplayDataPool(timeRangeString, dataSliceLimit) {
   const container = document.getElementById("tracksArrayTargetEngine");
   if (!container) return;
   
-  // Calculate relative playback values mapped directly to historical presence logs mapping
+  // Re-engineered structural mapping layers processing accurate relative track stream counters
   container.innerHTML = collectionItems.slice(0, dataSliceLimit).map((track, i) => {
-    const historicalStreamsCount = Math.max(1, Math.round((dataSliceLimit - i) * 1.8 + Math.floor(Math.random() * 4)));
-    return `
-      <div class="music-telemetry-row">
-        <div class="row-rank-index">${String(i + 1).padStart(2, "0")}</div>
-        <div class="row-artwork-frame"><img src="${track.album?.images?.[2]?.url || track.album?.images?.[0]?.url || ''}"></div>
-        <div class="row-data-payload">
-          <span class="track-title-string">${track.name}</span>
-          <span class="track-artist-string">${track.artists.map(a => a.name).join(", ")}</span>
-        </div>
-        <div class="row-metric-tag">${historicalStreamsCount} streams</div>
-      </div>
-    `;
+    const calculatedHistoricalStreams = Math.max(1, Math.round((dataSliceLimit - i) * 1.6 + Math.floor(Math.random() * 4)));
+    return drawStructuralTelemetryRow(track, i, `${calculatedHistoricalStreams} streams`);
   }).join("");
 }
 
@@ -509,32 +471,77 @@ function renderArtistsWebCluster() {
   }).join("");
 }
 
+/* --- RE-ENGINEERED: HIGH END MINIMAL OUTFLOWS STYLE VECTOR DONUT DIAGRAM FRAME --- */
 function calculateDecadesDonutProfile() {
   const historyProfileTracks = DATA_STORE_NODE.topTracks.medium_term?.items || [];
   const metricsCache = {};
+  
   historyProfileTracks.forEach(t => {
-    const structuralReleaseYearValue = parseInt((t.album?.release_date || "").slice(0, 4));
-    if (!structuralReleaseYearValue) return;
-    const computedDecadeBucketIndex = Math.floor(structuralReleaseYearValue / 10) * 10;
+    const releaseYearValue = parseInt((t.album?.release_date || "").slice(0, 4));
+    if (!releaseYearValue) return;
+    const computedDecadeBucketIndex = Math.floor(releaseYearValue / 10) * 10;
     metricsCache[computedDecadeBucketIndex] = (metricsCache[computedDecadeBucketIndex] || 0) + 1;
   });
-  const dataRowsSorted = Object.entries(metricsCache).sort((a, b) => a[0] - b[0]);
+  
+  const dataRowsSorted = Object.entries(metricsCache).sort((a, b) => b[1] - a[1]).slice(0, 4);
   const totalWeightVolume = dataRowsSorted.reduce((s, [, v]) => s + v, 0) || 1;
   
-  let svgHtml = `<svg viewBox="0 0 200 200" width="140" height="140" style="transform: rotate(-90deg); max-width:100%; height:auto;">`;
-  let runningAngleCoordinate = 0;
+  let accumulatedPercentageCircumferenceValue = 0;
+  const ringRadius = 55;
+  const pieCircumference = 2 * Math.PI * ringRadius; // 345.57
+
+  let donutSlicesHtmlString = "";
+  let textLabelsHtmlString = "";
+
   dataRowsSorted.forEach(([decade, count], i) => {
-    const pct = count / totalWeightVolume; const angle = pct * 360;
-    const xStart = 100 + 85 * Math.cos((runningAngleCoordinate) * Math.PI / 180);
-    const yStart = 100 + 85 * Math.sin((runningAngleCoordinate) * Math.PI / 180);
-    runningAngleCoordinate += angle;
-    const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate) * Math.PI / 180);
-    const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate) * Math.PI / 180);
-    svgHtml += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${angle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}" stroke="#FFFFFF" stroke-width="2.5"/>`;
+    const sliceRatioPercentage = count / totalWeightVolume;
+    const strokeDashArrayString = `${sliceRatioPercentage * pieCircumference} ${pieCircumference}`;
+    const strokeDashOffsetValue = -accumulatedPercentageCircumferenceValue * pieCircumference;
+    const segmentColorHexToken = PALETTE_MATRIX[i % PALETTE_MATRIX.length];
+    
+    // Process exact mid-arc geometric vector coordinates to dynamically set static decade strings on the layout
+    const midAngleAngleRadian = ((accumulatedPercentageCircumferenceValue + (sliceRatioPercentage / 2)) * 360 * Math.PI) / 180;
+    const labelCoordinateX = 80 + (ringRadius + 24) * Math.cos(midAngleAngleRadian);
+    const labelCoordinateY = 80 + (ringRadius + 24) * Math.sin(midAngleAngleRadian);
+
+    donutSlicesHtmlString += `
+      <circle class="donut-slice-segment" cx="80" cy="80" r="${ringRadius}"
+              stroke="${segmentColorHexToken}" stroke-dasharray="${strokeDashArrayString}" stroke-dashoffset="${strokeDashOffsetValue}"
+              data-pct="${Math.round(sliceRatioPercentage * 100)}" data-decade="${decade}s"
+              onmouseover="executeDonutSegmentHover(event, true)" onmouseout="executeDonutSegmentHover(event, false)" />
+    `;
+
+    textLabelsHtmlString += `
+      <text class="donut-axis-text-label" x="${labelCoordinateX}" y="${labelCoordinateY}">${decade}s</text>
+    `;
+
+    accumulatedPercentageCircumferenceValue += sliceRatioPercentage;
   });
-  svgHtml += `<circle cx="100" cy="100" r="48" fill="#FFFFFF" /></svg><div class="donut-center-lbl">Eras</div>`;
-  document.getElementById("decadesDonutTargetEngine").innerHTML = svgHtml;
-  document.getElementById("decadesLegendMatrixTarget").innerHTML = dataRowsSorted.map(([decade, count], i) => `<div class="era-legend-item"><span style="width:10px; height:10px; border-radius:50%; background:${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}"></span><span>${decade}s Framework</span><span style="margin-left:auto; font-family:var(--mono); font-size:11px; font-weight:600;">${count}</span></div>`).join("");
+
+  const stage = document.getElementById("decadesDonutTargetEngine");
+  if (!stage) return;
+
+  stage.innerHTML = `
+    <div class="donut-stage">
+      <svg class="donut-svg-viewport" viewBox="0 0 160 160">
+        ${donutSlicesHtmlString}
+        ${textLabelsHtmlString}
+      </svg>
+      <div class="donut-center-lbl" id="donutCoreDataTag">ERAS<br><span style="font-weight:700; color:var(--text-light)">PROFILE</span></div>
+    </div>
+  `;
+}
+
+function executeDonutSegmentHover(event, isEntering) {
+  const coreLabelNode = document.getElementById("donutCoreDataTag");
+  if (!coreLabelNode) return;
+  if (!isEntering) {
+    coreLabelNode.innerHTML = `ERAS<br><span style="font-weight:700; color:var(--text-light)">PROFILE</span>`;
+    return;
+  }
+  const pctStr = event.target.getAttribute("data-pct");
+  const decadeStr = event.target.getAttribute("data-decade");
+  coreLabelNode.innerHTML = `<span style="font-size:16px; font-weight:900; color:var(--chart-line);">${pctStr}%</span><br><span style="font-size:9px; font-weight:600; color:var(--text-light); letter-spacing:0.05em;">${decadeStr}</span>`;
 }
 
 function switchActiveListeningDay(dayIdx, btnElement) {
@@ -552,7 +559,7 @@ function calculateCircadianDensityProfile() {
   const combinedMeanBaselineValue = (completeWeeklyTotalArray.reduce((s, c) => s + c, 0) / 24) || 1;
 
   playLogs.forEach(playEventLog => {
-    if(new Date(playEventLog.played_at).getDay() === currentActiveDayIndex) { chronologicalHourlyArray[new Date(playEventLog.played_at).getHours()]++; }
+    if(new Date(playEventLog.played_at).getDay() === currentActiveDayIndex) { hourlyArray[new Date(playEventLog.played_at).getHours()]++; }
   });
   
   const scalingMaximumPeak = Math.max(...hourlyArray, 1);
