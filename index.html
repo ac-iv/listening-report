@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>listening report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EFEEE9;
+  --ink:#191A1E;
+  --ink-40:rgba(25,26,30,.4);
+  --ink-15:rgba(25,26,30,.15);
+  --ink-08:rgba(25,26,30,.08);
+  --blue:#3138E0;
+  --pink:#F1478A;
+  --card:#F7F6F2;
+  --mono:'IBM Plex Mono',monospace;
+  --disp:'Archivo',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--disp);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+/* ruled-paper background */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--ink-08) 1px,transparent 1px);
+  background-size:100% 72px;
+  opacity:.5;
+}
+.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 24px 120px}
+a{color:var(--blue)}
+button{font-family:inherit;cursor:pointer}
+
+/* ---------- mono utility ---------- */
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:lowercase}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-40);text-transform:lowercase;display:flex;align-items:center;gap:10px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--ink-15)}
+
+/* ---------- header ---------- */
+header{padding:56px 0 40px;border-bottom:2px solid var(--ink)}
+.masthead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px}
+h1{
+  font-family:var(--disp);
+  font-weight:900;
+  font-stretch:88%;
+  font-size:clamp(44px,8vw,88px);
+  line-height:.92;
+  letter-spacing:-.02em;
+  text-transform:lowercase;
+}
+h1 em{font-style:normal;color:var(--blue)}
+.stamp{font-family:var(--mono);font-size:12px;text-align:right;color:var(--ink-40);line-height:1.7}
+.stamp b{color:var(--ink);font-weight:600}
+
+/* ---------- sections ---------- */
+section{padding:56px 0 8px}
+h2{
+  font-family:var(--disp);font-weight:800;font-stretch:92%;
+  font-size:clamp(24px,3.4vw,34px);letter-spacing:-.01em;
+  text-transform:lowercase;margin:10px 0 26px;
+}
+.sub{font-size:14px;color:var(--ink-40);max-width:52ch;margin:-16px 0 26px}
+
+/* ---------- setup / login screens ---------- */
+.gate{max-width:560px;margin:9vh auto 0;padding:40px 0}
+.gate h1{font-size:clamp(40px,7vw,68px);margin-bottom:20px}
+.gate p{margin:0 0 16px;font-size:15px;color:rgba(25,26,30,.75)}
+.gate ol{margin:0 0 24px 20px;font-size:14px;line-height:1.9;color:rgba(25,26,30,.75)}
+.gate code{font-family:var(--mono);font-size:12.5px;background:var(--ink-08);padding:2px 7px;border-radius:4px;user-select:all}
+.field{display:flex;gap:10px;margin:22px 0 10px}
+.field input{
+  flex:1;font-family:var(--mono);font-size:13px;padding:14px 16px;
+  border:1.5px solid var(--ink);border-radius:8px;background:var(--card);color:var(--ink);
+}
+.field input:focus{outline:2px solid var(--blue);outline-offset:2px}
+.btn{
+  font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.03em;
+  background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);
+  padding:14px 22px;border-radius:8px;text-transform:lowercase;
+  transition:transform .12s ease,background .12s ease;
+}
+.btn:hover{background:var(--blue);border-color:var(--blue);transform:translateY(-1px)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink-08);color:var(--ink);border-color:var(--ink)}
+.err{font-family:var(--mono);font-size:12.5px;color:#C22F2F;margin-top:12px;display:none}
+.loading{display:flex;flex-direction:column;align-items:center;gap:22px;padding:20vh 0;font-family:var(--mono);font-size:13px;color:var(--ink-40)}
+.spinner{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink-15);border-top-color:var(--blue);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- vinyl genre wheel ---------- */
+.wheel-grid{display:grid;grid-template-columns:minmax(300px,460px) 1fr;gap:48px;align-items:center}
+@media(max-width:760px){.wheel-grid{grid-template-columns:1fr}}
+.legend{display:flex;flex-direction:column;gap:0}
+.legend-row{
+  display:grid;grid-template-columns:14px 1fr auto;gap:14px;align-items:center;
+  padding:11px 4px;border-bottom:1px solid var(--ink-15);
+}
+.legend-row .dot{width:14px;height:14px;border-radius:50%}
+.legend-row .g-name{font-weight:600;font-size:15px;text-transform:lowercase;letter-spacing:-.01em}
+.legend-row .g-pct{font-family:var(--mono);font-size:12px;color:var(--ink-40)}
+
+/* ---------- stat cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.card{
+  background:var(--card);border:1.5px solid var(--ink);border-radius:14px;
+  padding:22px 20px 18px;display:flex;flex-direction:column;gap:6px;min-height:150px;
+}
+.card .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-40)}
+.card .v{font-family:var(--disp);font-weight:900;font-stretch:90%;font-size:clamp(34px,4.5vw,46px);line-height:1;letter-spacing:-.02em;margin-top:auto}
+.card .v small{font-size:.45em;font-weight:700;color:var(--ink-40);letter-spacing:0}
+.card .d{font-size:12.5px;color:var(--ink-40);line-height:1.45}
+.card.hot{background:var(--ink);color:var(--paper)}
+.card.hot .k,.card.hot .d{color:rgba(239,238,233,.55)}
+.card.hot .v{color:var(--pink)}
+
+/* ---------- lists ---------- */
+.toggle{display:inline-flex;border:1.5px solid var(--ink);border-radius:8px;overflow:hidden;margin-bottom:26px}
+.toggle button{
+  font-family:var(--mono);font-size:12px;padding:9px 16px;border:0;background:transparent;color:var(--ink);
+  border-right:1.5px solid var(--ink);text-transform:lowercase;
+}
+.toggle button:last-child{border-right:0}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.toggle button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+
+.tracklist{display:flex;flex-direction:column}
+.trow{
+  display:grid;grid-template-columns:34px 52px 1fr auto;gap:16px;align-items:center;
+  padding:12px 4px;border-bottom:1px solid var(--ink-15);
+}
+.trow .rank{font-family:var(--mono);font-size:13px;color:var(--ink-40)}
+.trow img{width:52px;height:52px;border-radius:6px;object-fit:cover;background:var(--ink-08)}
+.trow .t-name{font-weight:700;font-size:15px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trow .t-artist{font-size:13px;color:var(--ink-40);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.trow .tag{font-family:var(--mono);font-size:11px;color:var(--ink-40);white-space:nowrap}
+.trow .tag b{color:var(--blue);font-weight:600}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+
+.artist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.artist{position:relative;border-radius:12px;overflow:hidden;border:1.5px solid var(--ink);aspect-ratio:1;background:var(--ink)}
+.artist img{width:100%;height:100%;object-fit:cover;filter:grayscale(28%);transition:filter .2s,transform .3s}
+.artist:hover img{filter:grayscale(0);transform:scale(1.04)}
+.artist .a-label{
+  position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;
+  background:linear-gradient(transparent,rgba(10,10,14,.85));color:#fff;
+  font-weight:700;font-size:13.5px;letter-spacing:-.01em;
+}
+.artist .a-rank{position:absolute;top:8px;left:10px;font-family:var(--mono);font-size:11px;color:#fff;background:rgba(10,10,14,.6);padding:2px 7px;border-radius:20px}
+
+/* ---------- bar charts ---------- */
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:grid;grid-template-columns:74px 1fr 52px;gap:14px;align-items:center}
+.bar-row .b-label{font-family:var(--mono);font-size:12px;color:var(--ink-40);text-align:right}
+.bar-row .b-track{height:26px;background:var(--ink-08);border-radius:5px;overflow:hidden}
+.bar-row .b-fill{height:100%;border-radius:5px;background:var(--blue);transform-origin:left;animation:grow .7s cubic-bezier(.2,.7,.2,1) both}
+.bar-row .b-val{font-family:var(--mono);font-size:12px;color:var(--ink-40)}
+@keyframes grow{from{transform:scaleX(0)}}
+
+.clock{display:flex;align-items:flex-end;gap:4px;height:150px;border-bottom:1.5px solid var(--ink);padding-bottom:0}
+.clock .hr{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.clock .hr .col{background:var(--pink);border-radius:4px 4px 0 0;min-height:2px;animation:grow-v .7s cubic-bezier(.2,.7,.2,1) both}
+@keyframes grow-v{from{transform:scaleY(0)}}
+.clock .hr .col{transform-origin:bottom}
+.clock-labels{display:flex;gap:4px;margin-top:8px}
+.clock-labels span{flex:1;font-family:var(--mono);font-size:10px;color:var(--ink-40);text-align:center}
+
+footer{margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+footer .mono{color:var(--ink-40)}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app"></div>
+</div>
+<script>
+/* ============================================================
+   listening report — a very custom spotify stats page
+   single file. PKCE auth. no backend, no client secret.
+   ============================================================ */
+
+/* ── developer setup (you, once) ─────────────────────────────
+   paste your spotify client id here before deploying.
+   users will only ever see a "connect spotify" button.
+   leave empty to fall back to the ask-the-user setup screen. */
+const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27";
+
+const SCOPES = "user-top-read user-read-recently-played";
+const REDIRECT = location.origin + location.pathname;
+const app = document.getElementById("app");
+const store = {
+  get: k => localStorage.getItem("lr_" + k),
+  set: (k, v) => localStorage.setItem("lr_" + k, v),
+  del: k => localStorage.removeItem("lr_" + k),
+};
+const PALETTE = ["#3138E0","#F1478A","#F5A623","#18A05E","#7A4FE0","#E04F31","#1FA8C9","#B48A1F","#8A8D98"];
+
+/* ---------- tiny helpers ---------- */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = n => n.toLocaleString("en-US");
+const el = html => { const d = document.createElement("div"); d.innerHTML = html; return d.firstElementChild; };
+
+/* ---------- PKCE ---------- */
+function randString(len) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const vals = crypto.getRandomValues(new Uint8Array(len));
+  return Array.from(vals, v => chars[v % chars.length]).join("");
+}
+async function challenge(verifier) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function activeClientId() {
+  return CLIENT_ID || store.get("client_id");
+}
+async function beginLogin() {
+  const clientId = activeClientId();
+  const verifier = randString(64);
+  store.set("verifier", verifier);
+  const params = new URLSearchParams({
+    response_type: "code",
+    client_id: clientId,
+    scope: SCOPES,
+    redirect_uri: REDIRECT,
+    code_challenge_method: "S256",
+    code_challenge: await challenge(verifier),
+  });
+  location.href = "https://accounts.spotify.com/authorize?" + params;
+}
+async function exchangeCode(code) {
+  const res = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: REDIRECT,
+      client_id: activeClientId(),
+      code_verifier: store.get("verifier"),
+    }),
+  });
+  if (!res.ok) throw new Error("token exchange failed (" + res.status + ")");
+  const data = await res.json();
+  store.set("token", data.access_token);
+  store.set("token_exp", Date.now() + data.expires_in * 1000);
+}
+
+/* ---------- spotify api ---------- */
+async function api(path) {
+  const res = await fetch("https://api.spotify.com/v1" + path, {
+    headers: { Authorization: "Bearer " + store.get("token") },
+  });
+  if (res.status === 401) { store.del("token"); renderGate(); throw new Error("expired"); }
+  if (res.status === 429) {
+    const wait = (parseInt(res.headers.get("Retry-After")) || 2) * 1000;
+    await new Promise(r => setTimeout(r, wait));
+    return api(path);
+  }
+  if (!res.ok) throw new Error("api error " + res.status + " on " + path);
+  return res.json();
+}
+
+/* ---------- screens ---------- */
+function renderGate() {
+  if (CLIENT_ID) {
+    app.innerHTML = "";
+    app.append(el(`
+    <div class="gate">
+      <h1>listening<br><em>report</em></h1>
+      <p>a very custom look at your spotify stats — weekly favorites, your genres pressed to a record, and the numbers underneath your rotation.</p>
+      <p>everything runs in your browser. nothing is stored anywhere, nothing leaves this page except calls to spotify itself.</p>
+      <div class="field" style="margin-top:28px">
+        <button class="btn" id="go" style="flex:1;padding:16px 22px">connect spotify →</button>
+      </div>
+      <p class="err" id="err"></p>
+    </div>`));
+    document.getElementById("go").onclick = () => beginLogin();
+    return;
+  }
+  const saved = store.get("client_id") || "";
+  app.innerHTML = "";
+  app.append(el(`
+  <div class="gate">
+    <h1>listening<br><em>report</em></h1>
+    <p>a very custom look at your spotify stats. runs entirely in your browser — nothing leaves this page except calls to spotify itself.</p>
+    <p class="mono" style="color:var(--ink-40);margin-bottom:8px">one-time setup:</p>
+    <ol>
+      <li>go to <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">developer.spotify.com/dashboard</a> and create an app</li>
+      <li>add this exact redirect uri: <code>${esc(REDIRECT)}</code></li>
+      <li>check "web api", save, and copy your client id below</li>
+    </ol>
+    <div class="field">
+      <input id="cid" type="text" placeholder="paste your client id" value="${esc(saved)}" autocomplete="off" spellcheck="false">
+      <button class="btn" id="go">connect spotify</button>
+    </div>
+    <p class="err" id="err"></p>
+  </div>`));
+  document.getElementById("go").onclick = () => {
+    const v = document.getElementById("cid").value.trim();
+    const err = document.getElementById("err");
+    if (!/^[a-f0-9]{32}$/i.test(v)) {
+      err.textContent = "that doesn't look like a spotify client id (32 hex characters)";
+      err.style.display = "block"; return;
+    }
+    store.set("client_id", v);
+    beginLogin();
+  };
+}
+function renderLoading(msg) {
+  app.innerHTML = `<div class="loading"><div class="spinner" role="status" aria-label="loading"></div>${esc(msg)}</div>`;
+}
+
+/* ---------- stat computation ---------- */
+function computeGenres(artists) {
+  const counts = {};
+  artists.forEach((a, i) => {
+    const w = artists.length - i; // weight by rank
+    (a.genres || []).forEach(g => counts[g] = (counts[g] || 0) + w);
+  });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const top = sorted.slice(0, 8);
+  const rest = sorted.slice(8).reduce((s, [, v]) => s + v, 0);
+  if (rest > 0) top.push(["everything else", rest]);
+  const total = top.reduce((s, [, v]) => s + v, 0) || 1;
+  return top.map(([name, v], i) => ({ name, pct: v / total, color: PALETTE[i % PALETTE.length] }));
+}
+function computeWeekly(recent) {
+  const weekAgo = Date.now() - 7 * 864e5;
+  const plays = {};
+  recent.items.forEach(it => {
+    if (new Date(it.played_at).getTime() < weekAgo) return;
+    const t = it.track;
+    if (!plays[t.id]) plays[t.id] = { track: t, count: 0, last: it.played_at };
+    plays[t.id].count++;
+  });
+  return Object.values(plays).sort((a, b) => b.count - a.count).slice(0, 8);
+}
+function computeClock(recent) {
+  const hours = new Array(24).fill(0);
+  recent.items.forEach(it => hours[new Date(it.played_at).getHours()]++);
+  return hours;
+}
+function computeDecades(tracks) {
+  const d = {};
+  tracks.forEach(t => {
+    const y = parseInt((t.album.release_date || "").slice(0, 4));
+    if (!y) return;
+    const dec = Math.floor(y / 10) * 10;
+    d[dec] = (d[dec] || 0) + 1;
+  });
+  return Object.entries(d).map(([k, v]) => [parseInt(k), v]).sort((a, b) => a[0] - b[0]);
+}
+
+/* ---------- svg: the vinyl genre wheel ---------- */
+function arcPath(cx, cy, r1, r2, a0, a1) {
+  const p = (r, a) => [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  const large = a1 - a0 > Math.PI ? 1 : 0;
+  const [x0, y0] = p(r2, a0), [x1, y1] = p(r2, a1), [x2, y2] = p(r1, a1), [x3, y3] = p(r1, a0);
+  return `M${x0} ${y0} A${r2} ${r2} 0 ${large} 1 ${x1} ${y1} L${x2} ${y2} A${r1} ${r1} 0 ${large} 0 ${x3} ${y3} Z`;
+}
+function vinylWheel(genres, centerLabel) {
+  const S = 460, c = S / 2, rOuter = 218, rInner = 74;
+  let a = -Math.PI / 2;
+  let segs = "";
+  genres.forEach(g => {
+    const a1 = a + g.pct * Math.PI * 2;
+    segs += `<path d="${arcPath(c, c, rInner, rOuter, a, a1 - 0.004)}" fill="${g.color}"><title>${esc(g.name)} — ${(g.pct * 100).toFixed(1)}%</title></path>`;
+    a = a1;
+  });
+  // record grooves
+  let grooves = "";
+  for (let r = rInner + 14; r < rOuter - 6; r += 13) {
+    grooves += `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="rgba(25,26,30,.22)" stroke-width="1"/>`;
+  }
+  return `
+  <svg viewBox="0 0 ${S} ${S}" role="img" aria-label="genre breakdown as a vinyl record" style="width:100%;height:auto;display:block">
+    <circle cx="${c}" cy="${c}" r="${rOuter + 6}" fill="#191A1E"/>
+    ${segs}${grooves}
+    <circle cx="${c}" cy="${c}" r="${rInner}" fill="#F7F6F2" stroke="#191A1E" stroke-width="2"/>
+    <circle cx="${c}" cy="${c}" r="7" fill="#191A1E"/>
+    <text x="${c}" y="${c - 16}" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(25,26,30,.45)">side a</text>
+    <text x="${c}" y="${c + 30}" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="15" fill="#191A1E">${esc(centerLabel)}</text>
+  </svg>`;
+}
+/* ---------- report rendering ---------- */
+let DATA = null;
+
+function trackRow(t, i, tag) {
+  const img = t.album?.images?.[2]?.url || t.album?.images?.[0]?.url || "";
+  return `<div class="trow">
+    <span class="rank">${String(i + 1).padStart(2, "0")}</span>
+    <img src="${esc(img)}" alt="" loading="lazy">
+    <div style="min-width:0">
+      <div class="t-name">${esc(t.name)}</div>
+      <div class="t-artist">${esc(t.artists.map(a => a.name).join(", "))}</div>
+    </div>
+    <span class="tag">${tag}</span>
+  </div>`;
+}
+
+function renderReport() {
+  const { me, topArtists, topTracks, recent } = DATA;
+  const artistsMed = topArtists.medium_term.items;
+  const tracksMed = topTracks.medium_term.items;
+
+  const genres = computeGenres(artistsMed);
+  const weekly = computeWeekly(recent);
+  const clock = computeClock(recent);
+  const decades = computeDecades(tracksMed);
+
+  const avgPop = tracksMed.reduce((s, t) => s + t.popularity, 0) / (tracksMed.length || 1);
+  const obscurity = Math.round(100 - avgPop);
+  const avgMs = tracksMed.reduce((s, t) => s + t.duration_ms, 0) / (tracksMed.length || 1);
+  const avgMin = Math.floor(avgMs / 60000), avgSec = Math.round((avgMs % 60000) / 1000);
+  const years = tracksMed.map(t => parseInt((t.album.release_date || "").slice(0, 4))).filter(Boolean);
+  const avgYear = Math.round(years.reduce((s, y) => s + y, 0) / (years.length || 1));
+  const explicitPct = Math.round(100 * tracksMed.filter(t => t.explicit).length / (tracksMed.length || 1));
+  const avgFollowers = artistsMed.reduce((s, a) => s + (a.followers?.total || 0), 0) / (artistsMed.length || 1);
+  const followerLabel = avgFollowers > 5e6 ? "stadium tier" : avgFollowers > 5e5 ? "festival tier" : avgFollowers > 5e4 ? "club tier" : "basement tier";
+  const repeat = weekly[0];
+  const peakHour = clock.indexOf(Math.max(...clock));
+  const hourName = h => h === 0 ? "midnight" : h === 12 ? "noon" : h < 12 ? h + "am" : (h - 12) + "pm";
+  const now = new Date();
+
+  const rangeButtons = (kind) => `
+    <div class="toggle" role="group" aria-label="time range">
+      <button data-kind="${kind}" data-range="short_term" aria-pressed="false">4 weeks</button>
+      <button data-kind="${kind}" data-range="medium_term" aria-pressed="true">6 months</button>
+      <button data-kind="${kind}" data-range="long_term" aria-pressed="false">all time</button>
+    </div>`;
+
+  app.innerHTML = `
+  <header>
+    <div class="masthead">
+      <h1>listening<br><em>report</em></h1>
+      <div class="stamp">
+        prepared for <b>${esc((me.display_name || "you").toLowerCase())}</b><br>
+        generated ${now.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toLowerCase()}<br>
+        source: spotify web api
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">the sound, pressed to wax</div>
+    <h2>your genres, as a record</h2>
+    <div class="wheel-grid">
+      <div>${vinylWheel(genres, (genres[0]?.name || "eclectic"))}</div>
+      <div class="legend">
+        ${genres.map(g => `
+          <div class="legend-row">
+            <span class="dot" style="background:${g.color}"></span>
+            <span class="g-name">${esc(g.name)}</span>
+            <span class="g-pct">${(g.pct * 100).toFixed(1)}%</span>
+          </div>`).join("")}
+      </div>
+    </div>
+    <p class="sub" style="margin-top:22px">weighted by how high each artist sits in your last six months — your no. 1 artist counts more than your no. 50.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">the numbers</div>
+    <h2>stats people might find neat</h2>
+    <div class="cards">
+      <div class="card hot">
+        <span class="k">obscurity score</span>
+        <span class="v">${obscurity}<small>/100</small></span>
+        <span class="d">${obscurity >= 60 ? "deep in the crates. your friends have not heard of these." : obscurity >= 40 ? "a healthy mix of hits and finds." : "you and the charts are in agreement."}</span>
+      </div>
+      <div class="card">
+        <span class="k">average release year</span>
+        <span class="v">${avgYear || "—"}</span>
+        <span class="d">the center of gravity of your rotation.</span>
+      </div>
+      <div class="card">
+        <span class="k">average track length</span>
+        <span class="v">${avgMin}:${String(avgSec).padStart(2, "0")}</span>
+        <span class="d">across your top 50 tracks.</span>
+      </div>
+      <div class="card">
+        <span class="k">artist scale</span>
+        <span class="v" style="font-size:clamp(24px,3vw,32px)">${followerLabel}</span>
+        <span class="d">avg ${fmt(Math.round(avgFollowers))} followers per artist.</span>
+      </div>
+      <div class="card">
+        <span class="k">explicit share</span>
+        <span class="v">${explicitPct}<small>%</small></span>
+        <span class="d">of your top tracks carry the tag.</span>
+      </div>
+      <div class="card">
+        <span class="k">peak listening hour</span>
+        <span class="v" style="font-size:clamp(28px,3.6vw,38px)">${hourName(peakHour)}</span>
+        <span class="d">based on your last 50 plays.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">last seven days</div>
+    <h2>weekly favorites</h2>
+    ${weekly.length ? `
+      ${repeat && repeat.count > 1 ? `<p class="sub">repeat offender: <b style="color:var(--blue)">${esc(repeat.track.name)}</b> — ${repeat.count} plays this week.</p>` : ""}
+      <div class="tracklist">
+        ${weekly.map((w, i) => trackRow(w.track, i, `<b>${w.count}</b> play${w.count > 1 ? "s" : ""}`)).join("")}
+      </div>
+      <p class="sub" style="margin-top:16px">counted from your 50 most recent plays — spotify only hands back so much history.</p>
+    ` : `<p class="sub">no plays in the last week that spotify will admit to.</p>`}
+  </section>
+
+  <section>
+    <div class="eyebrow">heavy rotation</div>
+    <h2>top tracks</h2>
+    ${rangeButtons("tracks")}
+    <div class="two-col" id="tracks-list"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">the roster</div>
+    <h2>top artists</h2>
+    ${rangeButtons("artists")}
+    <div class="artist-grid" id="artists-grid"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow">time machine</div>
+    <h2>your decades</h2>
+    <div class="bars">
+      ${(() => {
+        const max = Math.max(...decades.map(d => d[1]), 1);
+        return decades.map(([dec, n], i) => `
+          <div class="bar-row">
+            <span class="b-label">${dec}s</span>
+            <div class="b-track"><div class="b-fill" style="width:${(n / max * 100).toFixed(1)}%;animation-delay:${i * 60}ms;background:${n === max ? "var(--pink)" : "var(--blue)"}"></div></div>
+            <span class="b-val">${n}</span>
+          </div>`).join("");
+      })()}
+    </div>
+    <p class="sub" style="margin-top:18px">release decade of each of your top 50 tracks (last six months).</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">circadian rhythm</div>
+    <h2>when you listen</h2>
+    <div class="clock" role="img" aria-label="plays by hour of day">
+      ${(() => {
+        const max = Math.max(...clock, 1);
+        return clock.map((n, h) => `
+          <div class="hr"><div class="col" style="height:${Math.max(n / max * 100, 1.5)}%;animation-delay:${h * 25}ms;${n === max ? "" : "background:var(--blue)"}" title="${hourName(h)}: ${n}"></div></div>`).join("");
+      })()}
+    </div>
+    <div class="clock-labels">
+      ${Array.from({ length: 24 }, (_, h) => `<span>${h % 6 === 0 ? hourName(h) : ""}</span>`).join("")}
+    </div>
+  </section>
+
+  <footer>
+    <span class="mono">end of report · data via spotify web api</span>
+    <button class="btn ghost" id="logout">disconnect</button>
+  </footer>`;
+
+  // fill range-toggled sections + wire toggles
+  fillTracks("medium_term");
+  fillArtists("medium_term");
+  app.querySelectorAll(".toggle button").forEach(b => {
+    b.onclick = () => {
+      app.querySelectorAll(`.toggle button[data-kind="${b.dataset.kind}"]`).forEach(x => x.setAttribute("aria-pressed", x === b));
+      (b.dataset.kind === "tracks" ? fillTracks : fillArtists)(b.dataset.range);
+    };
+  });
+  document.getElementById("logout").onclick = () => {
+    ["token", "token_exp", "verifier"].forEach(store.del);
+    renderGate();
+  };
+}
+
+function fillTracks(range) {
+  const items = DATA.topTracks[range].items.slice(0, 20);
+  document.getElementById("tracks-list").innerHTML =
+    items.map((t, i) => trackRow(t, i, `pop <b>${t.popularity}</b>`)).join("");
+}
+function fillArtists(range) {
+  const items = DATA.topArtists[range].items.slice(0, 12);
+  document.getElementById("artists-grid").innerHTML = items.map((a, i) => `
+    <a class="artist" href="${esc(a.external_urls?.spotify || "#")}" target="_blank" rel="noopener" aria-label="${esc(a.name)}">
+      <img src="${esc(a.images?.[1]?.url || a.images?.[0]?.url || "")}" alt="" loading="lazy">
+      <span class="a-rank">${String(i + 1).padStart(2, "0")}</span>
+      <span class="a-label">${esc(a.name)}</span>
+    </a>`).join("");
+}
+
+/* ---------- boot ---------- */
+async function loadEverything() {
+  renderLoading("pulling your listening history…");
+  const ranges = ["short_term", "medium_term", "long_term"];
+  const [me, recent, ...tops] = await Promise.all([
+    api("/me"),
+    api("/me/player/recently-played?limit=50"),
+    ...ranges.map(r => api("/me/top/tracks?time_range=" + r + "&limit=50")),
+    ...ranges.map(r => api("/me/top/artists?time_range=" + r + "&limit=50")),
+  ]);
+  DATA = {
+    me, recent,
+    topTracks: { short_term: tops[0], medium_term: tops[1], long_term: tops[2] },
+    topArtists: { short_term: tops[3], medium_term: tops[4], long_term: tops[5] },
+  };
+  renderReport();
+}
+
+(async function init() {
+  if (location.protocol === "file:") {
+    app.innerHTML = `<div class="gate"><h1>one sec</h1><p>spotify won't redirect back to a <code>file://</code> page. serve this file locally first — from this folder, run:</p><p><code>python3 -m http.server 8888</code></p><p>then open <code>http://127.0.0.1:8888/${esc(location.pathname.split("/").pop())}</code></p></div>`;
+    return;
+  }
+  const params = new URLSearchParams(location.search);
+  if (params.get("error")) {
+    renderGate();
+    const err = document.getElementById("err");
+    err.textContent = "spotify said: " + params.get("error");
+    err.style.display = "block";
+    return;
+  }
+  if (params.get("code")) {
+    renderLoading("finishing login…");
+    try {
+      await exchangeCode(params.get("code"));
+      history.replaceState({}, "", REDIRECT);
+    } catch (e) {
+      renderGate();
+      const err = document.getElementById("err");
+      err.textContent = e.message + " — double-check the redirect uri in your spotify app settings matches exactly.";
+      err.style.display = "block";
+      return;
+    }
+  }
+  const tokenOk = store.get("token") && Date.now() < +(store.get("token_exp") || 0);
+  if (tokenOk || params.get("code")) {
+    try { await loadEverything(); } catch (e) { console.error(e); }
+  } else {
+    renderGate();
+  }
+})();
+</script>
+</body>
+</html>
