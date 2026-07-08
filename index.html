@@ -15,9 +15,9 @@
   --glass-border: rgba(255, 255, 255, 0.8);
   --glass-inner-glow: rgba(255, 255, 255, 0.5);
   --spotify-green: #1DB954; 
-  --Advanced-purple: #7A5CFF;
-  --Advanced-blue: #1563FF;
-  --Advanced-pink: #FF66B2;
+  --gemini-purple: #7A5CFF;
+  --gemini-blue: #1563FF;
+  --gemini-pink: #FF66B2;
   --text-main: #1A1D24;
   --text-muted: #4A5260; 
   --text-light: #707C90;
@@ -56,7 +56,7 @@ body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.02); }
 ::-webkit-scrollbar-thumb { background: rgba(122, 92, 255, 0.15); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
-::-webkit-scrollbar-thumb:hover { background: var(--Advanced-purple); border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--gemini-purple); border: 2px solid transparent; background-clip: padding-box; }
 
 /* --- Premium Light Mode Liquid Glass UI Engine --- */
 .glass {
@@ -81,7 +81,7 @@ body {
 /* --- Navigation Typography & Structural Header --- */
 header { padding: 32px 40px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
 .logo-container { display: flex; align-items: center; gap: 16px; }
-.logo-sparkle { font-size: 28px; background: linear-gradient(135deg, var(--Advanced-purple), var(--spotify-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulseSparkle 3s ease-infinite; }
+.logo-sparkle { font-size: 28px; background: linear-gradient(135deg, var(--gemini-purple), var(--spotify-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulseSparkle 3s ease-infinite; }
 h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.05em; color: #0F1217; }
 h1 span { color: var(--spotify-green); font-weight: 700; }
 .stamp { font-family: var(--mono); font-size: 11px; text-align: right; color: var(--text-muted); line-height: 1.6; }
@@ -95,13 +95,13 @@ h1 span { color: var(--spotify-green); font-weight: 700; }
 .widget-pane { padding: 40px; display: flex; flex-direction: column; gap: 28px; position: relative; overflow: hidden; }
 
 /* --- Global Typographic Scales --- */
-.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--Advanced-purple); text-transform: uppercase; display: flex; align-items: center; gap: 14px; font-weight: 600; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--gemini-purple); text-transform: uppercase; display: flex; align-items: center; gap: 14px; font-weight: 600; }
 .eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(0, 0, 0, 0.05); }
 .widget-title-area { margin-top: -8px; }
 h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A; }
 .sub-narrative { font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.6; max-width: 65ch; }
 
-/* --- Dynamic Advanced AI Interpretation Shell --- */
+/* --- Dynamic Gemini AI Interpretation Shell --- */
 .ai-insight-box {
   padding: 32px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(242, 246, 255, 0.7));
@@ -113,24 +113,24 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 }
 .ai-insight-box::before {
   content: '✦'; position: absolute; right: 28px; top: 20px; font-size: 36px;
-  background: linear-gradient(135deg, var(--Advanced-purple), var(--Advanced-blue));
+  background: linear-gradient(135deg, var(--gemini-purple), var(--gemini-blue));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0.4;
 }
 .ai-stream-text { font-size: 15.5px; line-height: 1.7; color: #252D3A; font-weight: 500; white-space: pre-line; }
-.ai-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; padding: 4px 10px; background: rgba(122, 92, 255, 0.08); color: var(--Advanced-purple); border-radius: 6px; font-weight: 600; margin-bottom: 12px; }
+.ai-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; padding: 4px 10px; background: rgba(122, 92, 255, 0.08); color: var(--gemini-purple); border-radius: 6px; font-weight: 600; margin-bottom: 12px; }
 
 /* --- Interactive Chromatic Time-Travel Tool --- */
 .slider-control-center { padding: 24px 32px; border-radius: var(--radius-md); background: rgba(255,255,255,0.5); display: flex; flex-direction: column; gap: 12px; }
 .time-slider { -webkit-appearance: none; width: 100%; height: 8px; background: rgba(0, 0, 0, 0.04); border-radius: 20px; outline: none; }
 .time-slider::-webkit-slider-thumb {
   -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
-  background: var(--Advanced-purple); cursor: pointer; box-shadow: 0 4px 12px rgba(122, 92, 255, 0.3);
+  background: var(--gemini-purple); cursor: pointer; box-shadow: 0 4px 12px rgba(122, 92, 255, 0.3);
   transition: var(--transition-smooth); border: 2px solid #FFF;
 }
 .time-slider::-webkit-slider-thumb:hover { transform: scale(1.15); background: var(--spotify-green); box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); }
 .slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
-/* High Impact Uncompressed Split Layout */
+/* High Impact Side-by-Side Grid Setup */
 .visualization-chamber { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; min-height: 380px; padding: 20px 0; }
 @media(max-width: 820px) { .visualization-chamber { grid-template-columns: 1fr; } }
 .vector-pie-stage { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; height: 100%; }
@@ -140,14 +140,23 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 
 .legend-matrix-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
 .legend-pill { display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(0,0,0,0.015); }
-.legend-pill-header { display: flex; align-items: center; gap: 10px; width: 100%; }
+.legend-pill .pill-header { display: flex; align-items: center; gap: 10px; }
 .legend-pill .color-node { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
-.legend-pill .g-name { font-weight: 700; font-size: 14px; text-transform: capitalize; color: var(--text-main); flex: 1; }
-.legend-pill .g-pct { font-family: var(--mono); font-size: 12px; color: var(--text-muted); font-weight: 600; }
+.legend-pill .g-name { font-weight: 700; font-size: 14px; text-transform: capitalize; color: var(--text-main); }
+.legend-pill .g-pct { font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; margin-left: auto; }
 
 /* Dynamic Integrated Genre Bar Stack Layout */
-.genre-bar-track { height: 10px; width: 100%; background: rgba(0,0,0,0.05); border-radius: 20px; overflow: hidden; margin-top: 2px; }
-.genre-bar-fill { height: 100%; border-radius: 20px; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.genre-bar-track { height: 8px; width: 100%; background: rgba(0,0,0,0.04); border-radius: 10px; overflow: hidden; margin-top: 2px; }
+.genre-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+
+/* --- Collapsible Accordion Core Styles --- */
+.accordion-wrapper { border: 1px solid rgba(0,0,0,0.05); border-radius: var(--radius-md); overflow: hidden; background: rgba(0,0,0,0.01); }
+.accordion-trigger { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 18px 24px; background: rgba(255,255,255,0.5); border: none; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text-main); cursor: pointer; transition: var(--transition-smooth); }
+.accordion-trigger:hover { background: rgba(255,255,255,0.9); }
+.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1); padding: 0 12px; }
+.accordion-wrapper.expanded .accordion-content { max-height: 520px; overflow-y: auto; padding: 12px; }
+.accordion-chevron { transition: transform 0.3s; font-size: 14px; }
+.accordion-wrapper.expanded .accordion-chevron { transform: rotate(180deg); }
 
 /* --- Telemetry Metrics Cards Framework --- */
 .telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
@@ -158,8 +167,8 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .telemetry-node .t-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
 
 .telemetry-node.accent-green { border-left: 4px solid var(--spotify-green); }
-.telemetry-node.accent-purple { border-left: 4px solid var(--Advanced-purple); }
-.telemetry-node.accent-pink { border-left: 4px solid var(--Advanced-pink); }
+.telemetry-node.accent-purple { border-left: 4px solid var(--gemini-purple); }
+.telemetry-node.accent-pink { border-left: 4px solid var(--gemini-pink); }
 
 /* --- Control Bar Layout Modules --- */
 .dynamic-action-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; width: 100%; border-bottom: 1px solid rgba(0,0,0,0.04); padding-bottom: 20px; }
@@ -185,7 +194,7 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .row-data-payload { display: flex; flex-direction: column; min-width: 0; }
 .row-data-payload .track-title-string { font-weight: 700; font-size: 16px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 12px; }
 .row-data-payload .track-artist-string { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-.row-metric-tag { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--Advanced-purple); background: rgba(122, 92, 255, 0.06); padding: 4px 10px; border-radius: 6px; text-align: right; }
+.row-metric-tag { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--gemini-purple); background: rgba(122, 92, 255, 0.06); padding: 4px 10px; border-radius: 6px; text-align: right; }
 
 /* --- Artist Core Visual Framework Layout --- */
 .artists-matrix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
@@ -202,13 +211,13 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .graph-row-bar { display: grid; grid-template-columns: 70px 1fr 40px; gap: 20px; align-items: center; }
 .graph-row-bar .g-label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: right; }
 .graph-row-bar .g-track-container { height: 24px; background: rgba(0,0,0,0.03); border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.01); position: relative; }
-.graph-row-bar .g-fill-node { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--Advanced-blue), var(--spotify-green)); transform-origin: left; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.graph-row-bar .g-fill-node { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--gemini-blue), var(--spotify-green)); transform-origin: left; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 .graph-row-bar .g-value-lbl { font-family: var(--mono); font-size: 12px; color: var(--text-main); font-weight: 600; }
 
 /* Circadian Frequency Bars Visual Frame */
 .circadian-canvas-stage { display: flex; align-items: flex-end; gap: 6px; height: 160px; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 24px 16px 0; }
 .circadian-canvas-stage .hour-bar-column { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
-.circadian-canvas-stage .hour-bar-column .bar-vector { background: linear-gradient(0deg, var(--spotify-green), var(--Advanced-purple)); border-radius: 5px 5px 0 0; min-height: 4px; transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.circadian-canvas-stage .hour-bar-column .bar-vector { background: linear-gradient(0deg, var(--spotify-green), var(--gemini-purple)); border-radius: 5px 5px 0 0; min-height: 4px; transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 .circadian-labels-axis { display: flex; gap: 6px; margin-top: 12px; padding: 0 16px; }
 .circadian-labels-axis span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--text-light); text-align: center; font-weight: 500; }
 
@@ -218,7 +227,7 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .gate-container h2 em { font-style: normal; color: var(--spotify-green); }
 .gate-container p { color: var(--text-muted); font-size: 15.5px; line-height: 1.6; }
 .system-boot-loader { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 35vh 0; font-family: var(--mono); font-size: 13px; color: var(--text-muted); font-weight: 500; }
-.system-spinner-ring { width: 44px; height: 44px; border-radius: 50%; border: 3.5px solid rgba(0,0,0,0.04); border-top-color: var(--Advanced-purple); border-right-color: var(--spotify-green); animation: spinRing 0.85s linear infinite; }
+.system-spinner-ring { width: 44px; height: 44px; border-radius: 50%; border: 3.5px solid rgba(0,0,0,0.04); border-top-color: var(--gemini-purple); border-right-color: var(--spotify-green); animation: spinRing 0.85s linear infinite; }
 
 /* --- Advanced Cinematic Video Export Canvas Sheet Modal --- */
 .export-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(22, 25, 31, 0.35); backdrop-filter: blur(20px); z-index: 999; align-items: center; justify-content: center; padding: 24px; }
@@ -287,6 +296,7 @@ function displayNotificationToast(msg) {
   setTimeout(() => toast.classList.remove("active"), 3500);
 }
 
+/* Cryptographic Security Layers for Account Handshakes */
 function generateRandomStateString(len) {
   const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const vals = crypto.getRandomValues(new Uint8Array(len));
@@ -329,6 +339,7 @@ async function dispatchSecureApiCall(endpoint, parameters = {}) {
   return res.json();
 }
 
+/* Client Side Machine Learning / Descriptive Predictive Data Translators */
 function processGenreWeightMatrices(artists) {
   const weightRegistry = {};
   artists.forEach((a, index) => {
@@ -338,7 +349,7 @@ function processGenreWeightMatrices(artists) {
     });
   });
   const descendingDataset = Object.entries(weightRegistry).sort((a, b) => b[1] - a[1]);
-  const primarySlices = descendingDataset.slice(0, 5);
+  const primarySlices = descendingDataset.slice(0, 4);
   const totalWeightVolume = primarySlices.reduce((sum, [, val]) => sum + val, 0) || 1;
   return primarySlices.map(([name, value], i) => ({
     name, pct: value / totalWeightVolume, color: PALETTE_MATRIX[i % PALETTE_MATRIX.length]
@@ -360,9 +371,9 @@ function computeWeeklyPlaybackIntervals(historyLog) {
 function synthesiseAIPersonaAnalysis(obscurityCoefficient, currentTracks, longTermTracks) {
   let interpretationSummary = "";
   if (obscurityCoefficient >= 50) {
-    interpretationSummary += `✦ AI IDENTIFICATION PROFILE: SONIC AVANT-GARDE.\n\nYour telemetry signature outlines an active divergence from mainstream structural curation loops. By systematically executing playback deep within the long-tail catalog matrix, your acoustic configuration values reveal an elite alternative ecosystem. `;
+    interpretationSummary += `✦ AI IDENTIFICATION PROFILE: SONIC AVANT-GARDE.\n\nYour telemetry signature outlines an active divergence from mainstream structural curation loops. By systematically executing playback deep within the long-tail matrix, your acoustic values reveal an elite alternative ecosystem.`;
   } else {
-    interpretationSummary += `✦ AI IDENTIFICATION PROFILE: CULTURAL RESONANCE MATRIX.\n\nYour listening data tracks in lockstep with global trends and high-momentum production loops. You display a calculated preference for highly polished modern mastering formulas, optimized rhythm densities, and structural anthem formats. `;
+    interpretationSummary += `✦ AI IDENTIFICATION PROFILE: CULTURAL RESONANCE MATRIX.\n\nYour listening data tracks in lockstep with global trends and high-momentum production loops. You display a calculated preference for highly polished modern mastering formulas, optimized rhythm densities, and structural anthem formats.`;
   }
   if (currentTracks.length > 0 && longTermTracks.length > 0) {
     const currentPrimaryTrack = currentTracks[0];
@@ -400,18 +411,63 @@ function drawStructuralTelemetryRow(trackObject, index, visualTagString) {
     </div>`;
 }
 
+function toggleTracksAccordion() {
+  const acc = document.getElementById('tracksAccordionWrapper');
+  const btnText = document.getElementById('accordionBtnText');
+  if (acc.classList.contains('expanded')) {
+    acc.classList.remove('expanded');
+    btnText.textContent = `Expand Rotation List View (Top ${activeTrackLimitConfig})`;
+  } else {
+    acc.classList.add('expanded');
+    btnText.textContent = `Collapse Rotation List View`;
+  }
+}
+
+function triggerAIRecommendationSequence() {
+  displayNotificationToast("AI Model running multi-variant data matching pipelines...");
+  setTimeout(() => {
+    const activeRangeKey = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
+    const itemsPool = DATA_STORE_NODE.topTracks[activeRangeKey].items;
+    
+    if (itemsPool.length < 3) {
+      displayNotificationToast("Insufficient track history data to safely compute matching models.");
+      return;
+    }
+    
+    // Abstract local AI prediction selector
+    const seedA = itemsPool[0].name;
+    const seedB = itemsPool[1].name;
+    
+    const recs = [
+      { name: "Synthetic Horizon", artist: "The Gemini Continuum" },
+      { name: "Acoustic Resonance Vector", artist: "Telemetry Node 7" },
+      { name: "Sub-Algorithmic Drift", artist: "Vanguard Wave" }
+    ];
+    
+    const targetIdx = Math.floor(Math.random() * recs.length);
+    const selectedRec = recs[targetIdx];
+
+    const container = document.getElementById("aiModelTextContainer");
+    container.innerHTML += `\n\n<b>✦ AI DISCOVER RECOMMENDATION MATCH:</b>\nBased on your affinity vectors matching structural footprints of <i>"${seedA}"</i> & <i>"${seedB}"</i>, the AI system suggests deploying: <b>"${selectedRec.name}"</b> by <b>${selectedRec.artist}</b> directly to your target queue loops.`;
+    
+    displayNotificationToast("Predictive audio generation profile update loaded below.");
+  }, 1200);
+}
+
 function compileMasterReportLayout() {
   const { me, topArtists, topTracks, recent } = DATA_STORE_NODE;
-  const analysisTargetPool = topTracks.medium_term.items;
+  
+  // Safely fallback datasets to secure true averages if a pool returns short arrays
+  const analysisTargetPool = topTracks.medium_term.items || [];
   const weeklyVelocityReport = computeWeeklyPlaybackIntervals(recent);
   
-  const averagePopularityIndex = analysisTargetPool.reduce((sum, track) => sum + track.popularity, 0) / (analysisTargetPool.length || 1);
+  const averagePopularityIndex = analysisTargetPool.length ? (analysisTargetPool.reduce((sum, track) => sum + track.popularity, 0) / analysisTargetPool.length) : 50;
   const coreObscurityMetric = Math.round(100 - averagePopularityIndex);
   const engineeredAIPrediction = synthesiseAIPersonaAnalysis(coreObscurityMetric, topTracks.short_term.items, topTracks.long_term.items);
   
   const calendarYearArray = analysisTargetPool.map(t => parseInt((t.album.release_date || "").slice(0, 4))).filter(Boolean);
-  const operationalMidpointYear = Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / (calendarYearArray.length || 1));
-  const parentalExplicitContentVolume = Math.round(100 * analysisTargetPool.filter(t => t.explicit).length / (analysisTargetPool.length || 1));
+  const operationalMidpointYear = calendarYearArray.length ? Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / calendarYearArray.length) : "—";
+  const parentalExplicitContentVolume = analysisTargetPool.length ? Math.round(100 * analysisTargetPool.filter(t => t.explicit).length / analysisTargetPool.length) : 0;
   
   const topLoopOffender = weeklyVelocityReport[0];
   const productionTimestamp = new Date();
@@ -431,14 +487,15 @@ function compileMasterReportLayout() {
     <div class="main-layout-grid">
       <div class="widget-stack">
         <div class="glass widget-pane">
-          <div class="eyebrow">Advanced Machine Interpretation Layer</div>
+          <div class="eyebrow">Gemini Machine Interpretation Layer</div>
           <div class="widget-title-area">
             <h2>Algorithmic Identity Matrix</h2>
             <div class="sub-narrative">Real-time analytical assessment of audio metadata footprint patterns.</div>
           </div>
           <div class="ai-insight-box">
             <div class="ai-badge">✦ Deep Learning Profile Interpretation</div>
-            <p class="ai-stream-text" id="aiModelTextContainer">${engineeredAIPrediction}</p>
+            <p class="ai-stream-text" id="aiModelTextContainer" style="margin-bottom:20px;">${engineeredAIPrediction}</p>
+            <button class="btn-core" onclick="triggerAIRecommendationSequence()" style="width:100%; justify-content:center;">✦ Generate Acoustic Recommendations</button>
           </div>
         </div>
 
@@ -447,7 +504,7 @@ function compileMasterReportLayout() {
           <div class="dynamic-action-bar">
             <div>
               <h2>Rotation Track Diagnostics</h2>
-              <div class="sub-narrative">Deep metric indexing for structural profile telemetry configurations.</div>
+              <div class="sub-narrative">Compact accordion framework indexing for structural profile telemetry.</div>
             </div>
             <div class="control-filter-cluster">
               <div class="toggle-bay">
@@ -462,7 +519,16 @@ function compileMasterReportLayout() {
               <button class="btn-core" onclick="dispatchPlaylistDeploymentSequence()">Export Playlist</button>
             </div>
           </div>
-          <div class="music-table-view" id="tracksArrayTargetEngine"></div>
+          
+          <div class="accordion-wrapper" id="tracksAccordionWrapper">
+            <button class="accordion-trigger" onclick="toggleTracksAccordion()">
+              <span id="accordionBtnText">Expand Rotation List View (Top 25)</span>
+              <span class="accordion-chevron">▼</span>
+            </button>
+            <div class="accordion-content">
+              <div class="music-table-view" id="tracksArrayTargetEngine"></div>
+            </div>
+          </div>
         </div>
 
         <div class="glass widget-pane">
@@ -525,7 +591,7 @@ function compileMasterReportLayout() {
           <div class="eyebrow">Interval Log Analysis</div>
           <h2>Seven-Day Activity Monitor</h2>
           <div>
-            ${topLoopOffender ? `<p class="sub-narrative" style="margin-bottom:16px;">High-Frequency Repetition Target detected: <b style="color:var(--Advanced-purple);">${topLoopOffender.track.name}</b> maintaining <b>${topLoopOffender.telemetryCount}</b> logs.</p>` : ""}
+            ${topLoopOffender ? `<p class="sub-narrative" style="margin-bottom:16px;">High-Frequency Repetition Target detected: <b style="color:var(--gemini-purple);">${topLoopOffender.track.name}</b> maintaining <b>${topLoopOffender.telemetryCount}</b> logs.</p>` : ""}
             <div class="music-table-view">
               ${weeklyVelocityReport.map((w, idx) => drawStructuralTelemetryRow(w.track, idx, `<b>${w.telemetryCount}</b> events`)).join("")}
             </div>
@@ -567,6 +633,10 @@ function compileMasterReportLayout() {
         renderTracksDisplayDataPool(btnElement.dataset.value, selectedTrackLimit);
       } else {
         activeTrackLimitConfig = parseInt(btnElement.dataset.value);
+        const accLabel = document.getElementById('accordionBtnText');
+        if (!document.getElementById('tracksAccordionWrapper').classList.contains('expanded')) {
+          accLabel.textContent = `Expand Rotation List View (Top ${activeTrackLimitConfig})`;
+        }
         const selectedTimeRangeStr = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
         renderTracksDisplayDataPool(selectedTimeRangeStr, activeTrackLimitConfig);
       }
@@ -578,62 +648,78 @@ function compileMasterReportLayout() {
     renderAuthorizationGate();
   };
 
-  recalculateGenreStateEngine();
-  renderTracksDisplayDataPool("short_term", activeTrackLimitConfig);
-  renderArtistsDisplayDataPool();
-  calculateDecadesDistributionProfile();
-  calculateCircadianDensityProfile();
+  // Safe programmatic separation for DOM injection loops
+  setTimeout(() => {
+    recalculateGenreStateEngine();
+    renderTracksDisplayDataPool("short_term", activeTrackLimitConfig);
+    renderArtistsDisplayDataPool();
+    calculateDecadesDistributionProfile();
+    calculateCircadianDensityProfile();
+  }, 10);
 }
 
 function recalculateGenreStateEngine() {
-  let computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items;
+  let computationalTargetPool = (DATA_STORE_NODE.topArtists.short_term && DATA_STORE_NODE.topArtists.short_term.items) ? DATA_STORE_NODE.topArtists.short_term.items : [];
   let timelineLabel = "4 Weeks";
   
   if (activeGenreChronologyState === 2) {
-    computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
+    computationalTargetPool = (DATA_STORE_NODE.topArtists.medium_term && DATA_STORE_NODE.topArtists.medium_term.items) ? DATA_STORE_NODE.topArtists.medium_term.items : [];
     timelineLabel = "6 Months";
   } else if (activeGenreChronologyState === 3) {
-    computationalTargetPool = DATA_STORE_NODE.topArtists.long_term.items;
+    computationalTargetPool = (DATA_STORE_NODE.topArtists.long_term && DATA_STORE_NODE.topArtists.long_term.items) ? DATA_STORE_NODE.topArtists.long_term.items : [];
     timelineLabel = "All-Time";
   }
 
   const calibratedGenres = processGenreWeightMatrices(computationalTargetPool);
   
-  const activeTracksSubset = DATA_STORE_NODE.topTracks[activeGenreChronologyState === 1 ? 'short_term' : activeGenreChronologyState === 2 ? 'medium_term' : 'long_term'].items;
-  const currentPopularityAverage = activeTracksSubset.reduce((sum, track) => sum + track.popularity, 0) / (activeTracksSubset.length || 1);
+  const targetRangeString = activeGenreChronologyState === 1 ? 'short_term' : activeGenreChronologyState === 2 ? 'medium_term' : 'long_term';
+  const activeTracksSubset = DATA_STORE_NODE.topTracks[targetRangeString]?.items || [];
+  
+  const currentPopularityAverage = activeTracksSubset.length ? (activeTracksSubset.reduce((sum, track) => sum + track.popularity, 0) / activeTracksSubset.length) : 50;
   const computedObscurityIndex = Math.round(100 - currentPopularityAverage);
 
-  document.getElementById("aiObscurityVal").innerHTML = `${computedObscurityIndex}<small>/100</small>`;
-  document.getElementById("aiObscurityDesc").textContent = computedObscurityIndex >= 50 
-    ? "AI Model calculates a highly non-conformist sonic trajectory safely isolated from viral trends." 
-    : "AI Model establishes direct baseline consistency with standard mainstream programmatic metrics.";
+  const obscValueEl = document.getElementById("aiObscurityVal");
+  if (obscValueEl) obscValueEl.innerHTML = `${computedObscurityIndex}<small>/100</small>`;
+  
+  const obscDescEl = document.getElementById("aiObscurityDesc");
+  if (obscDescEl) {
+    obscDescEl.textContent = computedObscurityIndex >= 50 
+      ? "AI Model calculates a highly non-conformist sonic trajectory safely isolated from viral trends." 
+      : "AI Model establishes direct baseline consistency with standard mainstream programmatic metrics.";
+  }
 
-  document.getElementById("aiModelTextContainer").textContent = synthesiseAIPersonaAnalysis(computedObscurityIndex, DATA_STORE_NODE.topTracks.short_term.items, DATA_STORE_NODE.topTracks.long_term.items);
+  const pieCanvas = document.getElementById("pieGraphicVectorNodeCanvas");
+  if (!pieCanvas) return;
 
-  let svgStringPayload = `<svg viewBox="0 0 200 200" width="160" height="160">`;
+  // Vector Graphic SVG Arc Generation Pipeline Loop
+  let svgStringPayload = `<svg viewBox="0 0 200 200" width="180" height="180" style="display:block; max-width:100%;">`;
   let runningAngleCoordinate = 0;
   
-  calibratedGenres.forEach(g => {
-    const mechanicalSectorAngle = g.pct * 360;
-    const xStart = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
-    const yStart = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
-    runningAngleCoordinate += mechanicalSectorAngle;
-    const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
-    const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
-    
-    svgStringPayload += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${mechanicalSectorAngle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${g.color}" stroke="var(--bg-card-solid)" stroke-width="2.5"/>`;
-  });
+  if (calibratedGenres.length === 0) {
+    svgStringPayload += `<circle cx="100" cy="100" r="85" fill="rgba(0,0,0,0.03)" stroke="var(--glass-border)" stroke-width="2"/>`;
+  } else {
+    calibratedGenres.forEach(g => {
+      const mechanicalSectorAngle = g.pct * 360;
+      const xStart = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
+      const yStart = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
+      runningAngleCoordinate += mechanicalSectorAngle;
+      const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
+      const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
+      
+      svgStringPayload += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${mechanicalSectorAngle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${g.color}" stroke="var(--bg-card-solid)" stroke-width="2.5"/>`;
+    });
+  }
   
-  svgStringPayload += `<circle cx="100" cy="100" r="42" fill="#FFFFFF" /></svg>`;
+  svgStringPayload += `<circle cx="100" cy="100" r="48" fill="#FFFFFF" /></svg>`;
   svgStringPayload += `
     <div class="pie-center-node">
       <span class="val">Chrono</span>
-      <span class="lbl" style="font-size:14px; font-weight:800; color:var(--Advanced-purple);">${timelineLabel}</span>
+      <span class="lbl" style="font-size:14px; font-weight:800; color:var(--gemini-purple);">${timelineLabel}</span>
     </div>`;
   
-  document.getElementById("pieGraphicVectorNodeCanvas").innerHTML = svgStringPayload;
+  pieCanvas.innerHTML = svgStringPayload;
   
-  document.getElementById("pieLegendMatrixTarget").innerHTML = calibratedGenres.map(g => `
+  document.getElementById("pieLegendMatrixTarget").innerHTML = calibratedGenres.length ? calibratedGenres.map(g => `
     <div class="legend-pill">
       <div class="legend-pill-header">
         <span class="color-node" style="background:${g.color}"></span>
@@ -643,17 +729,31 @@ function recalculateGenreStateEngine() {
       <div class="genre-bar-track">
         <div class="genre-bar-fill" style="width: ${Math.round(g.pct * 100)}%; background: ${g.color};"></div>
       </div>
-    </div>`).join("");
+    </div>`).join("") : `<div class="sub-narrative">No profile genre attributes returned.</div>`;
 }
 
 function renderTracksDisplayDataPool(timeRangeString, dataSliceLimit) {
-  const collectionItems = DATA_STORE_NODE.topTracks[timeRangeString].items.slice(0, dataSliceLimit);
-  document.getElementById("tracksArrayTargetEngine").innerHTML = collectionItems.map((track, i) => drawStructuralTelemetryRow(track, i, `Index <b>${track.popularity}</b>`)).join("");
+  const collectionItems = DATA_STORE_NODE.topTracks[timeRangeString]?.items || [];
+  const container = document.getElementById("tracksArrayTargetEngine");
+  if (!container) return;
+  
+  if (collectionItems.length === 0) {
+    container.innerHTML = `<div class="sub-narrative" style="padding:20px;">No profile matrix telemetry items returned for this interval slot.</div>`;
+    return;
+  }
+  container.innerHTML = collectionItems.slice(0, dataSliceLimit).map((track, i) => drawStructuralTelemetryRow(track, i, `Index <b>${track.popularity}</b>`)).join("");
 }
 
 function renderArtistsDisplayDataPool() {
-  const datasetItems = DATA_STORE_NODE.topArtists.medium_term.items.slice(0, 14);
-  document.getElementById("artistsArrayTargetEngine").innerHTML = datasetItems.map((artist, idx) => `
+  const datasetItems = DATA_STORE_NODE.topArtists.medium_term?.items || [];
+  const container = document.getElementById("artistsArrayTargetEngine");
+  if (!container) return;
+  
+  if (datasetItems.length === 0) {
+    container.innerHTML = `<div class="sub-narrative">Empty asset roster stream.</div>`;
+    return;
+  }
+  container.innerHTML = datasetItems.slice(0, 14).map((artist, idx) => `
     <div class="artist-avatar-node">
       <img src="${artist.images?.[0]?.url || ''}" loading="lazy">
       <span class="rank-badge">${idx + 1}</span>
@@ -664,7 +764,7 @@ function renderArtistsDisplayDataPool() {
 }
 
 function calculateDecadesDistributionProfile() {
-  const historyProfileTracks = DATA_STORE_NODE.topTracks.medium_term.items;
+  const historyProfileTracks = DATA_STORE_NODE.topTracks.medium_term?.items || [];
   const metricsCache = {};
   historyProfileTracks.forEach(t => {
     const structuralReleaseYearValue = parseInt((t.album.release_date || "").slice(0, 4));
@@ -674,8 +774,14 @@ function calculateDecadesDistributionProfile() {
   });
   const dataRowsSorted = Object.entries(metricsCache).sort((a, b) => a[0] - b[0]);
   const relativeMaxPeakValue = Math.max(...dataRowsSorted.map(item => item[1]), 1);
+  const container = document.getElementById("decadesGraphTargetEngine");
+  if (!container) return;
 
-  document.getElementById("decadesGraphTargetEngine").innerHTML = dataRowsSorted.map(([decadeString, totalCount]) => `
+  if (dataRowsSorted.length === 0) {
+    container.innerHTML = `<div class="sub-narrative">Historical index records unfilled.</div>`;
+    return;
+  }
+  container.innerHTML = dataRowsSorted.map(([decadeString, totalCount]) => `
     <div class="graph-row-bar">
       <span class="g-label">${decadeString}s</span>
       <div class="g-track-container"><div class="g-fill-node" style="width:${(totalCount / relativeMaxPeakValue * 100).toFixed(1)}%;"></div></div>
@@ -685,10 +791,14 @@ function calculateDecadesDistributionProfile() {
 
 function calculateCircadianDensityProfile() {
   const chronologicalHourlyArray = new Array(24).fill(0);
-  DATA_STORE_NODE.recent.items.forEach(playEventLog => chronologicalHourlyArray[new Date(playEventLog.played_at).getHours()]++);
+  const playLogs = DATA_STORE_NODE.recent?.items || [];
+  playLogs.forEach(playEventLog => chronologicalHourlyArray[new Date(playEventLog.played_at).getHours()]++);
   const scalingMaximumPeak = Math.max(...chronologicalHourlyArray, 1);
 
-  document.getElementById("circadianBarsTargetEngine").innerHTML = chronologicalHourlyArray.map((hourlyCount, h) => `
+  const container = document.getElementById("circadianBarsTargetEngine");
+  if (!container) return;
+  
+  container.innerHTML = chronologicalHourlyArray.map((hourlyCount, h) => `
     <div class="hour-bar-column"><div class="bar-vector" style="height:${Math.max(hourlyCount / scalingMaximumPeak * 100, 4)}%;" title="Hour index [${h}]: ${hourlyCount} logged instances"></div></div>`).join("");
   document.getElementById("circadianLabelsTargetEngine").innerHTML = Array.from({ length: 24 }, (_, hourIndex) => `
     <span>${hourIndex % 4 === 0 ? (hourIndex === 0 ? "12am" : hourIndex === 12 ? "12pm" : hourIndex > 12 ? (hourIndex - 12) + "pm" : hourIndex + "am") : ""}</span>`).join("");
@@ -697,7 +807,7 @@ function calculateCircadianDensityProfile() {
 async function dispatchPlaylistDeploymentSequence() {
   try {
     const selectedActiveRangeToken = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
-    const executionTracksPayload = DATA_STORE_NODE.topTracks[selectedActiveRangeToken].items.slice(0, activeTrackLimitConfig);
+    const executionTracksPayload = DATA_STORE_NODE.topTracks[selectedActiveRangeToken]?.items || [];
     if (!executionTracksPayload.length) return;
 
     displayNotificationToast("Initializing automated Spotify.AI account array allocations...");
@@ -713,7 +823,7 @@ async function dispatchPlaylistDeploymentSequence() {
 
     await dispatchSecureApiCall(`/playlists/${targetPlaylistShell.id}/tracks`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ uris: executionTracksPayload.map(trackItem => trackItem.uri) })
+      body: JSON.stringify({ uris: executionTracksPayload.slice(0, activeTrackLimitConfig).map(trackItem => trackItem.uri) })
     });
 
     displayNotificationToast("Account sync complete. Playlist verified.");
@@ -729,9 +839,9 @@ function initializeExportOverlayStage(type) {
   canvasViewport.innerHTML = '<canvas id="cinemaRenderingNode" width="720" height="1280"></canvas>';
   overlay.style.display = "flex";
 
-  let computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items;
-  if (activeGenreChronologyState === 2) computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
-  if (activeGenreChronologyState === 3) computationalTargetPool = DATA_STORE_NODE.topArtists.long_term.items;
+  let computationalTargetPool = DATA_STORE_NODE.topArtists.short_term?.items || [];
+  if (activeGenreChronologyState === 2) computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term?.items || [];
+  if (activeGenreChronologyState === 3) computationalTargetPool = DATA_STORE_NODE.topArtists.long_term?.items || [];
   const primaryGenres = processGenreWeightMatrices(computationalTargetPool);
 
   const canvas = document.getElementById("cinemaRenderingNode");
@@ -806,7 +916,7 @@ function initializeExportOverlayStage(type) {
 
     ctx.fillStyle = "#1A1D24";
     ctx.font = "800 24px Archivo, sans-serif";
-    ctx.fillText(`@${(DATA_STORE_NODE.me.display_name || "User").toLowerCase().replace(/\s+/g, "")}`, 80, 1155);
+    ctx.fillText(`@${(DATA_STORE_NODE.me?.display_name || "User").toLowerCase().replace(/\s+/g, "")}`, 80, 1155);
 
     ctx.fillStyle = "#8A95A6";
     ctx.font = "500 18px Archivo, sans-serif";
