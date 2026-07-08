@@ -116,7 +116,7 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
   background: linear-gradient(135deg, var(--gemini-purple), var(--gemini-blue));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0.4;
 }
-.ai-stream-text { font-size: 15.5px; line-height: 1.7; color: #252D3A; font-weight: 500; }
+.ai-stream-text { font-size: 15.5px; line-height: 1.7; color: #252D3A; font-weight: 500; white-space: pre-line; }
 .ai-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; padding: 4px 10px; background: rgba(122, 92, 255, 0.08); color: var(--gemini-purple); border-radius: 6px; font-weight: 600; margin-bottom: 12px; }
 
 /* --- Interactive Chromatic Time-Travel Tool --- */
@@ -130,23 +130,24 @@ h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A;
 .time-slider::-webkit-slider-thumb:hover { transform: scale(1.15); background: var(--spotify-green); box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); }
 .slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
-.visualization-chamber { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 32px; align-items: center; min-height: 300px; }
-@media(max-width: 680px) { .visualization-chamber { grid-template-columns: 1fr; } }
-.vector-pie-stage { display: flex; justify-content: center; align-items: center; position: relative; }
-.pie-center-node { position: absolute; width: 90px; height: 90px; background: #FFFFFF; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid var(--glass-border); text-align: center; pointer-events: none; }
-.pie-center-node .val { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.pie-center-node .lbl { font-size: 15px; font-weight: 800; color: var(--text-main); margin-top: 2px; }
+/* High Impact Uncompressed Split Layout */
+.visualization-chamber { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; min-height: 380px; padding: 20px 0; }
+@media(max-width: 820px) { .visualization-chamber { grid-template-columns: 1fr; } }
+.vector-pie-stage { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; height: 100%; }
+.pie-center-node { position: absolute; width: 110px; height: 110px; background: #FFFFFF; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.04); border: 1px solid var(--glass-border); text-align: center; pointer-events: none; z-index: 5; }
+.pie-center-node .val { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.06em; }
+.pie-center-node .lbl { font-size: 16px; font-weight: 800; color: var(--text-main); margin-top: 4px; }
 
-.legend-matrix-grid { display: flex; flex-direction: column; gap: 12px; }
-.legend-pill { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8); transition: var(--transition-smooth); }
-.legend-pill .color-node { width: 14px; height: 14px; border-radius: 5px; flex-shrink: 0; }
-.legend-pill .metadata-stack { display: grid; grid-template-columns: 1fr auto; width: 100%; align-items: center; }
-.legend-pill .metadata-stack .g-name { font-weight: 700; font-size: 13.5px; text-transform: capitalize; color: var(--text-main); }
-.legend-pill .metadata-stack .g-pct { font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; }
+.legend-matrix-grid { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+.legend-pill { display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(0,0,0,0.015); }
+.legend-pill-header { display: flex; align-items: center; gap: 10px; width: 100%; }
+.legend-pill .color-node { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+.legend-pill .g-name { font-weight: 700; font-size: 14px; text-transform: capitalize; color: var(--text-main); flex: 1; }
+.legend-pill .g-pct { font-family: var(--mono); font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
 /* Dynamic Integrated Genre Bar Stack Layout */
-.genre-bar-track { height: 8px; width: 100%; background: rgba(0,0,0,0.04); border-radius: 10px; overflow: hidden; margin-top: 6px; grid-column: span 2; }
-.genre-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.genre-bar-track { height: 10px; width: 100%; background: rgba(0,0,0,0.05); border-radius: 20px; overflow: hidden; margin-top: 2px; }
+.genre-bar-fill { height: 100%; border-radius: 20px; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 
 /* --- Telemetry Metrics Cards Framework --- */
 .telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
@@ -356,17 +357,23 @@ function computeWeeklyPlaybackIntervals(historyLog) {
   return Object.values(metricsCache).sort((a, b) => b.telemetryCount - a.telemetryCount).slice(0, 5);
 }
 
-function synthesiseAIPersonaAnalysis(obscurityCoefficient, contextualTrackData) {
-  let structuralBaseModel = "AI Translation Model loaded: Your rotational baseline demonstrates deep structural complexity. ";
+function synthesiseAIPersonaAnalysis(obscurityCoefficient, currentTracks, longTermTracks) {
+  let interpretationSummary = "";
   if (obscurityCoefficient >= 50) {
-    structuralBaseModel = "AI Persona Diagnostic: Independent Vanguard Signature. Your matrix paths avoid algorithmic cultural aggregation nodes. You intentionally prioritize underground releases, generating a highly obscure acoustic distribution coefficient. ";
-  } else if (obscurityCoefficient < 35) {
-    structuralBaseModel = "AI Persona Diagnostic: Cultural Synced Node. Your consumption trajectory matches prominent global distribution pipelines. Production signatures skew clean, bright, and hyper-optimized for massive stadium energy response profiles. ";
+    interpretationSummary += `✦ AI IDENTIFICATION PROFILE: SONIC AVANT-GARDE.\n\nYour telemetry signature outlines an active divergence from mainstream structural curation loops. By systematically executing playback deep within the long-tail catalog matrix, your acoustic configuration values reveal an elite alternative ecosystem. `;
+  } else {
+    interpretationSummary += `✦ AI IDENTIFICATION PROFILE: CULTURAL RESONANCE MATRIX.\n\nYour listening data tracks in lockstep with global trends and high-momentum production loops. You display a calculated preference for highly polished modern mastering formulas, optimized rhythm densities, and structural anthem formats. `;
   }
-  if (contextualTrackData && contextualTrackData.length > 0) {
-    structuralBaseModel += `The current real-time atmospheric focus is grounded elegantly around projects like "${contextualTrackData[0].name}."`;
+  if (currentTracks.length > 0 && longTermTracks.length > 0) {
+    const currentPrimaryTrack = currentTracks[0];
+    const historicalPrimaryTrack = longTermTracks[0];
+    if (currentPrimaryTrack.id !== historicalPrimaryTrack.id) {
+      interpretationSummary += `\n\nDiagnostic logs identify an ongoing shift in your emotional era baseline. While your multi-year center of gravity has been historically anchored by architectural styles found in "${historicalPrimaryTrack.name}", your current real-time attention vector has successfully adapted to projects like "${currentPrimaryTrack.name}". This points to a highly adaptive and evolving sensory processing model.`;
+    } else {
+      interpretationSummary += `\n\nYour profile demonstrates profound core constancy. Projects like "${currentPrimaryTrack.name}" remain unshakeable foundational anchors over deep time scales, showing a highly disciplined internal aesthetic index.`;
+    }
   }
-  return structuralBaseModel;
+  return interpretationSummary;
 }
 
 function renderAuthorizationGate() {
@@ -400,7 +407,7 @@ function compileMasterReportLayout() {
   
   const averagePopularityIndex = analysisTargetPool.reduce((sum, track) => sum + track.popularity, 0) / (analysisTargetPool.length || 1);
   const coreObscurityMetric = Math.round(100 - averagePopularityIndex);
-  const engineeredAIPrediction = synthesiseAIPersonaAnalysis(coreObscurityMetric, topTracks.short_term.items);
+  const engineeredAIPrediction = synthesiseAIPersonaAnalysis(coreObscurityMetric, topTracks.short_term.items, topTracks.long_term.items);
   
   const calendarYearArray = analysisTargetPool.map(t => parseInt((t.album.release_date || "").slice(0, 4))).filter(Boolean);
   const operationalMidpointYear = Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / (calendarYearArray.length || 1));
@@ -481,8 +488,8 @@ function compileMasterReportLayout() {
           <div class="slider-control-center">
             <input type="range" min="1" max="3" value="${activeGenreChronologyState}" class="time-slider" id="chronologySliderInputDevice">
             <div class="slider-labels">
+              <span>4 Weeks Recent</span>
               <span>6 Months Spectrum</span>
-              <span>1 Year Interval</span>
               <span>All-Time Ledger</span>
             </div>
           </div>
@@ -579,20 +586,19 @@ function compileMasterReportLayout() {
 }
 
 function recalculateGenreStateEngine() {
-  let computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
-  let dynamicStatusLabelText = "6 Months Base";
+  let computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items;
+  let timelineLabel = "4 Weeks";
   
   if (activeGenreChronologyState === 2) {
-    computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items.concat(DATA_STORE_NODE.topArtists.medium_term.items);
-    dynamicStatusLabelText = "1 Year Dynamic Matrix";
+    computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
+    timelineLabel = "6 Months";
   } else if (activeGenreChronologyState === 3) {
     computationalTargetPool = DATA_STORE_NODE.topArtists.long_term.items;
-    dynamicStatusLabelText = "All Time Era Log";
+    timelineLabel = "All-Time";
   }
 
   const calibratedGenres = processGenreWeightMatrices(computationalTargetPool);
   
-  // Dynamic AI Obscurity Calibration Matrix
   const activeTracksSubset = DATA_STORE_NODE.topTracks[activeGenreChronologyState === 1 ? 'short_term' : activeGenreChronologyState === 2 ? 'medium_term' : 'long_term'].items;
   const currentPopularityAverage = activeTracksSubset.reduce((sum, track) => sum + track.popularity, 0) / (activeTracksSubset.length || 1);
   const computedObscurityIndex = Math.round(100 - currentPopularityAverage);
@@ -602,10 +608,8 @@ function recalculateGenreStateEngine() {
     ? "AI Model calculates a highly non-conformist sonic trajectory safely isolated from viral trends." 
     : "AI Model establishes direct baseline consistency with standard mainstream programmatic metrics.";
 
-  // Dynamic text reassignment via simulated execution paths
-  document.getElementById("aiModelTextContainer").textContent = synthesiseAIPersonaAnalysis(computedObscurityIndex, activeTracksSubset);
+  document.getElementById("aiModelTextContainer").textContent = synthesiseAIPersonaAnalysis(computedObscurityIndex, DATA_STORE_NODE.topTracks.short_term.items, DATA_STORE_NODE.topTracks.long_term.items);
 
-  // Vector Graphic SVG Arc Rendering Pipeline
   let svgStringPayload = `<svg viewBox="0 0 200 200" width="160" height="160">`;
   let runningAngleCoordinate = 0;
   
@@ -624,21 +628,20 @@ function recalculateGenreStateEngine() {
   svgStringPayload += `
     <div class="pie-center-node">
       <span class="val">Chrono</span>
-      <span class="lbl" style="font-size:11px; font-weight:700; text-align:center; padding:0 4px; color:var(--gemini-purple);">${activeGenreChronologyState === 1 ? '6 Mos' : activeGenreChronologyState === 2 ? '1 Year' : 'All-Time'}</span>
+      <span class="lbl" style="font-size:14px; font-weight:800; color:var(--gemini-purple);">${timelineLabel}</span>
     </div>`;
   
   document.getElementById("pieGraphicVectorNodeCanvas").innerHTML = svgStringPayload;
   
-  // Implementation of Simultaneous Horizontal Bar Charts along with Legend entries
   document.getElementById("pieLegendMatrixTarget").innerHTML = calibratedGenres.map(g => `
     <div class="legend-pill">
-      <span class="color-node" style="background:${g.color}"></span>
-      <div class="metadata-stack">
+      <div class="legend-pill-header">
+        <span class="color-node" style="background:${g.color}"></span>
         <span class="g-name">${g.name}</span>
-        <span class="g-pct">${Math.round(g.pct * 100)}% density</span>
-        <div class="genre-bar-track">
-          <div class="genre-bar-fill" style="width: ${Math.round(g.pct * 100)}%; background: ${g.color};"></div>
-        </div>
+        <span class="g-pct">${Math.round(g.pct * 100)}%</span>
+      </div>
+      <div class="genre-bar-track">
+        <div class="genre-bar-fill" style="width: ${Math.round(g.pct * 100)}%; background: ${g.color};"></div>
       </div>
     </div>`).join("");
 }
@@ -708,7 +711,7 @@ async function dispatchPlaylistDeploymentSequence() {
       })
     });
 
-    await dispatchSecureApiCall(`/playlists/${targetPlaylistShell.id}/items`, {
+    await dispatchSecureApiCall(`/playlists/${targetPlaylistShell.id}/tracks`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uris: executionTracksPayload.map(trackItem => trackItem.uri) })
     });
@@ -726,8 +729,8 @@ function initializeExportOverlayStage(type) {
   canvasViewport.innerHTML = '<canvas id="cinemaRenderingNode" width="720" height="1280"></canvas>';
   overlay.style.display = "flex";
 
-  let computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
-  if (activeGenreChronologyState === 2) computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items.concat(DATA_STORE_NODE.topArtists.medium_term.items);
+  let computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items;
+  if (activeGenreChronologyState === 2) computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
   if (activeGenreChronologyState === 3) computationalTargetPool = DATA_STORE_NODE.topArtists.long_term.items;
   const primaryGenres = processGenreWeightMatrices(computationalTargetPool);
 
