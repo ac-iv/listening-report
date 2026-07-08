@@ -242,7 +242,6 @@ footer { margin-top: 80px; padding: 32px 40px; display: flex; justify-content: s
 </head>
 <body>
 
-<!-- Global Layout Components -->
 <div id="toastEngine" class="toast-alert-banner">
   <span class="toast-icon">✦</span> <span id="toastMessageTarget">Telemetry Framework Initiated</span>
 </div>
@@ -251,12 +250,10 @@ footer { margin-top: 80px; padding: 32px 40px; display: flex; justify-content: s
   <div id="appRootStage"></div>
 </div>
 
-<!-- Social Cinema Modal Overlay Layout Stage -->
 <div id="socialExportOverlay" class="export-modal-overlay">
   <div class="export-workspace-card">
     <div class="canvas-aspect-viewport" id="canvasFrameContainer">
-      <!-- High Performance Canvas Component is programmatically bound here -->
-    </div>
+      </div>
     <div style="display:flex; gap:12px; justify-content:center;">
       <button class="btn-core" onclick="triggerMotionExportSequence()">Download Motion MP4</button>
       <button class="btn-core ghost-variant" onclick="terminateExportOverlay()">Close</button>
@@ -270,6 +267,7 @@ footer { margin-top: 80px; padding: 32px 40px; display: flex; justify-content: s
    PURE ARCHITECTURAL CLIENT IMPLEMENTATION — PKCE SECURE PROTOCOLS EXTENSION
    ============================================================================ */
 
+const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27"; /* ◄ RESTORED THIS LINE */
 const SCOPES = "user-top-read user-read-recently-played playlist-modify-public playlist-modify-private";
 const REDIRECT = location.origin + location.pathname;
 const appStage = document.getElementById("appRootStage");
@@ -435,10 +433,8 @@ function compileMasterReportLayout() {
     </header>
 
     <div class="main-layout-grid">
-      <!-- LEFT PRIMARY DATA COLUMN -->
       <div class="widget-stack">
         
-        <!-- MODULE: AI TRANSLATION -->
         <div class="glass widget-pane">
           <div class="eyebrow">Gemini Machine Interpretation Layer</div>
           <div class="widget-title-area">
@@ -451,7 +447,6 @@ function compileMasterReportLayout() {
           </div>
         </div>
 
-        <!-- MODULE: RANGE TRACK LIMIT FILTERS -->
         <div class="glass widget-pane">
           <div class="eyebrow">Framework Quantization Tables</div>
           <div class="dynamic-action-bar">
@@ -475,7 +470,6 @@ function compileMasterReportLayout() {
           <div class="music-table-view" id="tracksArrayTargetEngine"></div>
         </div>
 
-        <!-- MODULE: ARTIFACT ARTIST ROSTER MATRIX -->
         <div class="glass widget-pane">
           <div class="eyebrow">Roster Standings Diagnostics</div>
           <div class="widget-title-area">
@@ -487,10 +481,8 @@ function compileMasterReportLayout() {
 
       </div>
 
-      <!-- RIGHT SIDE GRAPHICS AND TIMELINE PATTERNS -->
       <div class="widget-stack">
         
-        <!-- MODULE: TIME TRAVEL CHRONO SLIDER -->
         <div class="glass widget-pane">
           <div class="eyebrow">Acoustic Timeline Chronology</div>
           <div class="widget-title-area">
@@ -514,7 +506,6 @@ function compileMasterReportLayout() {
           </div>
         </div>
 
-        <!-- MODULE: METRICS SCORE MATRIX CARD TILES -->
         <div class="glass widget-pane">
           <div class="eyebrow">Telemetry Analytics Ledger</div>
           <h2>Structural Rotation Diagnostics</h2>
@@ -537,7 +528,6 @@ function compileMasterReportLayout() {
           </div>
         </div>
 
-        <!-- MODULE: WEEKLY ACTIVE RECENT TELEMETRY LOG -->
         <div class="glass widget-pane">
           <div class="eyebrow">Interval Log Analysis</div>
           <h2>Seven-Day Activity Monitor</h2>
@@ -549,14 +539,12 @@ function compileMasterReportLayout() {
           </div>
         </div>
 
-        <!-- MODULE: HISTORICAL RELEASE ERAS BAR GRAPH -->
         <div class="glass widget-pane">
           <div class="eyebrow">Temporal Distributions</div>
           <h2>Chronological Era Density Profile</h2>
           <div class="graph-matrix-chamber" id="decadesGraphTargetEngine"></div>
         </div>
 
-        <!-- MODULE: CIRCADIAN PROFILE DENSITIES DISPLAY -->
         <div class="glass widget-pane">
           <div class="eyebrow">Circadian Engine Resonance</div>
           <h2>Temporal Listening Density Vector</h2>
