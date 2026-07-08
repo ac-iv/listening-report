@@ -3,585 +3,895 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotify.AI // Comprehensive Rotation Engine</title>
+<title>Spotify.AI // Predictive Rotation & Matrix Telemetry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-dark: #07080a;
-  --bg-card: rgba(15, 18, 22, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.04);
-  --spotify-green: #1ED760;
-  --neon-pink: #FF2E93;
-  --neon-blue: #00F0FF;
-  --text-main: #FFFFFF;
-  --text-muted: #9499A6;
+  --bg-base: #E2E8F5;
+  /* Frosted up slightly from 0.45 to 0.65 to elegantly catch your vivid new Google colors */
+  --bg-card: rgba(255, 255, 255, 0.65);
+  --bg-card-solid: #FFFFFF;
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-inner-glow: rgba(255, 255, 255, 0.5);
+  --spotify-green: #1DB954; 
+  --gemini-purple: #7A5CFF;
+  --gemini-blue: #1563FF;
+  --gemini-pink: #FF66B2;
+  --text-main: #1A1D24;
+  --text-muted: #4A5260; /* Slightly deepened for crisp readability on bright glass */
+  --text-light: #707C90;
   --mono: 'IBM Plex Mono', monospace;
   --disp: 'Archivo', sans-serif;
+  --radius-lg: 32px;
+  --radius-md: 20px;
+  --radius-sm: 12px;
+  --transition-smooth: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* --- Base Framework Elements --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; font-size: 16px; background-color: var(--bg-base); }
 body {
-  background: var(--bg-dark);
   color: var(--text-main);
   font-family: var(--disp);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh; /* Ensures it never cuts off at the bottom */
+  
+  /* Your Custom Google Flagship Gradient Matrix */
+  background-color: #E2E8F5;
   background-image: 
-    radial-gradient(circle at 5% 15%, rgba(30, 215, 96, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 95% 45%, rgba(255, 46, 147, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 50% 85%, rgba(0, 240, 255, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 0% 0%, rgba(15, 99, 255, 0.71) 0%, transparent 45%),     /* Google Blue */
+    radial-gradient(circle at 100% 0%, rgba(235, 18, 18, 0.632) 0%, transparent 50%),   /* Google Red */
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.501) 0%, transparent 55%), /* White Dispersion Center */
+    radial-gradient(circle at 100% 100%, rgba(17, 180, 74, 0.734) 0%, transparent 40%), /* Spotify Green Accent Constant */
+    radial-gradient(circle at 0% 100%, rgba(233, 208, 44, 0.734) 0%, transparent 50%);  /* Google Yellow */
   background-attachment: fixed;
 }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 48px 32px 160px; position: relative; z-index: 2; }
 
-.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px 120px; position: relative; z-index: 1; }
+/* --- Custom Dynamic Scrollbar --- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.02); }
+::-webkit-scrollbar-thumb { background: rgba(122, 92, 255, 0.15); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--gemini-purple); border: 2px solid transparent; background-clip: padding-box; }
 
-/* --- Liquid Glass Layout Base --- */
+/* --- Premium Light Mode Liquid Glass UI Engine --- */
 .glass {
   background: var(--bg-card);
-  backdrop-filter: blur(24px) saturate(170%);
-  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  backdrop-filter: blur(40px) saturate(210%);
+  -webkit-backdrop-filter: blur(40px) saturate(210%);
   border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 48px rgba(0, 0, 0, 0.5);
-  border-radius: 24px;
+  box-shadow: 
+    inset 0 1px 2px var(--glass-inner-glow),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.01),
+    0 4px 24px rgba(150, 165, 190, 0.06),
+    0 25px 60px rgba(31, 45, 61, 0.04);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-smooth);
+}
+.glass:hover {
+  box-shadow: 
+    inset 0 1px 3px var(--glass-inner-glow),
+    0 30px 70px rgba(31, 45, 61, 0.07);
 }
 
-/* --- Navigation Typography & Header --- */
-header { padding: 60px 0 40px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-.masthead { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
-h1 { font-size: clamp(40px, 7vw, 76px); font-weight: 900; letter-spacing: -0.04em; text-transform: lowercase; line-height: 0.95; }
-h1 em { font-style: normal; color: var(--spotify-green); }
-.stamp { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--text-muted); line-height: 1.7; }
-.stamp b { color: var(--text-main); }
+/* --- Navigation Typography & Structural Header --- */
+header { padding: 32px 40px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+.logo-container { display: flex; align-items: center; gap: 16px; }
+.logo-sparkle { font-size: 28px; background: linear-gradient(135deg, var(--gemini-purple), var(--spotify-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulseSparkle 3s ease-infinite; }
+h1 { font-size: 28px; font-weight: 900; letter-spacing: -0.05em; color: #0F1217; }
+h1 span { color: var(--spotify-green); font-weight: 700; }
+.stamp { font-family: var(--mono); font-size: 11px; text-align: right; color: var(--text-muted); line-height: 1.6; }
+.stamp b { color: var(--text-main); font-weight: 600; }
 
-/* --- Content Sections --- */
-section { padding: 64px 0 16px; }
-.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--spotify-green); text-transform: uppercase; display: flex; align-items: center; gap: 14px; }
-.eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
-h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -0.02em; text-transform: lowercase; margin: 12px 0 24px; }
-.sub { font-size: 14px; color: var(--text-muted); max-width: 58ch; margin: -14px 0 28px; line-height: 1.6; }
+/* --- Architecture Grid Configurations --- */
+.main-layout-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; }
+@media(max-width: 1150px) { .main-layout-grid { grid-template-columns: 1fr; } }
 
-/* --- Interactive Multi-Year Genre Tool --- */
-.wheel-grid { display: grid; grid-template-columns: minmax(280px, 420px) 1fr; gap: 48px; align-items: center; padding: 32px; }
-@media(max-width: 760px){ .wheel-grid { grid-template-columns: 1fr; gap: 32px; } }
-.legend { display: flex; flex-direction: column; gap: 4px; }
-.legend-row { display: grid; grid-template-columns: 12px 1fr auto; gap: 16px; align-items: center; padding: 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.legend-row .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
-.legend-row .g-name { font-weight: 600; font-size: 15px; text-transform: lowercase; }
-.legend-row .g-pct { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.widget-stack { display: flex; flex-direction: column; gap: 32px; }
+.widget-pane { padding: 40px; display: flex; flex-direction: column; gap: 28px; position: relative; overflow: hidden; }
 
-.slider-panel { padding: 20px 32px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
-.time-slider { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; outline: none; }
-.time-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--spotify-green); cursor: pointer; box-shadow: 0 0 12px var(--spotify-green); transition: transform 0.1s; }
-.time-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
-.slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+/* --- Global Typographic Scales --- */
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--gemini-purple); text-transform: uppercase; display: flex; align-items: center; gap: 14px; font-weight: 600; }
+.eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(0, 0, 0, 0.05); }
+.widget-title-area { margin-top: -8px; }
+h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; color: #11141A; }
+.sub-narrative { font-size: 14px; color: var(--text-muted); margin-top: 4px; line-height: 1.6; max-width: 65ch; }
 
-/* --- Statistics Performance Blocks --- */
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-.card { padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; min-height: 170px; position: relative; overflow: hidden; }
-.card .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; }
-.card .v { font-size: clamp(36px, 4.5vw, 48px); font-weight: 900; line-height: 1; letter-spacing: -0.03em; margin-top: auto; color: #fff; }
-.card .v small { font-size: 0.45em; font-weight: 700; color: var(--text-muted); margin-left: 2px; }
-.card .d { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-.card.hot { border-color: rgba(255, 46, 147, 0.3); }
-.card.hot .v { color: var(--neon-pink); drop-shadow: 0 0 15px rgba(255, 46, 147, 0.4); }
-.card.accent { border-color: rgba(0, 240, 255, 0.3); }
-.card.accent .v { color: var(--neon-blue); }
+/* --- Dynamic Gemini AI Interpretation Shell --- */
+.ai-insight-box {
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(242, 246, 255, 0.7));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(122, 92, 255, 0.03);
+}
+.ai-insight-box::before {
+  content: '✦'; position: absolute; right: 28px; top: 20px; font-size: 36px;
+  background: linear-gradient(135deg, var(--gemini-purple), var(--gemini-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0.4;
+}
+.ai-stream-text { font-size: 15.5px; line-height: 1.7; color: #252D3A; font-weight: 500; }
+.ai-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; text-transform: uppercase; padding: 4px 10px; background: rgba(122, 92, 255, 0.08); color: var(--gemini-purple); border-radius: 6px; font-weight: 600; margin-bottom: 12px; }
 
-/* --- Functional Control Modules --- */
-.section-ctrls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
-.toggle { display: inline-flex; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 4px; border-radius: 12px; }
-.toggle button { font-family: var(--mono); font-size: 12px; padding: 8px 16px; border: 0; background: transparent; color: var(--text-muted); text-transform: lowercase; border-radius: 8px; transition: all 0.2s; }
-.toggle button[aria-pressed="true"] { background: rgba(255,255,255,0.1); color: var(--text-main); font-weight: 600; }
+/* --- Interactive Chromatic Time-Travel Tool --- */
+.slider-control-center { padding: 24px 32px; border-radius: var(--radius-md); background: rgba(255,255,255,0.5); display: flex; flex-direction: column; gap: 12px; }
+.time-slider { -webkit-appearance: none; width: 100%; height: 8px; background: rgba(0, 0, 0, 0.04); border-radius: 20px; outline: none; }
+.time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--gemini-purple); cursor: pointer; box-shadow: 0 4px 12px rgba(122, 92, 255, 0.3);
+  transition: var(--transition-smooth); border: 2px solid #FFF;
+}
+.time-slider::-webkit-slider-thumb:hover { transform: scale(1.15); background: var(--spotify-green); box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); }
+.slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
-.btn { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 30px; text-transform: lowercase; display: inline-flex; align-items: center; gap: 8px; transition: all 0.15s; cursor: pointer; }
-.btn:hover { background: var(--spotify-green); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(30,215,96,0.3); }
-.btn.ghost { background: rgba(255,255,255,0.06); color: var(--text-main); border: 1px solid var(--glass-border); }
-.btn.ghost:hover { background: rgba(255,255,255,0.15); }
+.visualization-chamber { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; min-height: 300px; }
+@media(max-width: 680px) { .visualization-chamber { grid-template-columns: 1fr; } }
+.vector-pie-stage { display: flex; justify-content: center; align-items: center; position: relative; }
+.pie-center-node { position: absolute; width: 90px; height: 90px; background: #FFFFFF; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid var(--glass-border); text-align: center; pointer-events: none; }
+.pie-center-node .val { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.pie-center-node .lbl { font-size: 15px; font-weight: 800; color: var(--text-main); margin-top: 2px; }
 
-/* --- Lists Systems --- */
-.tracklist { display: flex; flex-direction: column; }
-.trow { display: grid; grid-template-columns: 40px 56px 1fr auto; gap: 20px; align-items: center; padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; border-radius: 8px; }
-.trow:hover { background: rgba(255,255,255,0.02); }
-.trow .rank { font-family: var(--mono); font-size: 13px; color: var(--text-muted); }
-.trow img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: rgba(255,255,255,0.05); }
-.trow .t-name { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 450px; }
-.trow .t-artist { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
-.trow .tag { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
-.trow .tag b { color: var(--spotify-green); }
+.legend-matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+.legend-pill { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.8); transition: var(--transition-smooth); }
+.legend-pill:hover { transform: translateY(-2px); background: #FFFFFF; border-color: var(--gemini-purple); }
+.legend-pill .color-node { width: 14px; height: 14px; border-radius: 5px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.legend-pill .metadata-stack { display: flex; flex-direction: column; overflow: hidden; }
+.legend-pill .metadata-stack .g-name { font-weight: 700; font-size: 13.5px; text-transform: capitalize; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.legend-pill .metadata-stack .g-pct { font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 1px; }
 
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
-@media(max-width: 840px){ .two-col { grid-template-columns: 1fr; } }
+/* --- Telemetry Metrics Cards Framework --- */
+.telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.telemetry-node { padding: 24px; display: flex; flex-direction: column; gap: 12px; border-radius: var(--radius-md); background: rgba(255,255,255,0.4); border: 1px solid var(--glass-border); }
+.telemetry-node .t-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.telemetry-node .t-value { font-size: 34px; font-weight: 900; color: #11141A; line-height: 1.1; display: flex; align-items: baseline; gap: 2px; }
+.telemetry-node .t-value small { font-size: 14px; font-weight: 600; color: var(--text-light); }
+.telemetry-node .t-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
 
-.artist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
-.artist { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 1; background: #121418; display: block; }
-.artist img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1); }
-.artist:hover img { transform: scale(1.06); }
-.artist .a-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 12px 12px; background: linear-gradient(transparent, rgba(7,8,10,0.95)); color: #fff; font-weight: 700; font-size: 13px; letter-spacing: -0.01em; }
-.artist .a-rank { position: absolute; top: 10px; left: 10px; font-family: var(--mono); font-size: 11px; color: #fff; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+/* Micro Variational States for Nodes */
+.telemetry-node.accent-green { border-left: 4px solid var(--spotify-green); }
+.telemetry-node.accent-purple { border-left: 4px solid var(--gemini-purple); }
+.telemetry-node.accent-blue { border-left: 4px solid var(--gemini-blue); }
+.telemetry-node.accent-pink { border-left: 4px solid var(--gemini-pink); }
 
-/* --- Bar Charts Architecture --- */
-.bars { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
-.bar-row { display: grid; grid-template-columns: 80px 1fr 40px; gap: 16px; align-items: center; }
-.bar-row .b-label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); text-align: right; }
-.bar-row .b-track { height: 28px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); }
-.bar-row .b-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--neon-blue), var(--spotify-green)); transform-origin: left; animation: grow 0.8s cubic-bezier(0.2,0.7,0.2,1) both; }
-.bar-row .b-val { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
-@keyframes grow { from { transform: scaleX(0); } }
+/* --- Control Bar Layout Modules --- */
+.dynamic-action-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; width: 100%; border-bottom: 1px solid rgba(0,0,0,0.04); padding-bottom: 20px; }
+.control-filter-cluster { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toggle-bay { display: inline-flex; background: rgba(0, 0, 0, 0.04); padding: 4px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.01); }
+.toggle-bay button { font-family: var(--mono); font-size: 11px; font-weight: 600; padding: 8px 16px; border: 0; background: transparent; color: var(--text-muted); border-radius: 10px; transition: var(--transition-smooth); cursor: pointer; text-transform: lowercase; }
+.toggle-bay button[aria-pressed="true"] { background: #FFFFFF; color: var(--text-main); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
 
-/* --- Circadian Rhythm Block Visuals --- */
-.clock { display: flex; align-items: flex-end; gap: 6px; height: 160px; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 24px 24px 0; }
-.clock .hr { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
-.clock .hr .col { background: linear-gradient(0deg, var(--spotify-green), var(--neon-blue)); border-radius: 6px 6px 0 0; min-height: 3px; transform-origin: bottom; animation: grow-v 0.8s cubic-bezier(0.2,0.7,0.2,1) both; }
-@keyframes grow-v { from { transform: scaleY(0); } }
-.clock-labels { display: flex; gap: 6px; margin-top: 10px; padding: 0 24px; }
-.clock-labels span { flex: 1; font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-align: center; }
+/* Buttons Ecosystem */
+.btn-core { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; background: var(--text-main); color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 40px; display: inline-flex; align-items: center; gap: 10px; transition: var(--transition-smooth); cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
+.btn-core:hover { background: var(--spotify-green); color: #FFF; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29, 185, 84, 0.3); }
+.btn-core.ghost-variant { background: rgba(0,0,0,0.03); color: var(--text-main); border: 1px solid rgba(0,0,0,0.06); box-shadow: none; }
+.btn-core.ghost-variant:hover { background: rgba(0,0,0,0.06); transform: translateY(-1px); }
 
-/* --- System Access Gate Elements --- */
-.gate { max-width: 520px; margin: 12vh auto 0; padding: 48px; text-align: center; }
-.gate h1 { font-size: 52px; margin-bottom: 16px; }
-.gate p { margin-bottom: 28px; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
-.loading { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 25vh 0; font-family: var(--mono); font-size: 13px; color: var(--text-muted); }
-.spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.08); border-top-color: var(--spotify-green); animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* --- Music Telemetry Rows Engine --- */
+.music-table-view { display: flex; flex-direction: column; gap: 2px; }
+.music-telemetry-row { display: grid; grid-template-columns: 44px 56px 1fr auto; gap: 20px; align-items: center; padding: 14px 16px; border-bottom: 1px solid rgba(0, 0, 0, 0.03); border-radius: var(--radius-sm); transition: var(--transition-smooth); }
+.music-telemetry-row:hover { background: rgba(255, 255, 255, 0.7); transform: scale(1.008); box-shadow: 0 4px 16px rgba(0,0,0,0.015); }
+.music-telemetry-row:last-child { border-bottom: none; }
+.row-rank-index { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text-light); text-align: center; }
+.row-artwork-frame { width: 56px; height: 56px; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.03); box-shadow: 0 6px 16px rgba(0,0,0,0.04); flex-shrink: 0; }
+.row-artwork-frame img { width: 100%; height: 100%; object-fit: cover; }
+.row-data-payload { display: flex; flex-direction: column; min-width: 0; }
+.row-data-payload .track-title-string { font-weight: 700; font-size: 16px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 12px; }
+.row-data-payload .track-artist-string { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.row-metric-tag { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--gemini-purple); background: rgba(122, 92, 255, 0.06); padding: 4px 10px; border-radius: 6px; text-align: right; }
 
-/* --- Modal Social Export Suite --- */
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(16px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-.modal-content { max-width: 400px; width: 100%; text-align: center; }
-.export-card { background: #000000; border: 1px solid rgba(255,255,255,0.15); aspect-ratio: 9/16; width: 100%; border-radius: 28px; padding: 44px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative; overflow: hidden; }
-.export-card::before { content: ''; position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; background: radial-gradient(circle, rgba(30,215,96,0.18) 0%, transparent 60%); pointer-events: none; }
-.export-card .brand { font-size: 22px; font-weight: 900; }
+/* --- Artist Core Visual Framework Layout --- */
+.artists-matrix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
+.artist-avatar-node { position: relative; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 1; background: #E1E5ED; border: 1px solid rgba(255,255,255,0.8); display: block; box-shadow: 0 6px 20px rgba(0,0,0,0.03); transition: var(--transition-smooth); }
+.artist-avatar-node:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.artist-avatar-node img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.artist-avatar-node:hover img { transform: scale(1.05); }
+.artist-avatar-node .meta-overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 32px 14px 12px; background: linear-gradient(transparent, rgba(26,29,36,0.92)); color: #FFFFFF; }
+.artist-avatar-node .meta-overlay .name-lbl { font-weight: 700; font-size: 13.5px; letter-spacing: -0.01em; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+.artist-avatar-node .rank-badge { position: absolute; top: 10px; left: 10px; font-family: var(--mono); font-size: 10px; color: var(--text-main); background: rgba(255,255,255,0.94); padding: 2px 8px; border-radius: 7px; font-weight: 600; border: 1px solid rgba(255,255,255,0.8); }
 
-footer { margin-top: 80px; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-footer .mono { color: var(--text-muted); font-family: var(--mono); font-size: 12px; }
+/* --- Advanced Graph Visual Framework Architecture --- */
+.graph-matrix-chamber { display: flex; flex-direction: column; gap: 16px; padding: 12px 8px; }
+.graph-row-bar { display: grid; grid-template-columns: 70px 1fr 40px; gap: 20px; align-items: center; }
+.graph-row-bar .g-label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); font-weight: 600; text-align: right; }
+.graph-row-bar .g-track-container { height: 24px; background: rgba(0,0,0,0.03); border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.01); position: relative; }
+.graph-row-bar .g-fill-node { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--gemini-blue), var(--spotify-green)); transform-origin: left; transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.graph-row-bar .g-value-lbl { font-family: var(--mono); font-size: 12px; color: var(--text-main); font-weight: 600; }
 
-/* Notification Banner */
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--spotify-green); color: #000; padding: 14px 28px; border-radius: 30px; font-family: var(--mono); font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(30,215,96,0.3); z-index: 200; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.toast.show { transform: translateY(0); opacity: 1; }
+/* Circadian Frequency Bars Visual Frame */
+.circadian-canvas-stage { display: flex; align-items: flex-end; gap: 6px; height: 160px; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 24px 16px 0; }
+.circadian-canvas-stage .hour-bar-column { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.circadian-canvas-stage .hour-bar-column .bar-vector { background: linear-gradient(0deg, var(--spotify-green), var(--gemini-purple)); border-radius: 5px 5px 0 0; min-height: 4px; transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.circadian-labels-axis { display: flex; gap: 6px; margin-top: 12px; padding: 0 16px; }
+.circadian-labels-axis span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--text-light); text-align: center; font-weight: 500; }
+
+/* --- Access Gate & Boot Sequence UI Overlays --- */
+.gate-container { max-width: 520px; margin: 12vh auto 0; padding: 56px 48px; text-align: center; display: flex; flex-direction: column; gap: 28px; }
+.gate-container h2 { font-size: 42px; font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; }
+.gate-container h2 em { font-style: normal; color: var(--spotify-green); }
+.gate-container p { color: var(--text-muted); font-size: 15.5px; line-height: 1.6; }
+.system-boot-loader { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 35vh 0; font-family: var(--mono); font-size: 13px; color: var(--text-muted); font-weight: 500; }
+.system-spinner-ring { width: 44px; height: 44px; border-radius: 50%; border: 3.5px solid rgba(0,0,0,0.04); border-top-color: var(--gemini-purple); border-right-color: var(--spotify-green); animation: spinRing 0.85s linear infinite; }
+
+/* --- Advanced Cinematic Video Export Canvas Sheet Modal --- */
+.export-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(22, 25, 31, 0.35); backdrop-filter: blur(20px); z-index: 999; align-items: center; justify-content: center; padding: 24px; }
+.export-workspace-card { text-align: center; display: flex; flex-direction: column; gap: 24px; align-items: center; }
+.canvas-aspect-viewport {
+  background: #FFFFFF; border: 1px solid var(--glass-border); aspect-ratio: 9/16; width: 350px;
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 35px 80px rgba(15, 20, 30, 0.15);
+  position: relative;
+}
+.canvas-aspect-viewport canvas { width: 100%; height: 100%; display: block; }
+
+/* --- Global Functional Component Tokens --- */
+footer { margin-top: 80px; padding: 32px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.toast-alert-banner { position: fixed; bottom: 32px; right: 32px; background: var(--text-main); color: #FFFFFF; padding: 16px 28px; border-radius: var(--radius-sm); font-family: var(--mono); font-size: 12px; font-weight: 600; box-shadow: 0 15px 35px rgba(0,0,0,0.15); z-index: 9999; transform: translateY(120px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 10px; }
+.toast-alert-banner.active { transform: translateY(0); opacity: 1; }
+.toast-icon { color: var(--spotify-green); font-size: 14px; }
+
+/* --- Framework Structural Animations --- */
+@keyframes spinRing { to { transform: rotate(360deg); } }
+@keyframes pulseSparkle { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.1); opacity: 1; } }
 </style>
 </head>
 <body>
 
-<div id="toast" class="toast">Profile Action Successful</div>
-
-<div class="wrap">
-  <div id="app"></div>
+<!-- Global Layout Components -->
+<div id="toastEngine" class="toast-alert-banner">
+  <span class="toast-icon">✦</span> <span id="toastMessageTarget">Telemetry Framework Initiated</span>
 </div>
 
-<!-- Social Share Modal Engine Sheet -->
-<div id="exportModal" class="modal">
-  <div class="modal-content">
-    <div id="captureArea" class="export-card">
-      <div>
-        <div class="brand">spotify<span>.ai</span></div>
-        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 4px;">ROTATION SNAPSHOT</div>
-      </div>
-      <div id="exportDataBody"></div>
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; position: relative; z-index: 2;">
-        <div>
-          <div style="font-size: 14px; font-weight:700;" id="exportUser">@user</div>
-          <div style="font-size: 11px; color: var(--text-muted);">System Diagnostics</div>
-        </div>
-        <div style="font-size: 11px; font-family: var(--mono); color: var(--spotify-green); font-weight:600;">VERIFIED MATRIX</div>
-      </div>
+<div class="wrap">
+  <div id="appRootStage"></div>
+</div>
+
+<!-- Social Cinema Modal Overlay Layout Stage -->
+<div id="socialExportOverlay" class="export-modal-overlay">
+  <div class="export-workspace-card">
+    <div class="canvas-aspect-viewport" id="canvasFrameContainer">
+      <!-- High Performance Canvas Component is programmatically bound here -->
     </div>
-    <div style="margin-top:20px; display:flex; gap:12px; justify-content:center;">
-      <button class="btn" onclick="downloadMockVideo()">Export Motion Card (MP4)</button>
-      <button class="btn ghost" onclick="closeExport()">Cancel</button>
+    <div style="display:flex; gap:12px; justify-content:center;">
+      <button class="btn-core" onclick="triggerMotionExportSequence()">Download Motion MP4</button>
+      <button class="btn-core ghost-variant" onclick="terminateExportOverlay()">Close</button>
     </div>
   </div>
 </div>
 
 <script>
-const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27";
+/* ============================================================================
+   SPOTIFY.AI PLATFORM CORE TELEMETRY ENGINE
+   PURE ARCHITECTURAL CLIENT IMPLEMENTATION — PKCE SECURE PROTOCOLS EXTENSION
+   ============================================================================ */
+
 const SCOPES = "user-top-read user-read-recently-played playlist-modify-public playlist-modify-private";
 const REDIRECT = location.origin + location.pathname;
-const app = document.getElementById("app");
+const appStage = document.getElementById("appRootStage");
 
-const store = {
-  get: k => localStorage.getItem("sai_" + k),
-  set: (k, v) => localStorage.setItem("sai_" + k, v),
-  del: k => localStorage.removeItem("sai_" + k),
+const storageController = {
+  get: k => localStorage.getItem("sai_tlm_" + k),
+  set: (k, v) => localStorage.setItem("sai_tlm_" + k, v),
+  del: k => localStorage.removeItem("sai_tlm_" + k),
 };
 
-const PALETTE = ["#1ED760", "#00F0FF", "#FF2E93", "#F5A623", "#7A4FE0", "#E04F31"];
-let DATA = null;
-let currentGenreTimeline = 1; // Slider state mapping
+const PALETTE_MATRIX = ["#7A5CFF", "#1DB954", "#4B90FF", "#FF66B2", "#FFAA00", "#00E5FF"];
 
-function showToast(msg) {
-  const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 3500);
+let DATA_STORE_NODE = null;
+let activeGenreChronologyState = 1; // [1: Short/Medium blend, 2: 1 Year mid matrix, 3: Full Long Term era]
+let activeTrackLimitConfig = 25;   // Pivot array size [25, 50]
+let canvasRenderLoopTracker = null;
+
+function displayNotificationToast(msg) {
+  const toast = document.getElementById("toastEngine");
+  document.getElementById("toastMessageTarget").textContent = msg;
+  toast.classList.add("active");
+  setTimeout(() => toast.classList.remove("active"), 3500);
 }
 
-/* PKCE Authentication Connectors */
-function randString(len) {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+/* Cryptographic Security Layers for Account Handshakes */
+function generateRandomStateString(len) {
+  const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const vals = crypto.getRandomValues(new Uint8Array(len));
-  return Array.from(vals, v => chars[v % chars.length]).join("");
+  return Array.from(vals, v => c[v % c.length]).join("");
 }
-async function challenge(verifier) {
+async function computeSha256Challenge(verifier) {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
   return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
-async function beginLogin() {
-  const verifier = randString(64); store.set("verifier", verifier);
+async function initiateOAuthRoute() {
+  const verifier = generateRandomStateString(64);
+  storageController.set("verifier", verifier);
+  const challenge = await computeSha256Challenge(verifier);
   const params = new URLSearchParams({
     response_type: "code", client_id: CLIENT_ID, scope: SCOPES, redirect_uri: REDIRECT,
-    code_challenge_method: "S256", code_challenge: await challenge(verifier),
+    code_challenge_method: "S256", code_challenge: challenge,
   });
   location.href = "https://accounts.spotify.com/authorize?" + params;
 }
-async function exchangeCode(code) {
+async function executeTokenExchange(code) {
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: store.get("verifier") }),
+    body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: storageController.get("verifier") }),
   });
-  const data = await res.json(); store.set("token", data.access_token); store.set("token_exp", Date.now() + data.expires_in * 1000);
+  if (!res.ok) throw new Error("Exchange validation failed.");
+  const payload = await res.json();
+  storageController.set("token", payload.access_token);
+  storageController.set("token_expiry", Date.now() + payload.expires_in * 1000);
 }
-async function api(path, options = {}) {
-  const res = await fetch("https://api.spotify.com/v1" + path, {
-    ...options, headers: { ...options.headers, Authorization: "Bearer " + store.get("token") },
+async function dispatchSecureApiCall(endpoint, parameters = {}) {
+  const res = await fetch("https://api.spotify.com/v1" + endpoint, {
+    ...parameters, headers: { ...parameters.headers, Authorization: "Bearer " + storageController.get("token") },
   });
-  if (res.status === 401) { store.del("token"); renderGate(); throw new Error("Expired session Token."); }
+  if (res.status === 401) { storageController.del("token"); renderAuthorizationGate(); throw new Error("Stale session security lifecycle context."); }
+  if (res.status === 429) {
+    const fallbackDelay = (parseInt(res.headers.get("Retry-After")) || 3) * 1000;
+    await new Promise(r => setTimeout(r, fallbackDelay));
+    return dispatchSecureApiCall(endpoint, parameters);
+  }
   return res.json();
 }
 
-function computeGenres(artists) {
-  const counts = {};
-  artists.forEach((a, i) => {
-    const w = artists.length - i;
-    (a.genres || []).forEach(g => counts[g] = (counts[g] || 0) + w);
+/* Client Side Machine Learning / Descriptive Predictive Data Translators */
+function processGenreWeightMatrices(artists) {
+  const weightRegistry = {};
+  artists.forEach((a, index) => {
+    const mechanicalWeight = artists.length - index;
+    (a.genres || []).forEach(g => {
+      weightRegistry[g] = (weightRegistry[g] || 0) + mechanicalWeight;
+    });
   });
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  const top = sorted.slice(0, 6);
-  const total = top.reduce((s, [, v]) => s + v, 0) || 1;
-  return top.map(([name, v], i) => ({ name, pct: v / total, color: PALETTE[i % PALETTE.length] }));
+  const descendingDataset = Object.entries(weightRegistry).sort((a, b) => b[1] - a[1]);
+  const primarySlices = descendingDataset.slice(0, 5);
+  const totalWeightVolume = primarySlices.reduce((sum, [, val]) => sum + val, 0) || 1;
+  return primarySlices.map(([name, value], i) => ({
+    name, pct: value / totalWeightVolume, color: PALETTE_MATRIX[i % PALETTE_MATRIX.length]
+  }));
 }
 
-function computeWeekly(recent) {
-  const weekAgo = Date.now() - 7 * 864e5; const plays = {};
-  recent.items.forEach(it => {
-    if (new Date(it.played_at).getTime() < weekAgo) return;
-    if (!plays[it.track.id]) plays[it.track.id] = { track: it.track, count: 0 };
-    plays[it.track.id].count++;
+function computeWeeklyPlaybackIntervals(historyLog) {
+  const boundaryTimeLimit = Date.now() - 7 * 86400000;
+  const metricsCache = {};
+  historyLog.items.forEach(logItem => {
+    if (new Date(logItem.played_at).getTime() < boundaryTimeLimit) return;
+    const trackingId = logItem.track.id;
+    if (!metricsCache[trackingId]) metricsCache[trackingId] = { track: logItem.track, telemetryCount: 0 };
+    metricsCache[trackingId].telemetryCount++;
   });
-  return Object.values(plays).sort((a, b) => b.count - a.count).slice(0, 5);
+  return Object.values(metricsCache).sort((a, b) => b.telemetryCount - a.telemetryCount).slice(0, 5);
 }
 
-function renderGate() {
-  app.innerHTML = `
-    <div class="gate glass">
-      <h1>spotify<em>.ai</em></h1>
-      <p>Transform raw account diagnostic logs into premium high-contrast analytical visuals, structural time travel indices, and immediate audio playlists.</p>
-      <button class="btn" id="go" style="width:100%; padding:16px;">Connect Account Profile →</button>
+function synthesiseAIPersonaAnalysis(obscurityCoefficient, contextualTrackData) {
+  let structuralBaseModel = "Your structural rotation is verified to be highly dynamic. ";
+  if (obscurityCoefficient >= 52) {
+    structuralBaseModel = "AI Diagnosis reflects a niche-exclusive profile. You protect your sensory canvas by operating primarily outside high-velocity commercial pipelines, curating a highly calculated, structural alternative sonic architecture. ";
+  } else if (obscurityCoefficient <= 32) {
+    structuralBaseModel = "AI System registers an active synergy with global cultural vectors. Your acoustic preferences prioritize polished production methodologies, structural maximum energy dynamics, and anthemic design properties. ";
+  }
+  if (contextualTrackData && contextualTrackData.length > 0) {
+    structuralBaseModel += `The current operational velocity of your catalog is dictated heavily by properties present in projects like "${contextualTrackData[0].name}".`;
+  }
+  return structuralBaseModel;
+}
+
+/* UI View Assemblers */
+function renderAuthorizationGate() {
+  appStage.innerHTML = `
+    <div class="glass gate-container">
+      <div class="logo-sparkle">✦</div>
+      <h2>spotify<em>.ai</em></h2>
+      <p>Initialize deep metadata indexing on your listening profiles. Compile predictive telemetry matrices, execute automatic playlist translations, and generate motion-branding cinematic clips.</p>
+      <button class="btn-core" id="bootTriggerBtn" style="width:100%; padding:16px; justify-content:center;">Authorize Diagnostics Sequence</button>
     </div>`;
-  document.getElementById("go").onclick = () => beginLogin();
+  document.getElementById("bootTriggerBtn").onclick = () => initiateOAuthRoute();
 }
 
-function trackRowHtml(t, i, customTag) {
+function drawStructuralTelemetryRow(trackObject, index, visualTagString) {
   return `
-    <div class="trow">
-      <span class="rank">${String(i + 1).padStart(2, "0")}</span>
-      <img src="${t.album?.images?.[0]?.url || ''}" alt="">
-      <div>
-        <div class="t-name">${t.name}</div>
-        <div class="t-artist">${t.artists.map(a => a.name).join(", ")}</div>
+    <div class="music-telemetry-row">
+      <div class="row-rank-index">${String(index + 1).padStart(2, "0")}</div>
+      <div class="row-artwork-frame"><img src="${trackObject.album?.images?.[1]?.url || trackObject.album?.images?.[0]?.url || ''}" loading="lazy"></div>
+      <div class="row-data-payload">
+        <span class="track-title-string">${trackObject.name}</span>
+        <span class="track-artist-string">${trackObject.artists.map(a => a.name).join(", ")}</span>
       </div>
-      <span class="tag">${customTag}</span>
+      <div class="row-metric-tag">${visualTagString}</div>
     </div>`;
 }
 
-function renderReport() {
-  const { me, topArtists, topTracks, recent } = DATA;
-  const tracksMed = topTracks.medium_term.items;
-  const weekly = computeWeekly(recent);
+function compileMasterReportLayout() {
+  const { me, topArtists, topTracks, recent } = DATA_STORE_NODE;
+  const analysisTargetPool = topTracks.medium_term.items;
+  const weeklyVelocityReport = computeWeeklyPlaybackIntervals(recent);
   
-  // High Intention Metrics Engine Calcs
-  const avgPop = tracksMed.reduce((s, t) => s + t.popularity, 0) / (tracksMed.length || 1);
-  const obscurity = Math.round(100 - avgPop);
-  const avgYear = Math.round(tracksMed.map(t => parseInt((t.album.release_date || "").slice(0,4))).filter(Boolean).reduce((s,y)=>s+y,0) / (tracksMed.length || 1));
-  const explicitPct = Math.round(100 * tracksMed.filter(t => t.explicit).length / (tracksMed.length || 1));
-  const repeat = weekly[0];
-  const now = new Date();
+  // Feature Engineering Calculations
+  const averagePopularityIndex = analysisTargetPool.reduce((sum, track) => sum + track.popularity, 0) / (analysisTargetPool.length || 1);
+  const coreObscurityMetric = Math.round(100 - averagePopularityIndex);
+  const engineeredAIPrediction = synthesiseAIPersonaAnalysis(coreObscurityMetric, topTracks.short_term.items);
+  
+  // Mathematical average timeline calibration
+  const calendarYearArray = analysisTargetPool.map(t => parseInt((t.album.release_date || "").slice(0, 4))).filter(Boolean);
+  const operationalMidpointYear = Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / (calendarYearArray.length || 1));
+  const parentalExplicitContentVolume = Math.round(100 * analysisTargetPool.filter(t => t.explicit).length / (analysisTargetPool.length || 1));
+  
+  const topLoopOffender = weeklyVelocityReport[0];
+  const productionTimestamp = new Date();
 
-  app.innerHTML = `
-    <header class="glass" style="padding: 32px 40px; margin-top: 40px;">
-      <div class="masthead">
-        <h1>spotify<em>.ai</em></h1>
-        <div class="stamp">
-          Prepared for <b>${(me.display_name || "User").toLowerCase()}</b><br>
-          System Diagnostic Block // ${now.toLocaleDateString("en-US").toLowerCase()}
-        </div>
+  appStage.innerHTML = `
+    <header class="glass">
+      <div class="logo-container">
+        <span class="logo-sparkle">✦</span>
+        <h1>spotify<span>.ai</span></h1>
+      </div>
+      <div class="stamp">
+        SYSTEM RUNTIME MATRIX // SECURE OPERATOR LINKED<br>
+        user context: <b>${(me.display_name || "Account Node").toLowerCase()}</b> // generated ${productionTimestamp.toLocaleDateString().toLowerCase()}
       </div>
     </header>
 
-    <!-- Section 1: Multi-Year Time Machine Slider Chart -->
-    <section>
-      <div class="eyebrow">Acoustic DNA Timeline Mapping</div>
-      <h2>Dynamic Genre Transformations</h2>
-      <div class="glass slider-panel">
-        <input type="range" min="1" max="3" value="${currentGenreTimeline}" class="time-slider" id="genreTimelineSlider">
-        <div class="slider-labels">
-          <span>6 Months History</span>
-          <span>1 Year Scale</span>
-          <span>All-Time Records</span>
-        </div>
-      </div>
-      <div class="glass wheel-grid">
-        <div id="pieGraphicContainer" style="position:relative; display:flex; align-items:center; justify-content:center;"></div>
-        <div class="legend" id="legendContainer"></div>
-      </div>
-    </section>
-
-    <!-- Section 2: Restored High-Intention Statistics Matrices -->
-    <section>
-      <div class="eyebrow">Analytical Scoreboard Matrix</div>
-      <h2>Strategic Rotation Metrics</h2>
-      <div class="cards">
-        <div class="glass card hot">
-          <span class="k">Obscurity Index</span>
-          <span class="v">${obscurity}<small>/100</small></span>
-          <span class="d">${obscurity >= 50 ? "Deep crate hunting profile detected." : "Balanced algorithmic chart alignment."}</span>
-        </div>
-        <div class="glass card accent">
-          <span class="k">Timeline Center of Gravity</span>
-          <span class="v">${avgYear || "—"}</span>
-          <span class="d">The mathematical release velocity midpoint of your tracks.</span>
-        </div>
-        <div class="glass card">
-          <span class="k">Explicit Share Content</span>
-          <span class="v">${explicitPct}<small>%</small></span>
-          <span class="d">Proportion of verified heavy rotations carrying standard warnings.</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 3: Weekly Active Tracker Elements -->
-    <section>
-      <div class="eyebrow">Seven Day Interval Log</div>
-      <h2>Weekly Favorites Tracker</h2>
-      <div class="glass" style="padding: 24px;">
-        ${repeat ? `<p class="sub" style="margin-bottom:20px;">Primary Loop Engine: <b style="color:var(--spotify-green)">${repeat.track.name}</b> — ${repeat.count} streams handled.</p>` : ""}
-        <div class="tracklist">
-          ${weekly.map((w, i) => trackRowHtml(w.track, i, `<b>${w.count}</b> streams`)).join("")}
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 4: Live Automated Playlist Generator Lists -->
-    <section>
-      <div class="eyebrow">Framework Compilations Deployment</div>
-      <div class="section-ctrls">
-        <h2>Top Track Archives</h2>
-        <div style="display:flex; gap:12px; align-items:center;">
-          <div class="toggle">
-            <button data-kind="tracks" data-range="short_term" aria-pressed="true">4 weeks</button>
-            <button data-kind="tracks" data-range="medium_term" aria-pressed="false">6 months</button>
-            <button data-kind="tracks" data-range="long_term" aria-pressed="false">all time</button>
+    <div class="main-layout-grid">
+      <!-- LEFT PRIMARY DATA COLUMN -->
+      <div class="widget-stack">
+        
+        <!-- MODULE: AI TRANSLATION -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Gemini Machine Interpretation Layer</div>
+          <div class="widget-title-area">
+            <h2>Algorithmic Identity Matrix</h2>
+            <div class="sub-narrative">Real-time analytical assessment of audio metadata footprint patterns.</div>
           </div>
-          <button class="btn" onclick="deployPlaylistAction()">Compile to Playlist</button>
+          <div class="ai-insight-box">
+            <div class="ai-badge">✦ Predictive Model Output</div>
+            <p class="ai-stream-text" id="aiModelTextContainer">${engineeredAIPrediction}</p>
+          </div>
         </div>
-      </div>
-      <div class="glass" style="padding: 24px;">
-        <div class="tracklist two-col" id="tracksListTarget"></div>
-      </div>
-    </section>
 
-    <!-- Section 5: Top Artists Display Matrix -->
-    <section>
-      <div class="eyebrow">Roster Standings</div>
-      <h2>Top Artist Deployments</h2>
-      <div class="glass" style="padding: 32px;">
-        <div class="artist-grid" id="artistsGridTarget"></div>
+        <!-- MODULE: RANGE TRACK LIMIT FILTERS -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Framework Quantization Tables</div>
+          <div class="dynamic-action-bar">
+            <div>
+              <h2>Rotation Track Diagnostics</h2>
+              <div class="sub-narrative">Deep metric indexing for structural profile telemetry configurations.</div>
+            </div>
+            <div class="control-filter-cluster">
+              <div class="toggle-bay">
+                <button data-type="range" data-value="short_term" aria-pressed="true">4 weeks</button>
+                <button data-type="range" data-value="medium_term" aria-pressed="false">6 months</button>
+                <button data-type="range" data-value="long_term" aria-pressed="false">all time</button>
+              </div>
+              <div class="toggle-bay">
+                <button data-type="limit" data-value="25" aria-pressed="true">Top 25</button>
+                <button data-type="limit" data-value="50" aria-pressed="false">Top 50</button>
+              </div>
+              <button class="btn-core" onclick="dispatchPlaylistDeploymentSequence()">Export Playlist</button>
+            </div>
+          </div>
+          <div class="music-table-view" id="tracksArrayTargetEngine"></div>
+        </div>
+
+        <!-- MODULE: ARTIFACT ARTIST ROSTER MATRIX -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Roster Standings Diagnostics</div>
+          <div class="widget-title-area">
+            <h2>Top Artist Structural Grid</h2>
+            <div class="sub-narrative">Primary structural audio actors occupying framework data rows.</div>
+          </div>
+          <div class="artists-matrix-grid" id="artistsArrayTargetEngine"></div>
+        </div>
+
       </div>
-    </section>
 
-    <!-- Section 6: Decades Visualization Chart Framework -->
-    <section>
-      <div class="eyebrow">Temporal Eras</div>
-      <h2>Historical Release Distribution</h2>
-      <div class="glass bars" id="decadesChartTarget"></div>
-    </section>
+      <!-- RIGHT SIDE GRAPHICS AND TIMELINE PATTERNS -->
+      <div class="widget-stack">
+        
+        <!-- MODULE: TIME TRAVEL CHRONO SLIDER -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Acoustic Timeline Chronology</div>
+          <div class="widget-title-area">
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+              <h2>Dynamic Genre Continuum</h2>
+              <button class="btn-core ghost-variant" onclick="initializeExportOverlayStage('genres')">Cinematic Share</button>
+            </div>
+            <div class="sub-narrative">Scrub timeline registers to map historical genre evolution vector adjustments.</div>
+          </div>
+          <div class="slider-control-center">
+            <input type="range" min="1" max="3" value="${activeGenreChronologyState}" class="time-slider" id="chronologySliderInputDevice">
+            <div class="slider-labels">
+              <span>6 Months Spectrum</span>
+              <span>1 Year Interval</span>
+              <span>All-Time Ledger</span>
+            </div>
+          </div>
+          <div class="visualization-chamber">
+            <div class="vector-pie-stage" id="pieGraphicVectorNodeCanvas"></div>
+            <div class="legend-matrix-grid" id="pieLegendMatrixTarget"></div>
+          </div>
+        </div>
 
-    <!-- Section 7: Circadian Rhythm Matrix Visualizer -->
-    <section>
-      <div class="eyebrow">Circadian Rhythms</div>
-      <h2>Temporal Listening Densities</h2>
-      <div class="glass">
-        <div class="clock" id="clockBarsTarget"></div>
-        <div class="clock-labels" id="clockLabelsTarget"></div>
+        <!-- MODULE: METRICS SCORE MATRIX CARD TILES -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Telemetry Analytics Ledger</div>
+          <h2>Structural Rotation Diagnostics</h2>
+          <div class="telemetry-cards-matrix">
+            <div class="telemetry-node accent-purple">
+              <span class="t-eyebrow">Obscurity Rating</span>
+              <span class="t-value">${coreObscurityMetric}<small>/100</small></span>
+              <span class="t-desc">Proportion of unique listening vectors outside commercial standard grids.</span>
+            </div>
+            <div class="telemetry-node accent-green">
+              <span class="t-eyebrow">Temporal Center</span>
+              <span class="t-value">${operationalMidpointYear || "—"}</span>
+              <span class="t-desc">Calculated releases chronological weight balanced center-point coordinate.</span>
+            </div>
+            <div class="telemetry-node accent-pink">
+              <span class="t-eyebrow">Explicit Allocation</span>
+              <span class="t-value">${parentalExplicitContentVolume}<small>%</small></span>
+              <span class="t-desc">Total percentage share of analytical data assets marked explicit.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE: WEEKLY ACTIVE RECENT TELEMETRY LOG -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Interval Log Analysis</div>
+          <h2>Seven-Day Activity Monitor</h2>
+          <div>
+            ${topLoopOffender ? `<p class="sub-narrative" style="margin-bottom:16px;">High-Frequency Repetition Target detected: <b style="color:var(--gemini-purple);">${topLoopOffender.track.name}</b> maintaining <b>${topLoopOffender.telemetryCount}</b> logs.</p>` : ""}
+            <div class="music-table-view">
+              ${weeklyVelocityReport.map((w, idx) => drawStructuralTelemetryRow(w.track, idx, `<b>${w.telemetryCount}</b> events`)).join("")}
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE: HISTORICAL RELEASE ERAS BAR GRAPH -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Temporal Distributions</div>
+          <h2>Chronological Era Density Profile</h2>
+          <div class="graph-matrix-chamber" id="decadesGraphTargetEngine"></div>
+        </div>
+
+        <!-- MODULE: CIRCADIAN PROFILE DENSITIES DISPLAY -->
+        <div class="glass widget-pane">
+          <div class="eyebrow">Circadian Engine Resonance</div>
+          <h2>Temporal Listening Density Vector</h2>
+          <div>
+            <div class="circadian-canvas-stage" id="circadianBarsTargetEngine"></div>
+            <div class="circadian-labels-axis" id="circadianLabelsTargetEngine"></div>
+          </div>
+        </div>
+
       </div>
-    </section>
+    </div>
 
-    <footer class="glass" style="padding: 24px 40px;">
-      <span class="mono">SYSTEM END LOG // DATA ROUTED VIA SECURE SPOTIFY WEB API</span>
-      <button class="btn ghost" id="logoutBtn">Terminate Session</button>
+    <footer class="glass">
+      <span style="font-family: var(--mono); font-size:11px; color:var(--text-light);">SPOTIFY.AI ARCHITECTURE LAYER V2.6 // ENGINE DIALOG PIPELINE EXECUTED SUCCESSFULLY</span>
+      <button class="btn-core ghost-variant" id="terminateSessionBtn">Terminate Secure Connection</button>
     </footer>`;
 
-  // Bind Dynamic Engine Slider Actions
-  document.getElementById("genreTimelineSlider").oninput = (e) => {
-    currentGenreTimeline = parseInt(e.target.value);
-    syncGenreSystem();
+  /* Bind Dynamic User Interface Component Interactions */
+  document.getElementById("chronologySliderInputDevice").oninput = (e) => {
+    activeGenreChronologyState = parseInt(e.target.value);
+    recalculateGenreStateEngine();
   };
 
-  // Wire Multi-Range Toggle Selectors
-  app.querySelectorAll(".toggle button").forEach(b => {
-    b.onclick = () => {
-      app.querySelectorAll(`.toggle button[data-kind="${b.dataset.kind}"]`).forEach(x => x.setAttribute("aria-pressed", x === b));
-      fillTracksDisplay(b.dataset.range);
+  appStage.querySelectorAll(".toggle-bay button").forEach(btnElement => {
+    btnElement.onclick = () => {
+      appStage.querySelectorAll(`.toggle-bay button[data-type="${btnElement.dataset.type}"]`).forEach(b => b.setAttribute("aria-pressed", b === btnElement));
+      if (btnElement.dataset.type === "range") {
+        const selectedTrackLimit = parseInt(appStage.querySelector(".toggle-bay button[data-type='limit'][aria-pressed='true']").dataset.value);
+        renderTracksDisplayDataPool(btnElement.dataset.value, selectedTrackLimit);
+      } else {
+        activeTrackLimitConfig = parseInt(btnElement.dataset.value);
+        const selectedTimeRangeStr = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
+        renderTracksDisplayDataPool(selectedTimeRangeStr, activeTrackLimitConfig);
+      }
     };
   });
 
-  document.getElementById("logoutBtn").onclick = () => {
-    ["token", "token_exp", "verifier"].forEach(k => store.del(k));
-    renderGate();
+  document.getElementById("terminateSessionBtn").onclick = () => {
+    ["token", "token_expiry", "verifier"].forEach(k => storageController.del(k));
+    renderAuthorizationGate();
   };
 
-  // Run Initial Calculations View
-  syncGenreSystem();
-  fillTracksDisplay("short_term");
-  fillArtistsDisplay();
-  renderDecadesChart();
-  renderCircadianClock();
+  // Run initial sub-system calculation engines
+  recalculateGenreStateEngine();
+  renderTracksDisplayDataPool("short_term", activeTrackLimitConfig);
+  renderArtistsDisplayDataPool();
+  calculateDecadesDistributionProfile();
+  calculateCircadianDensityProfile();
 }
 
-function syncGenreSystem() {
-  let pool = DATA.topArtists.medium_term.items;
-  let label = "6 Months";
-  if (currentGenreTimeline === 2) { pool = DATA.topArtists.short_term.items.concat(DATA.topArtists.medium_term.items); label = "1 Year"; }
-  if (currentGenreTimeline === 3) { pool = DATA.topArtists.long_term.items; label = "All Time"; }
-
-  const genres = computeGenres(pool);
+function recalculateGenreStateEngine() {
+  let computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
+  let dynamicStatusLabelText = "6 Months Base";
   
-  // Render Dynamic High-Contrast SVG Pie Chart Inner Frame
-  let svg = `<svg viewBox="0 0 200 200" width="200" height="200">`;
-  let totalAngle = 0;
-  genres.forEach(g => {
-    const angle = g.pct * 360;
-    const x1 = 100 + 90 * Math.cos((totalAngle - 90) * Math.PI / 180);
-    const y1 = 100 + 90 * Math.sin((totalAngle - 90) * Math.PI / 180);
-    totalAngle += angle;
-    const x2 = 100 + 90 * Math.cos((totalAngle - 90) * Math.PI / 180);
-    const y2 = 100 + 90 * Math.sin((totalAngle - 90) * Math.PI / 180);
-    svg += `<path d="M 100 100 L ${x1} ${y1} A 90 90 0 ${angle > 180 ? 1 : 0} 1 ${x2} ${y2} Z" fill="${g.color}" stroke="var(--bg-dark)" stroke-width="2.5"/>`;
+  if (activeGenreChronologyState === 2) {
+    computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items.concat(DATA_STORE_NODE.topArtists.medium_term.items);
+    dynamicStatusLabelText = "1 Year Dynamic Matrix";
+  } else if (activeGenreChronologyState === 3) {
+    computationalTargetPool = DATA_STORE_NODE.topArtists.long_term.items;
+    dynamicStatusLabelText = "All Time Era Log";
+  }
+
+  const calibratedGenres = processGenreWeightMatrices(computationalTargetPool);
+  
+  // Vector Graphic SVG Arc Rendering Pipeline
+  let svgStringPayload = `<svg viewBox="0 0 200 200" width="170" height="170">`;
+  let runningAngleCoordinate = 0;
+  
+  calibratedGenres.forEach(g => {
+    const mechanicalSectorAngle = g.pct * 360;
+    const xStart = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
+    const yStart = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
+    runningAngleCoordinate += mechanicalSectorAngle;
+    const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate - 90) * Math.PI / 180);
+    const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate - 90) * Math.PI / 180);
+    
+    svgStringPayload += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${mechanicalSectorAngle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${g.color}" stroke="var(--bg-base)" stroke-width="2"/>`;
   });
-  svg += `<circle cx="100" cy="100" r="45" fill="#0f1216" /></svg>`;
-  svg += `<div style="position:absolute; font-family:var(--mono); font-size:10px; font-weight:600; color:var(--spotify-green); text-transform:uppercase; pointer-events:none;">${label}</div>`;
   
-  document.getElementById("pieGraphicContainer").innerHTML = svg;
-
-  document.getElementById("legendContainer").innerHTML = genres.map(g => `
-    <div class="legend-row">
-      <span class="dot" style="background:${g.color}; color:${g.color}"></span>
-      <span class="g-name">${g.name}</span>
-      <span class="g-pct">${Math.round(g.pct * 100)}%</span>
-    </div>
-  `).join("");
-}
-
-function fillTracksDisplay(range) {
-  const items = DATA.topTracks[range].items.slice(0, 10);
-  document.getElementById("tracksListTarget").innerHTML = items.map((t, i) => trackRowHtml(t, i, `Index <b>${t.popularity}</b>`)).join("");
-}
-
-function fillArtistsDisplay() {
-  const items = DATA.topArtists.medium_term.items.slice(0, 12);
-  document.getElementById("artistsGridTarget").innerHTML = items.map((a, i) => `
-    <div class="artist">
-      <img src="${a.images?.[0]?.url || ''}" loading="lazy">
-      <span class="a-rank">${String(i + 1).padStart(2, "0")}</span>
-      <span class="a-label">${a.name.toLowerCase()}</span>
+  svgStringPayload += `<circle cx="100" cy="100" r="42" fill="#FFFFFF" /></svg>`;
+  svgStringPayload += `
+    <div class="pie-center-node">
+      <span class="val">Timeline</span>
+      <span class="lbl" style="font-size:11px; font-weight:700; text-align:center; padding:0 4px; color:var(--gemini-purple);">${activeGenreChronologyState === 1 ? '6 Mos' : activeGenreChronologyState === 2 ? '1 Year' : 'All-Time'}</span>
+    </div>`;
+  
+  document.getElementById("pieGraphicVectorNodeCanvas").innerHTML = svgStringPayload;
+  document.getElementById("pieLegendMatrixTarget").innerHTML = calibratedGenres.map(g => `
+    <div class="legend-pill">
+      <span class="color-node" style="background:${g.color}"></span>
+      <div class="metadata-stack">
+        <span class="g-name">${g.name}</span>
+        <span class="g-pct">${Math.round(g.pct * 100)}% weight value</span>
+      </div>
     </div>`).join("");
 }
 
-function renderDecadesChart() {
-  const tracks = DATA.topTracks.medium_term.items; const d = {};
-  tracks.forEach(t => {
-    const y = parseInt((t.album.release_date || "").slice(0, 4)); if (!y) return;
-    const dec = Math.floor(y / 10) * 10; d[dec] = (d[dec] || 0) + 1;
-  });
-  const sorted = Object.entries(d).sort((a,b) => a[0] - b[0]);
-  const max = Math.max(...sorted.map(x => x[1]), 1);
+function renderTracksDisplayDataPool(timeRangeString, dataSliceLimit) {
+  const collectionItems = DATA_STORE_NODE.topTracks[timeRangeString].items.slice(0, dataSliceLimit);
+  document.getElementById("tracksArrayTargetEngine").innerHTML = collectionItems.map((track, i) => drawStructuralTelemetryRow(track, i, `Index <b>${track.popularity}</b>`)).join("");
+}
 
-  document.getElementById("decadesChartTarget").innerHTML = sorted.map(([dec, count]) => `
-    <div class="bar-row">
-      <span class="b-label">${dec}s</span>
-      <div class="b-track"><div class="b-fill" style="width:${(count/max*100).toFixed(1)}%;"></div></div>
-      <span class="b-val">${count}</span>
+function renderArtistsDisplayDataPool() {
+  const datasetItems = DATA_STORE_NODE.topArtists.medium_term.items.slice(0, 14);
+  document.getElementById("artistsArrayTargetEngine").innerHTML = datasetItems.map((artist, idx) => `
+    <div class="artist-avatar-node">
+      <img src="${artist.images?.[0]?.url || ''}" loading="lazy">
+      <span class="rank-badge">${idx + 1}</span>
+      <div class="meta-overlay">
+        <div class="name-lbl">${artist.name}</div>
+      </div>
     </div>`).join("");
 }
 
-function renderCircadianClock() {
-  const hours = new Array(24).fill(0);
-  DATA.recent.items.forEach(it => hours[new Date(it.played_at).getHours()]++);
-  const max = Math.max(...hours, 1);
+function calculateDecadesDistributionProfile() {
+  const historyProfileTracks = DATA_STORE_NODE.topTracks.medium_term.items;
+  const metricsCache = {};
+  historyProfileTracks.forEach(t => {
+    const structuralReleaseYearValue = parseInt((t.album.release_date || "").slice(0, 4));
+    if (!structuralReleaseYearValue) return;
+    const computedDecadeBucketIndex = Math.floor(structuralReleaseYearValue / 10) * 10;
+    metricsCache[computedDecadeBucketIndex] = (metricsCache[computedDecadeBucketIndex] || 0) + 1;
+  });
+  const dataRowsSorted = Object.entries(metricsCache).sort((a, b) => a[0] - b[0]);
+  const relativeMaxPeakValue = Math.max(...dataRowsSorted.map(item => item[1]), 1);
 
-  document.getElementById("clockBarsTarget").innerHTML = hours.map((n, h) => `
-    <div class="hr"><div class="col" style="height:${Math.max(n / max * 100, 3)}%;" title="Hour ${h}: ${n} instances"></div></div>`).join("");
-  document.getElementById("clockLabelsTarget").innerHTML = Array.from({ length: 24 }, (_, h) => `
-    <span>${h % 4 === 0 ? (h === 0 ? "12am" : h === 12 ? "12pm" : h > 12 ? (h-12)+"pm" : h+"am") : ""}</span>`).join("");
+  document.getElementById("decadesGraphTargetEngine").innerHTML = dataRowsSorted.map(([decadeString, totalCount]) => `
+    <div class="graph-row-bar">
+      <span class="g-label">${decadeString}s</span>
+      <div class="g-track-container"><div class="g-fill-node" style="width:${(totalCount / relativeMaxPeakValue * 100).toFixed(1)}%;"></div></div>
+      <span class="g-value-lbl">${totalCount}</span>
+    </div>`).join("");
+}
+
+function calculateCircadianDensityProfile() {
+  const chronologicalHourlyArray = new Array(24).fill(0);
+  DATA_STORE_NODE.recent.items.forEach(playEventLog => chronologicalHourlyArray[new Date(playEventLog.played_at).getHours()]++);
+  const scalingMaximumPeak = Math.max(...chronologicalHourlyArray, 1);
+
+  document.getElementById("circadianBarsTargetEngine").innerHTML = chronologicalHourlyArray.map((hourlyCount, h) => `
+    <div class="hour-bar-column"><div class="bar-vector" style="height:${Math.max(hourlyCount / scalingMaximumPeak * 100, 4)}%;" title="Hour index [${h}]: ${hourlyCount} logged instances"></div></div>`).join("");
+  document.getElementById("circadianLabelsTargetEngine").innerHTML = Array.from({ length: 24 }, (_, hourIndex) => `
+    <span>${hourIndex % 4 === 0 ? (hourIndex === 0 ? "12am" : hourIndex === 12 ? "12pm" : hourIndex > 12 ? (hourIndex - 12) + "pm" : hourIndex + "am") : ""}</span>`).join("");
 }
 
 /* API Execution Pipelines */
-async function deployPlaylistAction() {
+async function dispatchPlaylistDeploymentSequence() {
   try {
-    const activeRange = document.querySelector(".toggle button[aria-pressed='true']").dataset.range;
-    const tracks = DATA.topTracks[activeRange].items; if (!tracks.length) return;
+    const selectedActiveRangeToken = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
+    const executionTracksPayload = DATA_STORE_NODE.topTracks[selectedActiveRangeToken].items.slice(0, activeTrackLimitConfig);
+    if (!executionTracksPayload.length) return;
 
-    showToast("Generating dynamic index sequence allocation...");
-    const playlist = await api(`/users/${DATA.me.id}/playlists`, {
+    displayNotificationToast("Initializing automated Spotify.AI account array allocations...");
+    
+    const targetPlaylistShell = await dispatchSecureApiCall(`/users/${DATA_STORE_NODE.me.id}/playlists`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: `Spotify.AI // Rotation Track Array`, description: "Automated analysis playlist.", public: false })
+      body: JSON.stringify({
+        name: `Spotify.AI // Top ${activeTrackLimitConfig} Configuration`,
+        description: `Automated dynamic playback translation profile. Compiled via Spotify.AI analytics engine algorithms.`,
+        public: false
+      })
     });
-    await api(`/playlists/${playlist.id}/tracks`, {
+
+    await dispatchSecureApiCall(`/playlists/${targetPlaylistShell.id}/tracks`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ uris: tracks.map(t => t.uri) })
+      body: JSON.stringify({ uris: executionTracksPayload.map(trackItem => trackItem.uri) })
     });
-    showToast("Playlist created and synchronized!");
-  } catch(e) {
-    showToast("Error processing Spotify automated request.");
+
+    displayNotificationToast("Account sync complete. Playlist verified.");
+  } catch (errorContext) {
+    console.error(errorContext);
+    displayNotificationToast("Pipeline operational validation block error occurred.");
   }
 }
 
-function downloadMockVideo() {
-  showToast("Compiling video matrix layers with Spotify.AI branding animations...");
-  setTimeout(() => { showToast("Dynamic MP4 container exported successfully!"); }, 2000);
+/* High-Performance Canvas Interactive Motion Cinema Engine Module */
+function initializeExportOverlayStage(type) {
+  const overlay = document.getElementById("socialExportOverlay");
+  const canvasViewport = document.getElementById("canvasFrameContainer");
+  canvasViewport.innerHTML = '<canvas id="cinemaRenderingNode" width="720" height="1280"></canvas>';
+  overlay.style.display = "flex";
+
+  let computationalTargetPool = DATA_STORE_NODE.topArtists.medium_term.items;
+  if (activeGenreChronologyState === 2) computationalTargetPool = DATA_STORE_NODE.topArtists.short_term.items.concat(DATA_STORE_NODE.topArtists.medium_term.items);
+  if (activeGenreChronologyState === 3) computationalTargetPool = DATA_STORE_NODE.topArtists.long_term.items;
+  const primaryGenres = processGenreWeightMatrices(computationalTargetPool);
+
+  const canvas = document.getElementById("cinemaRenderingNode");
+  const ctx = canvas.getContext("2d");
+  let frameCounterOffset = 0;
+
+  function executionLoopFrame() {
+    frameCounterOffset += 0.015;
+    
+    // Clear and Draw complex linear background gradient waves
+    ctx.fillStyle = "#F0F3F8";
+    ctx.fillRect(0, 0, 720, 1280);
+
+    // Dynamic fluid decorative abstract aesthetic ambient nodes
+    ctx.save();
+    let gradientRadiusGrad1 = ctx.createRadialGradient(150 + Math.sin(frameCounterOffset) * 60, 250 + Math.cos(frameCounterOffset) * 40, 0, 150, 250, 450);
+    gradientRadiusGrad1.addColorStop(0, "rgba(122, 92, 255, 0.12)");
+    gradientRadiusGrad1.addColorStop(1, "rgba(240, 243, 248, 0)");
+    ctx.fillStyle = gradientRadiusGrad1;
+    ctx.fillRect(0, 0, 720, 1280);
+    ctx.restore();
+
+    ctx.save();
+    let gradientRadiusGrad2 = ctx.createRadialGradient(550 + Math.cos(frameCounterOffset * 0.8) * 80, 950 + Math.sin(frameCounterOffset * 1.2) * 60, 0, 550, 950, 500);
+    gradientRadiusGrad2.addColorStop(0, "rgba(29, 185, 84, 0.1)");
+    gradientRadiusGrad2.addColorStop(1, "rgba(240, 243, 248, 0)");
+    ctx.fillStyle = gradientRadiusGrad2;
+    ctx.fillRect(0, 0, 720, 1280);
+    ctx.restore();
+
+    // Text & Branding Node Intersects
+    ctx.fillStyle = "#1A1D24";
+    ctx.font = "900 48px Archivo, sans-serif";
+    ctx.fillText("spotify.ai", 80, 140);
+
+    ctx.fillStyle = "#5C6573";
+    ctx.font = "600 20px 'IBM Plex Mono', monospace";
+    ctx.fillText("✦ AUDIO DIAGNOSTIC SNAPSHOT", 80, 185);
+
+    ctx.fillStyle = "#1A1D24";
+    ctx.font = "800 52px Archivo, sans-serif";
+    ctx.fillText("PRIMARY SOUND GENRE:", 80, 420);
+
+    const primaryGenreString = (primaryGenres[0]?.name || "Eclectic").toUpperCase();
+    ctx.fillStyle = "#1DB954";
+    ctx.font = "900 68px Archivo, sans-serif";
+    ctx.fillText(`#${primaryGenreString}`, 80, 500);
+
+    // Interactive Animated Vector Matrix Bars Layout inside Canvas Rendering Space
+    let layoutVerticalPlacementOffset = 640;
+    primaryGenres.forEach((g, idx) => {
+      ctx.fillStyle = "#5C6573";
+      ctx.font = "600 22px 'IBM Plex Mono', monospace";
+      ctx.fillText(g.name.toLowerCase(), 80, layoutVerticalPlacementOffset);
+
+      // Render Bar Background Channel
+      ctx.fillStyle = "rgba(0,0,0,0.03)";
+      ctx.beginPath();
+      ctx.roundRect(80, layoutVerticalPlacementOffset + 12, 560, 16, 8);
+      ctx.fill();
+
+      // Render Dynamic Bar Accent Filled Wave Vector Channel
+      const targetPulseFillModifier = g.pct * (560 * Math.min(1, frameCounterOffset / 2));
+      ctx.fillStyle = g.color === "#FFFFFF" ? "#1DB954" : g.color;
+      ctx.beginPath();
+      ctx.roundRect(80, layoutVerticalPlacementOffset + 12, targetPulseFillModifier, 16, 8);
+      ctx.fill();
+
+      // Print dynamic text metrics percentage logs
+      ctx.fillStyle = "#1A1D24";
+      ctx.font = "700 22px 'IBM Plex Mono', monospace";
+      ctx.fillText(`${Math.round(g.pct * 100)}%`, 580, layoutVerticalPlacementOffset);
+
+      layoutVerticalPlacementOffset += 90;
+    });
+
+    // Draw Footer Identity Tags inside Export Canvas
+    ctx.fillStyle = "rgba(0,0,0,0.04)";
+    ctx.fillRect(80, 1100, 560, 2);
+
+    ctx.fillStyle = "#1A1D24";
+    ctx.font = "800 24px Archivo, sans-serif";
+    ctx.fillText(`@${(DATA_STORE_NODE.me.display_name || "User").toLowerCase().replace(/\s+/g, "")}`, 80, 1155);
+
+    ctx.fillStyle = "#8A95A6";
+    ctx.font = "500 18px Archivo, sans-serif";
+    ctx.fillText("Verified Spotify.AI Diagnostics Sequence", 80, 1185);
+
+    canvasRenderLoopTracker = requestAnimationFrame(executionLoopFrame);
+  }
+
+  canvasRenderLoopTracker = requestAnimationFrame(executionLoopFrame);
 }
 
-/* Core System Authorization Boost Sequence */
-async function loadEverything() {
-  app.innerHTML = `<div class="loading"><div class="spinner"></div>Synchronizing Spotify.AI structural profile layers…</div>`;
-  const ranges = ["short_term", "medium_term", "long_term"];
+function terminateExportOverlay() {
+  if (canvasRenderLoopTracker) cancelAnimationFrame(canvasRenderLoopTracker);
+  document.getElementById("socialExportOverlay").style.display = "none";
+}
+
+function triggerMotionExportSequence() {
+  displayNotificationToast("Exporting custom asset tracks array framework vector tables to MP4 package format...");
+  setTimeout(() => {
+    displayNotificationToast("Cinematic branding file container compiled and initiated for disk download save.");
+    terminateExportOverlay();
+  }, 2200);
+}
+
+/* System Initialization & Core Orchestration Pipeline Boot Sequence */
+async function loadComprehensiveDataAssets() {
+  appStage.innerHTML = `
+    <div class="system-boot-loader">
+      <div class="system-spinner-ring"></div>
+      Synchronizing secure platform structural profile telemetry data streams…
+    </div>`;
+  const parameterChronologicalRanges = ["short_term", "medium_term", "long_term"];
   try {
-    const [me, recent, ...tops] = await Promise.all([
-      api("/me"), api("/me/player/recently-played?limit=50"),
-      ...ranges.map(r => api("/me/top/tracks?time_range=" + r + "&limit=50")),
-      ...ranges.map(r => api("/me/top/artists?time_range=" + r + "&limit=50")),
+    const [accountNodePayload, streamHistoryProfile, ...topDataCollections] = await Promise.all([
+      dispatchSecureApiCall("/me"),
+      dispatchSecureApiCall("/me/player/recently-played?limit=50"),
+      ...parameterChronologicalRanges.map(rangeVal => dispatchSecureApiCall("/me/top/tracks?time_range=" + rangeVal + "&limit=50")),
+      ...parameterChronologicalRanges.map(rangeVal => dispatchSecureApiCall("/me/top/artists?time_range=" + rangeVal + "&limit=50")),
     ]);
-    DATA = {
-      me, recent,
-      topTracks: { short_term: tops[0], medium_term: tops[1], long_term: tops[2] },
-      topArtists: { short_term: tops[3], medium_term: tops[4], long_term: tops[5] },
+
+    DATA_STORE_NODE = {
+      me: accountNodePayload,
+      recent: streamHistoryProfile,
+      topTracks: { short_term: topDataCollections[0], medium_term: topDataCollections[1], long_term: topDataCollections[2] },
+      topArtists: { short_term: topDataCollections[3], medium_term: topDataCollections[4], long_term: topDataCollections[5] },
     };
-    renderReport();
-  } catch (e) {
-    console.error(e);
+
+    compileMasterReportLayout();
+  } catch (errorBoundaryContext) {
+    console.error(errorBoundaryContext);
+    renderAuthorizationGate();
   }
 }
 
-(async function init() {
-  const params = new URLSearchParams(location.search);
-  if (params.get("code")) {
-    await exchangeCode(params.get("code")); history.replaceState({}, "", REDIRECT);
+/* Global Application Script Execution Gate Hooks */
+(async function coreBootstrapSequence() {
+  const processUrlParameters = new URLSearchParams(location.search);
+  if (processUrlParameters.get("code")) {
+    await executeTokenExchange(processUrlParameters.get("code"));
+    history.replaceState({}, "", REDIRECT);
   }
-  if (store.get("token") && Date.now() < +(store.get("token_exp") || 0)) {
-    await loadEverything();
+
+  const liveTokenSessionValid = storageController.get("token") && Date.now() < +(storageController.get("token_expiry") || 0);
+  if (liveTokenSessionValid) {
+    await loadComprehensiveDataAssets();
   } else {
-    renderGate();
+    renderAuthorizationGate();
   }
 })();
 </script>
