@@ -3,163 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotify.AI // Rotation Engine</title>
+<title>Spotify.AI // Comprehensive Rotation Engine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-dark: #090A0C;
-  --bg-card: rgba(18, 20, 24, 0.65);
+  --bg-dark: #07080a;
+  --bg-card: rgba(15, 18, 22, 0.75);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.03);
+  --glass-highlight: rgba(255, 255, 255, 0.04);
   --spotify-green: #1ED760;
+  --neon-pink: #FF2E93;
+  --neon-blue: #00F0FF;
   --text-main: #FFFFFF;
-  --text-muted: #8E929A;
+  --text-muted: #9499A6;
   --mono: 'IBM Plex Mono', monospace;
   --disp: 'Archivo', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   background: var(--bg-dark);
   color: var(--text-main);
   font-family: var(--disp);
-  overflow-x: hidden;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(30, 215, 96, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    radial-gradient(circle at 5% 15%, rgba(30, 215, 96, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 95% 45%, rgba(255, 46, 147, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 50% 85%, rgba(0, 240, 255, 0.06) 0%, transparent 50%);
   background-attachment: fixed;
 }
 
-.wrap { max-width: 1280px; margin: 0 auto; padding: 40px 24px; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 24px 120px; position: relative; z-index: 1; }
 
-/* --- Liquid Glass Utility --- */
+/* --- Liquid Glass Layout Base --- */
 .glass {
   background: var(--bg-card);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
   border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 20px 40px rgba(0, 0, 0, 0.4);
-  border-radius: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 24px 48px rgba(0, 0, 0, 0.5);
+  border-radius: 24px;
 }
 
-/* --- Navigation / Header --- */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding: 20px;
-}
-.brand { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
-.brand span { color: var(--spotify-green); }
-.user-badge { font-family: var(--mono); font-size: 12px; background: rgba(255,255,255,0.07); padding: 6px 14px; border-radius: 30px; border: 1px solid var(--glass-border); }
+/* --- Navigation Typography & Header --- */
+header { padding: 60px 0 40px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+.masthead { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+h1 { font-size: clamp(40px, 7vw, 76px); font-weight: 900; letter-spacing: -0.04em; text-transform: lowercase; line-height: 0.95; }
+h1 em { font-style: normal; color: var(--spotify-green); }
+.stamp { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--text-muted); line-height: 1.7; }
+.stamp b { color: var(--text-main); }
 
-/* --- Layout Architecture --- */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-@media (max-width: 1024px) {
-  .dashboard-grid { grid-template-columns: 1fr; }
-}
+/* --- Content Sections --- */
+section { padding: 64px 0 16px; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--spotify-green); text-transform: uppercase; display: flex; align-items: center; gap: 14px; }
+.eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -0.02em; text-transform: lowercase; margin: 12px 0 24px; }
+.sub { font-size: 14px; color: var(--text-muted); max-width: 58ch; margin: -14px 0 28px; line-height: 1.6; }
 
-.view-card { padding: 32px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
-.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
-.card-title h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
-.card-title p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+/* --- Interactive Multi-Year Genre Tool --- */
+.wheel-grid { display: grid; grid-template-columns: minmax(280px, 420px) 1fr; gap: 48px; align-items: center; padding: 32px; }
+@media(max-width: 760px){ .wheel-grid { grid-template-columns: 1fr; gap: 32px; } }
+.legend { display: flex; flex-direction: column; gap: 4px; }
+.legend-row { display: grid; grid-template-columns: 12px 1fr auto; gap: 16px; align-items: center; padding: 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.legend-row .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+.legend-row .g-name { font-weight: 600; font-size: 15px; text-transform: lowercase; }
+.legend-row .g-pct { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
 
-/* --- Controls & Sliders --- */
-.slider-container { width: 100%; margin: 20px 0; }
-.time-slider {
-  -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.1);
-  border-radius: 10px; outline: none; transition: background 0.3s;
-}
-.time-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--spotify-green); cursor: pointer; box-shadow: 0 0 10px var(--spotify-green);
-}
-.slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+.slider-panel { padding: 20px 32px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
+.time-slider { -webkit-appearance: none; width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; outline: none; }
+.time-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--spotify-green); cursor: pointer; box-shadow: 0 0 12px var(--spotify-green); transition: transform 0.1s; }
+.time-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.slider-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
 
-/* --- Action Buttons --- */
-.btn-action {
-  font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-  background: #FFFFFF; color: #000000; border: none; padding: 10px 18px; border-radius: 30px;
-  font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease;
-  cursor: pointer;
-}
-.btn-action:hover { background: var(--spotify-green); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30, 215, 96, 0.3); }
-.btn-secondary { background: rgba(255,255,255,0.06); color: var(--text-main); border: 1px solid var(--glass-border); }
-.btn-secondary:hover { background: rgba(255,255,255,0.15); color: #fff; }
+/* --- Statistics Performance Blocks --- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.card { padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; min-height: 170px; position: relative; overflow: hidden; }
+.card .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; }
+.card .v { font-size: clamp(36px, 4.5vw, 48px); font-weight: 900; line-height: 1; letter-spacing: -0.03em; margin-top: auto; color: #fff; }
+.card .v small { font-size: 0.45em; font-weight: 700; color: var(--text-muted); margin-left: 2px; }
+.card .d { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+.card.hot { border-color: rgba(255, 46, 147, 0.3); }
+.card.hot .v { color: var(--neon-pink); drop-shadow: 0 0 15px rgba(255, 46, 147, 0.4); }
+.card.accent { border-color: rgba(0, 240, 255, 0.3); }
+.card.accent .v { color: var(--neon-blue); }
 
-/* --- Tab Selectors --- */
-.tabs { display: flex; gap: 8px; margin-bottom: 24px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 30px; width: fit-content; border: 1px solid var(--glass-border); }
-.tab-btn { background: transparent; border: none; color: var(--text-muted); font-family: var(--mono); font-size: 12px; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
-.tab-btn.active { background: rgba(255,255,255,0.1); color: var(--text-main); font-weight: 600; }
+/* --- Functional Control Modules --- */
+.section-ctrls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+.toggle { display: inline-flex; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 4px; border-radius: 12px; }
+.toggle button { font-family: var(--mono); font-size: 12px; padding: 8px 16px; border: 0; background: transparent; color: var(--text-muted); text-transform: lowercase; border-radius: 8px; transition: all 0.2s; }
+.toggle button[aria-pressed="true"] { background: rgba(255,255,255,0.1); color: var(--text-main); font-weight: 600; }
 
-/* --- Data Visuals Lists & Rows --- */
-.track-row { display: grid; grid-template-columns: 40px 50px 1fr auto; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-.track-row img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-.track-info .name { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;}
-.track-info .artist { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-.track-rank { font-family: var(--mono); color: var(--spotify-green); font-weight: 600; }
+.btn { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; background: #fff; color: #000; border: none; padding: 10px 20px; border-radius: 30px; text-transform: lowercase; display: inline-flex; align-items: center; gap: 8px; transition: all 0.15s; cursor: pointer; }
+.btn:hover { background: var(--spotify-green); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(30,215,96,0.3); }
+.btn.ghost { background: rgba(255,255,255,0.06); color: var(--text-main); border: 1px solid var(--glass-border); }
+.btn.ghost:hover { background: rgba(255,255,255,0.15); }
 
-/* --- Genre Pie Visuals --- */
-.pie-wrapper { display: flex; align-items: center; justify-content: center; min-height: 260px; position: relative; }
-.legend-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+/* --- Lists Systems --- */
+.tracklist { display: flex; flex-direction: column; }
+.trow { display: grid; grid-template-columns: 40px 56px 1fr auto; gap: 20px; align-items: center; padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; border-radius: 8px; }
+.trow:hover { background: rgba(255,255,255,0.02); }
+.trow .rank { font-family: var(--mono); font-size: 13px; color: var(--text-muted); }
+.trow img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: rgba(255,255,255,0.05); }
+.trow .t-name { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 450px; }
+.trow .t-artist { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.trow .tag { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.trow .tag b { color: var(--spotify-green); }
 
-/* --- Modal Share Engine --- */
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-.modal-content { max-width: 420px; width: 100%; text-align: center; }
-.export-card { background: #000000; border: 2px solid var(--spotify-green); aspect-ratio: 9/16; width: 100%; border-radius: 24px; padding: 40px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; box-shadow: 0 30px 60px rgba(30,215,96,0.2); position: relative;}
-.export-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(30,215,96,0.15) 0%, transparent 50%); pointer-events: none;}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+@media(max-width: 840px){ .two-col { grid-template-columns: 1fr; } }
 
-/* --- Auth States Gate --- */
-.gate-wrapper { max-width: 480px; margin: 15vh auto; padding: 40px; text-align: center; }
-.gate-wrapper h1 { font-size: 44px; font-weight: 900; letter-spacing: -0.04em; margin-bottom: 16px; }
-.gate-wrapper p { color: var(--text-muted); font-size: 15px; margin-bottom: 32px; line-height: 1.6; }
+.artist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
+.artist { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); aspect-ratio: 1; background: #121418; display: block; }
+.artist img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1); }
+.artist:hover img { transform: scale(1.06); }
+.artist .a-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 12px 12px; background: linear-gradient(transparent, rgba(7,8,10,0.95)); color: #fff; font-weight: 700; font-size: 13px; letter-spacing: -0.01em; }
+.artist .a-rank { position: absolute; top: 10px; left: 10px; font-family: var(--mono); font-size: 11px; color: #fff; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
 
-/* Notification banner */
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--spotify-green); color: #000; padding: 14px 24px; border-radius: 30px; font-family: var(--mono); font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(30,215,96,0.4); z-index: 200; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+/* --- Bar Charts Architecture --- */
+.bars { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
+.bar-row { display: grid; grid-template-columns: 80px 1fr 40px; gap: 16px; align-items: center; }
+.bar-row .b-label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); text-align: right; }
+.bar-row .b-track { height: 28px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.03); }
+.bar-row .b-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--neon-blue), var(--spotify-green)); transform-origin: left; animation: grow 0.8s cubic-bezier(0.2,0.7,0.2,1) both; }
+.bar-row .b-val { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+@keyframes grow { from { transform: scaleX(0); } }
+
+/* --- Circadian Rhythm Block Visuals --- */
+.clock { display: flex; align-items: flex-end; gap: 6px; height: 160px; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 24px 24px 0; }
+.clock .hr { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.clock .hr .col { background: linear-gradient(0deg, var(--spotify-green), var(--neon-blue)); border-radius: 6px 6px 0 0; min-height: 3px; transform-origin: bottom; animation: grow-v 0.8s cubic-bezier(0.2,0.7,0.2,1) both; }
+@keyframes grow-v { from { transform: scaleY(0); } }
+.clock-labels { display: flex; gap: 6px; margin-top: 10px; padding: 0 24px; }
+.clock-labels span { flex: 1; font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-align: center; }
+
+/* --- System Access Gate Elements --- */
+.gate { max-width: 520px; margin: 12vh auto 0; padding: 48px; text-align: center; }
+.gate h1 { font-size: 52px; margin-bottom: 16px; }
+.gate p { margin-bottom: 28px; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+.loading { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 25vh 0; font-family: var(--mono); font-size: 13px; color: var(--text-muted); }
+.spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.08); border-top-color: var(--spotify-green); animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Modal Social Export Suite --- */
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(16px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+.modal-content { max-width: 400px; width: 100%; text-align: center; }
+.export-card { background: #000000; border: 1px solid rgba(255,255,255,0.15); aspect-ratio: 9/16; width: 100%; border-radius: 28px; padding: 44px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative; overflow: hidden; }
+.export-card::before { content: ''; position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; background: radial-gradient(circle, rgba(30,215,96,0.18) 0%, transparent 60%); pointer-events: none; }
+.export-card .brand { font-size: 22px; font-weight: 900; }
+
+footer { margin-top: 80px; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+footer .mono { color: var(--text-muted); font-family: var(--mono); font-size: 12px; }
+
+/* Notification Banner */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--spotify-green); color: #000; padding: 14px 28px; border-radius: 30px; font-family: var(--mono); font-size: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(30,215,96,0.3); z-index: 200; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .toast.show { transform: translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
 
-<div id="toast" class="toast">Playlist generated successfully!</div>
+<div id="toast" class="toast">Profile Action Successful</div>
 
 <div class="wrap">
   <div id="app"></div>
 </div>
 
-<!-- Modal Export Area -->
+<!-- Social Share Modal Engine Sheet -->
 <div id="exportModal" class="modal">
   <div class="modal-content">
     <div id="captureArea" class="export-card">
       <div>
-        <div class="brand" style="font-size: 24px;">SPOTIFY<span>.AI</span></div>
+        <div class="brand">spotify<span>.ai</span></div>
         <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 4px;">ROTATION SNAPSHOT</div>
       </div>
-      <div id="exportDataBody">
-        <!-- Dyn content injected -->
-      </div>
-      <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <div id="exportDataBody"></div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; position: relative; z-index: 2;">
         <div>
           <div style="font-size: 14px; font-weight:700;" id="exportUser">@user</div>
-          <div style="font-size: 11px; color: var(--text-muted);">Spotify.AI Engine</div>
+          <div style="font-size: 11px; color: var(--text-muted);">System Diagnostics</div>
         </div>
-        <div style="font-size: 11px; font-family: var(--mono); color: var(--spotify-green);">VERIFIED METADATA</div>
+        <div style="font-size: 11px; font-family: var(--mono); color: var(--spotify-green); font-weight:600;">VERIFIED MATRIX</div>
       </div>
     </div>
     <div style="margin-top:20px; display:flex; gap:12px; justify-content:center;">
-      <button class="btn-action" onclick="downloadMockVideo()">Export Core Video Clip</button>
-      <button class="btn-action btn-secondary" onclick="closeExport()">Cancel</button>
+      <button class="btn" onclick="downloadMockVideo()">Export Motion Card (MP4)</button>
+      <button class="btn ghost" onclick="closeExport()">Cancel</button>
     </div>
   </div>
 </div>
@@ -176,12 +208,16 @@ const store = {
   del: k => localStorage.removeItem("sai_" + k),
 };
 
-const PALETTE = ["#1ED760", "#FFFFFF", "#2e2f33", "#8E929A", "#4f5259"];
-
+const PALETTE = ["#1ED760", "#00F0FF", "#FF2E93", "#F5A623", "#7A4FE0", "#E04F31"];
 let DATA = null;
-let currentGenreTimeline = 1;
+let currentGenreTimeline = 1; // Slider state mapping
 
-/* PKCE Hooks */
+function showToast(msg) {
+  const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+/* PKCE Authentication Connectors */
 function randString(len) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const vals = crypto.getRandomValues(new Uint8Array(len));
@@ -192,8 +228,7 @@ async function challenge(verifier) {
   return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 async function beginLogin() {
-  const verifier = randString(64);
-  store.set("verifier", verifier);
+  const verifier = randString(64); store.set("verifier", verifier);
   const params = new URLSearchParams({
     response_type: "code", client_id: CLIENT_ID, scope: SCOPES, redirect_uri: REDIRECT,
     code_challenge_method: "S256", code_challenge: await challenge(verifier),
@@ -205,260 +240,343 @@ async function exchangeCode(code) {
     method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: store.get("verifier") }),
   });
-  const data = await res.json();
-  store.set("token", data.access_token);
-  store.set("token_exp", Date.now() + data.expires_in * 1000);
+  const data = await res.json(); store.set("token", data.access_token); store.set("token_exp", Date.now() + data.expires_in * 1000);
 }
 async function api(path, options = {}) {
   const res = await fetch("https://api.spotify.com/v1" + path, {
     ...options, headers: { ...options.headers, Authorization: "Bearer " + store.get("token") },
   });
-  if (res.status === 401) { store.del("token"); renderGate(); return; }
+  if (res.status === 401) { store.del("token"); renderGate(); throw new Error("Expired session Token."); }
   return res.json();
-}
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 3500);
 }
 
 function computeGenres(artists) {
   const counts = {};
   artists.forEach((a, i) => {
-    const weight = artists.length - i;
-    (a.genres || []).forEach(g => counts[g] = (counts[g] || 0) + weight);
+    const w = artists.length - i;
+    (a.genres || []).forEach(g => counts[g] = (counts[g] || 0) + w);
   });
-  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 5);
-  const total = sorted.reduce((acc, [,v]) => acc + v, 0) || 1;
-  return sorted.map(([name, v], i) => ({ name, pct: v / total, color: PALETTE[i % PALETTE.length] }));
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const top = sorted.slice(0, 6);
+  const total = top.reduce((s, [, v]) => s + v, 0) || 1;
+  return top.map(([name, v], i) => ({ name, pct: v / total, color: PALETTE[i % PALETTE.length] }));
+}
+
+function computeWeekly(recent) {
+  const weekAgo = Date.now() - 7 * 864e5; const plays = {};
+  recent.items.forEach(it => {
+    if (new Date(it.played_at).getTime() < weekAgo) return;
+    if (!plays[it.track.id]) plays[it.track.id] = { track: it.track, count: 0 };
+    plays[it.track.id].count++;
+  });
+  return Object.values(plays).sort((a, b) => b.count - a.count).slice(0, 5);
 }
 
 function renderGate() {
   app.innerHTML = `
-    <div class="gate-wrapper glass">
-      <h1>SPOTIFY<span>.AI</span></h1>
-      <p>Transform your listening metadata into premium Liquid Glass layouts, export smart automated playlist variants, and generate cinematic 9:16 clips.</p>
-      <button class="btn-action" id="loginBtn">Authorize System</button>
-    </div>
-  `;
-  document.getElementById("loginBtn").onclick = () => beginLogin();
+    <div class="gate glass">
+      <h1>spotify<em>.ai</em></h1>
+      <p>Transform raw account diagnostic logs into premium high-contrast analytical visuals, structural time travel indices, and immediate audio playlists.</p>
+      <button class="btn" id="go" style="width:100%; padding:16px;">Connect Account Profile →</button>
+    </div>`;
+  document.getElementById("go").onclick = () => beginLogin();
 }
 
-function renderDashboard() {
-  const name = (DATA.me.display_name || "User").toLowerCase();
+function trackRowHtml(t, i, customTag) {
+  return `
+    <div class="trow">
+      <span class="rank">${String(i + 1).padStart(2, "0")}</span>
+      <img src="${t.album?.images?.[0]?.url || ''}" alt="">
+      <div>
+        <div class="t-name">${t.name}</div>
+        <div class="t-artist">${t.artists.map(a => a.name).join(", ")}</div>
+      </div>
+      <span class="tag">${customTag}</span>
+    </div>`;
+}
+
+function renderReport() {
+  const { me, topArtists, topTracks, recent } = DATA;
+  const tracksMed = topTracks.medium_term.items;
+  const weekly = computeWeekly(recent);
   
+  // High Intention Metrics Engine Calcs
+  const avgPop = tracksMed.reduce((s, t) => s + t.popularity, 0) / (tracksMed.length || 1);
+  const obscurity = Math.round(100 - avgPop);
+  const avgYear = Math.round(tracksMed.map(t => parseInt((t.album.release_date || "").slice(0,4))).filter(Boolean).reduce((s,y)=>s+y,0) / (tracksMed.length || 1));
+  const explicitPct = Math.round(100 * tracksMed.filter(t => t.explicit).length / (tracksMed.length || 1));
+  const repeat = weekly[0];
+  const now = new Date();
+
   app.innerHTML = `
-    <header class="glass">
-      <div class="brand">Spotify<span>.AI</span></div>
-      <div class="user-badge">session // ${name}</div>
+    <header class="glass" style="padding: 32px 40px; margin-top: 40px;">
+      <div class="masthead">
+        <h1>spotify<em>.ai</em></h1>
+        <div class="stamp">
+          Prepared for <b>${(me.display_name || "User").toLowerCase()}</b><br>
+          System Diagnostic Block // ${now.toLocaleDateString("en-US").toLowerCase()}
+        </div>
+      </div>
     </header>
 
-    <div class="dashboard-grid">
-      <div class="view-card glass">
-        <div class="card-header">
-          <div class="card-title">
-            <h3>Heavy Rotation DNA</h3>
-            <p>Scrub timelines to scale dynamic shifts in your sound profile</p>
-          </div>
-          <button class="btn-action btn-secondary" onclick="openExport('genres')">Share</button>
+    <!-- Section 1: Multi-Year Time Machine Slider Chart -->
+    <section>
+      <div class="eyebrow">Acoustic DNA Timeline Mapping</div>
+      <h2>Dynamic Genre Transformations</h2>
+      <div class="glass slider-panel">
+        <input type="range" min="1" max="3" value="${currentGenreTimeline}" class="time-slider" id="genreTimelineSlider">
+        <div class="slider-labels">
+          <span>6 Months History</span>
+          <span>1 Year Scale</span>
+          <span>All-Time Records</span>
         </div>
-        
-        <div class="slider-container">
-          <input type="range" min="1" max="3" value="${currentGenreTimeline}" class="time-slider" id="timelineSlider">
-          <div class="slider-labels">
-            <span>6 Months</span>
-            <span>1 Year</span>
-            <span>All-Time Records</span>
-          </div>
-        </div>
-
-        <div class="pie-wrapper" id="genrePieTarget"></div>
-        <div class="legend-grid" id="genreLegendTarget"></div>
       </div>
-
-      <div class="view-card glass">
-        <div class="card-header">
-          <div class="card-title">
-            <h3>Rotation Archives</h3>
-            <p>Your current framework deployment rankings</p>
-          </div>
-          <button class="btn-action" onclick="generatePlaylistAction()">Compile to Playlist</button>
-        </div>
-
-        <div class="tabs">
-          <button class="tab-btn active" data-range="short_term">4 Weeks</button>
-          <button class="tab-btn" data-range="medium_term">6 Months</button>
-          <button class="tab-btn" data-range="long_term">All Time</button>
-        </div>
-
-        <div id="tracksContainer" style="max-height: 380px; overflow-y: auto; padding-right: 8px;"></div>
+      <div class="glass wheel-grid">
+        <div id="pieGraphicContainer" style="position:relative; display:flex; align-items:center; justify-content:center;"></div>
+        <div class="legend" id="legendContainer"></div>
       </div>
-    </div>
-  `;
+    </section>
 
-  document.getElementById("timelineSlider").oninput = (e) => {
+    <!-- Section 2: Restored High-Intention Statistics Matrices -->
+    <section>
+      <div class="eyebrow">Analytical Scoreboard Matrix</div>
+      <h2>Strategic Rotation Metrics</h2>
+      <div class="cards">
+        <div class="glass card hot">
+          <span class="k">Obscurity Index</span>
+          <span class="v">${obscurity}<small>/100</small></span>
+          <span class="d">${obscurity >= 50 ? "Deep crate hunting profile detected." : "Balanced algorithmic chart alignment."}</span>
+        </div>
+        <div class="glass card accent">
+          <span class="k">Timeline Center of Gravity</span>
+          <span class="v">${avgYear || "—"}</span>
+          <span class="d">The mathematical release velocity midpoint of your tracks.</span>
+        </div>
+        <div class="glass card">
+          <span class="k">Explicit Share Content</span>
+          <span class="v">${explicitPct}<small>%</small></span>
+          <span class="d">Proportion of verified heavy rotations carrying standard warnings.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Weekly Active Tracker Elements -->
+    <section>
+      <div class="eyebrow">Seven Day Interval Log</div>
+      <h2>Weekly Favorites Tracker</h2>
+      <div class="glass" style="padding: 24px;">
+        ${repeat ? `<p class="sub" style="margin-bottom:20px;">Primary Loop Engine: <b style="color:var(--spotify-green)">${repeat.track.name}</b> — ${repeat.count} streams handled.</p>` : ""}
+        <div class="tracklist">
+          ${weekly.map((w, i) => trackRowHtml(w.track, i, `<b>${w.count}</b> streams`)).join("")}
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Live Automated Playlist Generator Lists -->
+    <section>
+      <div class="eyebrow">Framework Compilations Deployment</div>
+      <div class="section-ctrls">
+        <h2>Top Track Archives</h2>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div class="toggle">
+            <button data-kind="tracks" data-range="short_term" aria-pressed="true">4 weeks</button>
+            <button data-kind="tracks" data-range="medium_term" aria-pressed="false">6 months</button>
+            <button data-kind="tracks" data-range="long_term" aria-pressed="false">all time</button>
+          </div>
+          <button class="btn" onclick="deployPlaylistAction()">Compile to Playlist</button>
+        </div>
+      </div>
+      <div class="glass" style="padding: 24px;">
+        <div class="tracklist two-col" id="tracksListTarget"></div>
+      </div>
+    </section>
+
+    <!-- Section 5: Top Artists Display Matrix -->
+    <section>
+      <div class="eyebrow">Roster Standings</div>
+      <h2>Top Artist Deployments</h2>
+      <div class="glass" style="padding: 32px;">
+        <div class="artist-grid" id="artistsGridTarget"></div>
+      </div>
+    </section>
+
+    <!-- Section 6: Decades Visualization Chart Framework -->
+    <section>
+      <div class="eyebrow">Temporal Eras</div>
+      <h2>Historical Release Distribution</h2>
+      <div class="glass bars" id="decadesChartTarget"></div>
+    </section>
+
+    <!-- Section 7: Circadian Rhythm Matrix Visualizer -->
+    <section>
+      <div class="eyebrow">Circadian Rhythms</div>
+      <h2>Temporal Listening Densities</h2>
+      <div class="glass">
+        <div class="clock" id="clockBarsTarget"></div>
+        <div class="clock-labels" id="clockLabelsTarget"></div>
+      </div>
+    </section>
+
+    <footer class="glass" style="padding: 24px 40px;">
+      <span class="mono">SYSTEM END LOG // DATA ROUTED VIA SECURE SPOTIFY WEB API</span>
+      <button class="btn ghost" id="logoutBtn">Terminate Session</button>
+    </footer>`;
+
+  // Bind Dynamic Engine Slider Actions
+  document.getElementById("genreTimelineSlider").oninput = (e) => {
     currentGenreTimeline = parseInt(e.target.value);
-    updateGenreVisuals();
+    syncGenreSystem();
   };
 
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.onclick = (e) => {
-      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      e.target.classList.add("active");
-      fillTracks(e.target.dataset.range);
+  // Wire Multi-Range Toggle Selectors
+  app.querySelectorAll(".toggle button").forEach(b => {
+    b.onclick = () => {
+      app.querySelectorAll(`.toggle button[data-kind="${b.dataset.kind}"]`).forEach(x => x.setAttribute("aria-pressed", x === b));
+      fillTracksDisplay(b.dataset.range);
     };
   });
 
-  updateGenreVisuals();
-  fillTracks("short_term");
+  document.getElementById("logoutBtn").onclick = () => {
+    ["token", "token_exp", "verifier"].forEach(k => store.del(k));
+    renderGate();
+  };
+
+  // Run Initial Calculations View
+  syncGenreSystem();
+  fillTracksDisplay("short_term");
+  fillArtistsDisplay();
+  renderDecadesChart();
+  renderCircadianClock();
 }
 
-function updateGenreVisuals() {
-  let artistPool = DATA.topArtists.medium_term.items; 
-  let labelText = "6 Months Base";
-  if (currentGenreTimeline === 2) {
-    artistPool = DATA.topArtists.short_term.items.concat(DATA.topArtists.medium_term.items);
-    labelText = "1 Year Balance";
-  } else if (currentGenreTimeline === 3) {
-    artistPool = DATA.topArtists.long_term.items;
-    labelText = "All Time Era";
-  }
+function syncGenreSystem() {
+  let pool = DATA.topArtists.medium_term.items;
+  let label = "6 Months";
+  if (currentGenreTimeline === 2) { pool = DATA.topArtists.short_term.items.concat(DATA.topArtists.medium_term.items); label = "1 Year"; }
+  if (currentGenreTimeline === 3) { pool = DATA.topArtists.long_term.items; label = "All Time"; }
 
-  const genres = computeGenres(artistPool);
-  let svgHtml = `<svg viewBox="0 0 200 200" width="180" height="180">`;
-  let accumulatedAngle = 0;
+  const genres = computeGenres(pool);
   
+  // Render Dynamic High-Contrast SVG Pie Chart Inner Frame
+  let svg = `<svg viewBox="0 0 200 200" width="200" height="200">`;
+  let totalAngle = 0;
   genres.forEach(g => {
     const angle = g.pct * 360;
-    const x1 = 100 + 80 * Math.cos((accumulatedAngle - 90) * Math.PI / 180);
-    const y1 = 100 + 80 * Math.sin((accumulatedAngle - 90) * Math.PI / 180);
-    accumulatedAngle += angle;
-    const x2 = 100 + 80 * Math.cos((accumulatedAngle - 90) * Math.PI / 180);
-    const y2 = 100 + 80 * Math.sin((accumulatedAngle - 90) * Math.PI / 180);
-    const largeArc = angle > 180 ? 1 : 0;
-    
-    svgHtml += `<path d="M 100 100 L ${x1} ${y1} A 80 80 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${g.color}" stroke="var(--bg-dark)" stroke-width="2"/>`;
+    const x1 = 100 + 90 * Math.cos((totalAngle - 90) * Math.PI / 180);
+    const y1 = 100 + 90 * Math.sin((totalAngle - 90) * Math.PI / 180);
+    totalAngle += angle;
+    const x2 = 100 + 90 * Math.cos((totalAngle - 90) * Math.PI / 180);
+    const y2 = 100 + 90 * Math.sin((totalAngle - 90) * Math.PI / 180);
+    svg += `<path d="M 100 100 L ${x1} ${y1} A 90 90 0 ${angle > 180 ? 1 : 0} 1 ${x2} ${y2} Z" fill="${g.color}" stroke="var(--bg-dark)" stroke-width="2.5"/>`;
   });
-  svgHtml += `<circle cx="100" cy="100" r="40" fill="#121418" /></svg>`;
+  svg += `<circle cx="100" cy="100" r="45" fill="#0f1216" /></svg>`;
+  svg += `<div style="position:absolute; font-family:var(--mono); font-size:10px; font-weight:600; color:var(--spotify-green); text-transform:uppercase; pointer-events:none;">${label}</div>`;
   
-  document.getElementById("genrePieTarget").innerHTML = svgHtml + `<div style="position:absolute; font-family:var(--mono); font-size:10px; color:var(--spotify-green); font-weight:600; text-transform:uppercase;">${labelText}</div>`;
+  document.getElementById("pieGraphicContainer").innerHTML = svg;
 
-  document.getElementById("genreLegendTarget").innerHTML = genres.map(g => `
-    <div class="legend-item">
-      <span class="legend-dot" style="background:${g.color}"></span>
-      <span style="text-transform: capitalize; font-weight: 600;">${g.name}</span>
-      <span style="margin-left:auto; color:var(--text-muted); font-family:var(--mono); font-size:11px;">${Math.round(g.pct*100)}%</span>
+  document.getElementById("legendContainer").innerHTML = genres.map(g => `
+    <div class="legend-row">
+      <span class="dot" style="background:${g.color}; color:${g.color}"></span>
+      <span class="g-name">${g.name}</span>
+      <span class="g-pct">${Math.round(g.pct * 100)}%</span>
     </div>
   `).join("");
 }
 
-function fillTracks(range) {
-  const tracks = DATA.topTracks[range].items.slice(0, 5);
-  document.getElementById("tracksContainer").innerHTML = tracks.map((t, idx) => `
-    <div class="track-row">
-      <div class="track-rank">${String(idx+1).padStart(2, '0')}</div>
-      <img src="${t.album.images[0]?.url || ''}">
-      <div class="track-info">
-        <div class="name">${t.name}</div>
-        <div class="artist">${t.artists.map(a => a.name).join(", ")}</div>
-      </div>
-      <div style="font-family:var(--mono); font-size:11px; color:var(--text-muted);">POP ${t.popularity}</div>
-    </div>
-  `).join("");
+function fillTracksDisplay(range) {
+  const items = DATA.topTracks[range].items.slice(0, 10);
+  document.getElementById("tracksListTarget").innerHTML = items.map((t, i) => trackRowHtml(t, i, `Index <b>${t.popularity}</b>`)).join("");
 }
 
-async function generatePlaylistAction() {
+function fillArtistsDisplay() {
+  const items = DATA.topArtists.medium_term.items.slice(0, 12);
+  document.getElementById("artistsGridTarget").innerHTML = items.map((a, i) => `
+    <div class="artist">
+      <img src="${a.images?.[0]?.url || ''}" loading="lazy">
+      <span class="a-rank">${String(i + 1).padStart(2, "0")}</span>
+      <span class="a-label">${a.name.toLowerCase()}</span>
+    </div>`).join("");
+}
+
+function renderDecadesChart() {
+  const tracks = DATA.topTracks.medium_term.items; const d = {};
+  tracks.forEach(t => {
+    const y = parseInt((t.album.release_date || "").slice(0, 4)); if (!y) return;
+    const dec = Math.floor(y / 10) * 10; d[dec] = (d[dec] || 0) + 1;
+  });
+  const sorted = Object.entries(d).sort((a,b) => a[0] - b[0]);
+  const max = Math.max(...sorted.map(x => x[1]), 1);
+
+  document.getElementById("decadesChartTarget").innerHTML = sorted.map(([dec, count]) => `
+    <div class="bar-row">
+      <span class="b-label">${dec}s</span>
+      <div class="b-track"><div class="b-fill" style="width:${(count/max*100).toFixed(1)}%;"></div></div>
+      <span class="b-val">${count}</span>
+    </div>`).join("");
+}
+
+function renderCircadianClock() {
+  const hours = new Array(24).fill(0);
+  DATA.recent.items.forEach(it => hours[new Date(it.played_at).getHours()]++);
+  const max = Math.max(...hours, 1);
+
+  document.getElementById("clockBarsTarget").innerHTML = hours.map((n, h) => `
+    <div class="hr"><div class="col" style="height:${Math.max(n / max * 100, 3)}%;" title="Hour ${h}: ${n} instances"></div></div>`).join("");
+  document.getElementById("clockLabelsTarget").innerHTML = Array.from({ length: 24 }, (_, h) => `
+    <span>${h % 4 === 0 ? (h === 0 ? "12am" : h === 12 ? "12pm" : h > 12 ? (h-12)+"pm" : h+"am") : ""}</span>`).join("");
+}
+
+/* API Execution Pipelines */
+async function deployPlaylistAction() {
   try {
-    const activeRangeBtn = document.querySelector(".tab-btn.active");
-    const range = activeRangeBtn ? activeRangeBtn.dataset.range : "short_term";
-    const tracks = DATA.topTracks[range].items;
-    if(!tracks || tracks.length === 0) return;
+    const activeRange = document.querySelector(".toggle button[aria-pressed='true']").dataset.range;
+    const tracks = DATA.topTracks[activeRange].items; if (!tracks.length) return;
 
-    showToast("Initializing automation engine...");
-    
+    showToast("Generating dynamic index sequence allocation...");
     const playlist = await api(`/users/${DATA.me.id}/playlists`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: `Spotify.AI // ${activeRangeBtn.textContent} Profile`,
-        description: "Generated by Spotify.AI dynamic playback timeline index systems.",
-        public: false
-      })
+      body: JSON.stringify({ name: `Spotify.AI // Rotation Track Array`, description: "Automated analysis playlist.", public: false })
     });
-
     await api(`/playlists/${playlist.id}/tracks`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uris: tracks.map(t => t.uri) })
     });
-
-    showToast("Profile deployed straight to your Spotify account!");
+    showToast("Playlist created and synchronized!");
   } catch(e) {
-    showToast("Pipeline generation error.");
+    showToast("Error processing Spotify automated request.");
   }
 }
 
-function openExport(type) {
-  const modal = document.getElementById("exportModal");
-  const body = document.getElementById("exportDataBody");
-  document.getElementById("exportUser").textContent = `@${(DATA.me.display_name || "User").toLowerCase().replace(/\s+/g, '')}`;
-  
-  let artistPool = DATA.topArtists.medium_term.items;
-  if (currentGenreTimeline === 2) artistPool = DATA.topArtists.short_term.items.concat(DATA.topArtists.medium_term.items);
-  if (currentGenreTimeline === 3) artistPool = DATA.topArtists.long_term.items;
-  
-  const genres = computeGenres(artistPool);
-
-  body.innerHTML = `
-    <div style="font-size:32px; font-weight:900; line-height:1.1; letter-spacing:-0.03em;">MY TIMELINE GENRE IS<br><span style="color:var(--spotify-green); text-transform:uppercase;">#${genres[0]?.name || 'ECLECTIC'}</span></div>
-    <div style="margin-top:24px; display:flex; flex-direction:column; gap:12px;">
-      ${genres.map((g, i) => `
-        <div>
-          <div style="display:flex; justify-content:between; font-size:12px; margin-bottom:4px; font-family:var(--mono);">
-            <span style="text-transform:capitalize;">${g.name}</span>
-            <span style="margin-left:auto; color:var(--spotify-green);">${Math.round(g.pct*100)}%</span>
-          </div>
-          <div style="width:100%; height:4px; background:rgba(255,255,255,0.1); border-radius:2px;">
-            <div style="width:${g.pct*100}%; height:100%; background:${g.color === '#FFFFFF' ? '#1ED760' : g.color}; border-radius:2px;"></div>
-          </div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-  modal.style.display = "flex";
-}
-
-function closeExport() { document.getElementById("exportModal").style.display = "none"; }
-
 function downloadMockVideo() {
-  showToast("Compiling video layers with Spotify.AI motion branding...");
-  setTimeout(() => {
-    showToast("Dynamic mp4 render complete. Export initialized!");
-    closeExport();
-  }, 2000);
+  showToast("Compiling video matrix layers with Spotify.AI branding animations...");
+  setTimeout(() => { showToast("Dynamic MP4 container exported successfully!"); }, 2000);
 }
 
+/* Core System Authorization Boost Sequence */
 async function loadEverything() {
+  app.innerHTML = `<div class="loading"><div class="spinner"></div>Synchronizing Spotify.AI structural profile layers…</div>`;
   const ranges = ["short_term", "medium_term", "long_term"];
-  const [me, ...tops] = await Promise.all([
-    api("/me"),
-    ...ranges.map(r => api("/me/top/tracks?time_range=" + r + "&limit=30")),
-    ...ranges.map(r => api("/me/top/artists?time_range=" + r + "&limit=30")),
-  ]);
-
-  DATA = {
-    me,
-    topTracks: { short_term: tops[0], medium_term: tops[1], long_term: tops[2] },
-    topArtists: { short_term: tops[3], medium_term: tops[4], long_term: tops[5] },
-  };
-  renderDashboard();
+  try {
+    const [me, recent, ...tops] = await Promise.all([
+      api("/me"), api("/me/player/recently-played?limit=50"),
+      ...ranges.map(r => api("/me/top/tracks?time_range=" + r + "&limit=50")),
+      ...ranges.map(r => api("/me/top/artists?time_range=" + r + "&limit=50")),
+    ]);
+    DATA = {
+      me, recent,
+      topTracks: { short_term: tops[0], medium_term: tops[1], long_term: tops[2] },
+      topArtists: { short_term: tops[3], medium_term: tops[4], long_term: tops[5] },
+    };
+    renderReport();
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 (async function init() {
   const params = new URLSearchParams(location.search);
   if (params.get("code")) {
-    await exchangeCode(params.get("code"));
-    history.replaceState({}, "", REDIRECT);
+    await exchangeCode(params.get("code")); history.replaceState({}, "", REDIRECT);
   }
   if (store.get("token") && Date.now() < +(store.get("token_exp") || 0)) {
     await loadEverything();
