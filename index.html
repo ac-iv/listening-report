@@ -297,6 +297,12 @@ body {
 .hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green); letter-spacing: -0.01em; }
 .hero p { font-size: 16.5px; color: var(--muted); max-width: 54ch; }
 .hero .fine { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; width: 100%; margin-top: 14px; }
+.feature { background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; display: flex; flex-direction: column; gap: 7px; }
+.feature .f-emoji { font-size: 20px; }
+.feature .f-name { font-weight: 750; font-size: 15px; letter-spacing: -0.01em; }
+.feature .f-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
 .loader { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 32vh 0; font-family: var(--mono); font-size: 12px; color: var(--faint); }
 .spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(12,15,13,0.06); border-top-color: var(--green); animation: spin 0.75s linear infinite; }
@@ -351,6 +357,7 @@ const state = {
   lastPlaylist: null,
   recs: null,
   recsLoading: false,
+  demo: false,
   readNonce: 0,
 };
 
@@ -665,10 +672,133 @@ function readPlainText() {
   return { ...r, plain: div.textContent };
 }
 /* ============================================================
+   demo mode — sample data so the whole app is browsable
+   ============================================================ */
+const DEMO_COLORS = ["#1DB954", "#0E5A2B", "#0C0F0D", "#3E4A42", "#63D98F", "#182019", "#2AA25C", "#7DE3A5"];
+function artURI(i, letter) {
+  const hex = DEMO_COLORS[i % DEMO_COLORS.length];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="300" height="300" fill="${hex}"/><text x="150" y="192" font-family="Archivo, Arial, sans-serif" font-size="130" font-weight="800" fill="rgba(255,255,255,0.82)" text-anchor="middle">${letter}</text></svg>`;
+  return "data:image/svg+xml," + encodeURIComponent(svg);
+}
+const DEMO_ARTISTS = [
+  ["velvet static", "dream pop", "shoegaze"],
+  ["the pool boys", "indie rock", "surf rock"],
+  ["moth eater", "slowcore", "dark indie"],
+  ["gemini rose", "alt r&b", "bedroom pop"],
+  ["backyard funeral", "midwest emo", "indie rock"],
+  ["civic sunset", "synth pop", "chillwave"],
+  ["petal & bone", "art pop", "chamber pop"],
+  ["holy overtime", "neo soul", "indie soul"],
+  ["dial tone romance", "hyperpop", "glitch pop"],
+  ["sadie chrome", "electro pop", "dance pop"],
+  ["night bus saints", "post punk", "new wave"],
+  ["worlds okayest", "lo-fi indie", "bedroom pop"],
+  ["the reruns", "garage rock", "power pop"],
+  ["glass casket hotel", "darkwave", "gothic pop"],
+  ["june in november", "indie folk", "folk pop"],
+];
+const DEMO_TRACKS = [
+  ["cul-de-sac angel", 0, 2021, 58, 0], ["communion in the parking lot", 4, 2019, 3, 0],
+  ["sleep schedule (ruined)", 8, 2023, 41, 1], ["chlorine summer", 1, 2016, 62, 0],
+  ["8 missed calls", 3, 2022, 7, 1], ["god's favorite customer", 7, 2018, 4, 0],
+  ["acquired taste", 9, 2024, 71, 1], ["the yearning (extended cut)", 0, 2020, 33, 0],
+  ["smoke detector lullaby", 2, 2015, 12, 0], ["main character syndrome", 9, 2025, 84, 1],
+  ["denim eulogy", 4, 2017, 22, 0], ["phone bad, moon good", 11, 2023, 47, 0],
+  ["kissing booth apocalypse", 12, 2014, 39, 1], ["haunted sedan", 13, 2019, 16, 0],
+  ["girl dinner communion", 3, 2024, 55, 1], ["exit interview with god", 7, 2021, 9, 0],
+  ["sunburn theology", 14, 2018, 28, 0], ["night bus to nowhere", 10, 1984, 44, 0],
+  ["vhs heartthrob", 12, 1989, 51, 0], ["static cling", 0, 2013, 26, 0],
+  ["midnight at the rite aid", 5, 2022, 63, 1], ["crying in 4k", 8, 2023, 72, 1],
+  ["pool water gospel", 1, 2015, 18, 0], ["backseat seance", 13, 2020, 8, 0],
+  ["lowercase feelings", 11, 2021, 35, 0], ["the group project", 12, 2016, 29, 0],
+  ["hymn for the wifi", 6, 2019, 42, 0], ["your mom's minivan (interlude)", 4, 2018, 6, 0],
+  ["grocery store slow dance", 14, 2022, 57, 0], ["existential dread but make it fashion", 9, 2025, 78, 1],
+  ["lucky charm graveyard", 2, 2017, 14, 0], ["sweat equity", 7, 2020, 31, 1],
+  ["the neighbors know", 5, 2023, 49, 0], ["big sad energy", 8, 2024, 66, 1],
+  ["cathedral of the clearance rack", 6, 2021, 11, 0], ["dial tone confessional", 8, 2022, 38, 1],
+  ["seasonal depression sampler", 2, 2019, 21, 0], ["olive garden after the funeral", 4, 2023, 5, 1],
+  ["prom king of nothing", 12, 2015, 45, 0], ["wilted bouquet economics", 13, 2018, 13, 0],
+  ["sunday scaries", 11, 2020, 53, 0], ["the algorithm knows i'm lonely", 9, 2026, 81, 1],
+  ["parking garage cathedral", 10, 1986, 36, 0], ["landline lovers", 10, 1982, 48, 0],
+  ["screensaver heaven", 6, 2024, 59, 0], ["beige flag parade", 3, 2023, 43, 1],
+  ["unpaid emotional labor", 7, 2019, 24, 0], ["the ick (reprise)", 3, 2025, 69, 1],
+  ["cursed image, blessed sound", 2, 2021, 17, 0], ["clairvoyant at the car wash", 14, 2017, 32, 0],
+  ["rapture at the drive-thru", 5, 2018, 27, 0], ["my therapist's voicemail", 8, 2023, 52, 1],
+  ["gaslight anthem for beginners", 9, 2024, 74, 1], ["roadkill romantics", 13, 2016, 19, 0],
+  ["the mall is a liminal space", 6, 2022, 46, 0], ["self checkout saint", 7, 2021, 15, 0],
+  ["dishwater blonde", 14, 2015, 34, 0], ["apocalypse now, brunch later", 12, 2019, 41, 0],
+  ["feral but responsible", 3, 2024, 61, 1], ["moth to the porch light", 2, 2014, 23, 0],
+  ["voicemail from 2016", 11, 2018, 37, 0], ["glitter in the gutter", 10, 1988, 54, 0],
+  ["hot girl hymnal", 9, 2025, 76, 1], ["the family group chat", 4, 2020, 10, 1],
+  ["polaroid purgatory", 13, 2017, 25, 0], ["sacred and profane (tiktok version)", 1, 2023, 64, 1],
+  ["open casket open bar", 4, 2022, 2, 1], ["suburban gothic", 5, 2016, 40, 0],
+  ["last one at the function", 1, 2024, 67, 1], ["amen and also lol", 7, 2026, 56, 0],
+];
+function demoTrackObj(name, ai, year, pop, ex, id) {
+  const a = DEMO_ARTISTS[ai];
+  return {
+    id: "demoT" + id, uri: "spotify:track:demo" + id,
+    name, popularity: pop, explicit: !!ex,
+    artists: [{ name: a[0], id: "demoA" + ai }],
+    album: { release_date: year + "-06-01", images: [0, 1, 2].map(() => ({ url: artURI(ai + 2, name[0].toUpperCase()) })) },
+  };
+}
+function demoRecent(tracks) {
+  const items = [];
+  const now = Date.now();
+  for (let i = 0; i < 50; i++) {
+    const late = i % 5 !== 0;
+    const hour = late ? [23, 0, 1, 2][i % 4] : [9, 13, 17, 19][i % 4];
+    const d = new Date(now - (i % 7) * 86400000);
+    d.setHours(hour, (i * 13) % 60, 0, 0);
+    items.push({ track: tracks[i % tracks.length], played_at: d.toISOString() });
+  }
+  return { items };
+}
+function demoRecs() {
+  const picks = [
+    ["glitter in the exit wound", 8], ["your honor, i loved her", 4], ["smoke break sacrament", 7],
+    ["mall at the end of the world", 5], ["kissed by the check engine light", 9], ["patron saint of group chats", 3],
+    ["slow dancing in traffic", 10], ["evicted from heaven", 13], ["diet apocalypse", 6], ["the yearning industrial complex", 11],
+  ];
+  return picks.map(([n, ai], i) => ({ track: demoTrackObj(n, ai, 2024 + (i % 3), 20 + i * 5, i % 2, "R" + i), because: DEMO_ARTISTS[ai][0] }));
+}
+function buildDemoData() {
+  const artists = DEMO_ARTISTS.map(([n, g1, g2], i) => ({
+    id: "demoA" + i, name: n, genres: [g1, g2], popularity: Math.max(20, 78 - i * 3),
+    images: [0, 1, 2].map(() => ({ url: artURI(i, n[0].toUpperCase()) })),
+  }));
+  const tracks = DEMO_TRACKS.map((t, i) => demoTrackObj(t[0], t[1], t[2], t[3], t[4], i));
+  return {
+    me: { id: null, display_name: "demo user", images: [] },
+    recent: demoRecent(tracks),
+    topTracks: {
+      short_term: { items: tracks.slice(0, 50) },
+      medium_term: { items: tracks.slice(3, 53) },
+      long_term: { items: tracks.slice(20, 70) },
+    },
+    topArtists: {
+      short_term: { items: artists },
+      medium_term: { items: artists },
+      long_term: { items: [...artists].reverse() },
+    },
+  };
+}
+function enterDemo() {
+  getMetrics._cache = null;
+  DATA = buildDemoData();
+  state.demo = true;
+  state.recs = null;
+  renderShell();
+  toast("Demo mode — sample data, not yours. Connect to see the real thing.");
+}
+
+/* ============================================================
    shell, tabs, login
    ============================================================ */
 function renderLogin() {
   state.tab = "dash";
+  state.demo = false;
   app.innerHTML = `
     <div class="top">
       <div class="brand">spotify<span>.ai</span></div>
@@ -676,11 +806,20 @@ function renderLogin() {
     <div class="glass hero">
       <div class="hero-tag">✦ your listening, decoded</div>
       <h1>Your Spotify, but make it <em>interesting</em>.</h1>
-      <p>Not just another top-tracks list. Get your listener archetype, a personalized (lightly judgmental) read on your taste, an obscurity score, your certified deep cuts, fresh song picks, one-tap playlists, and story cards built for posting.</p>
-      <button class="btn btn-green" id="loginBtn">connect spotify</button>
+      <p>Wrapped shouldn't come once a year. Get your listener archetype, a lightly judgmental read on your taste, an obscurity score, your certified deep cuts, fresh song picks, one-tap playlists, and story cards built for posting.</p>
+      <div class="btn-row">
+        <button class="btn btn-green" id="loginBtn">connect spotify</button>
+        <button class="btn btn-ghost" id="demoBtn">just looking — show me a demo</button>
+      </div>
       <div class="fine">runs entirely in your browser · nothing leaves your device</div>
+      <div class="feature-grid">
+        <div class="feature"><span class="f-emoji">🔮</span><span class="f-name">the read</span><span class="f-desc">Your listener archetype plus a summary generated from your actual data. It will be accurate. It might be rude.</span></div>
+        <div class="feature"><span class="f-emoji">🕳️</span><span class="f-name">certified deep cuts</span><span class="f-desc">The 5 songs in your rotation nobody else has found, with the receipts to prove it.</span></div>
+        <div class="feature"><span class="f-emoji">📲</span><span class="f-name">story cards</span><span class="f-desc">Every stat exports as a 1080×1920 card made for stories. Post your obscurity score. Start drama.</span></div>
+      </div>
     </div>`;
   document.getElementById("loginBtn").onclick = () => login();
+  document.getElementById("demoBtn").onclick = () => enterDemo();
 }
 
 function renderShell() {
@@ -689,7 +828,10 @@ function renderShell() {
   app.innerHTML = `
     <div class="top">
       <div class="brand">spotify<span>.ai</span></div>
-      <div class="user-chip ${avatar ? "" : "no-img"}">${avatar ? `<img src="${esc(avatar)}" alt="">` : ""}${esc((me.display_name || "you").toLowerCase())}</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        ${state.demo ? `<button class="btn btn-green" style="padding:8px 16px;" onclick="login()">connect for real</button>` : ""}
+        <div class="user-chip ${avatar ? "" : "no-img"}">${avatar ? `<img src="${esc(avatar)}" alt="">` : ""}${state.demo ? "demo mode" : esc((me.display_name || "you").toLowerCase())}</div>
+      </div>
     </div>
     <nav class="tabs glass" aria-label="Sections">
       <button class="tab-btn" data-tab="dash">dashboard</button>
@@ -884,6 +1026,11 @@ function recsBlock() {
 }
 async function generateRecs() {
   const target = document.getElementById("recsTarget");
+  if (state.demo) {
+    state.recs = demoRecs();
+    if (target) target.innerHTML = recsBlock();
+    return;
+  }
   state.recsLoading = true;
   if (target) target.innerHTML = recsBlock();
   try {
@@ -1169,6 +1316,7 @@ function createCustomPlaylist() {
 }
 async function createPlaylist(opts) {
   try {
+    if (state.demo) { toast("Demo mode — connect your Spotify to actually create playlists."); return; }
     if (!DATA.me?.id) { toast("Reconnect your account to create playlists."); return; }
     let tracks;
     if (opts.tracks) {
