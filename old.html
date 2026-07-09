@@ -3,15 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>yourmusicstats.ai — your listening, on trial</title>
-<meta name="description" content="yourmusicstats.ai — your listening, on trial. Get your listener archetype, obscurity score, certified deep cuts, weekly rhythm, one-tap playlists, and story cards built for posting.">
-<meta name="theme-color" content="#F2F5F3">
-<meta name="color-scheme" content="light">
-<meta property="og:title" content="yourmusicstats.ai — your listening, on trial">
-<meta property="og:description" content="Wrapped shouldn't come once a year. Archetype, a real obscurity score, red flags, deep cuts, and story cards built for posting.">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='5' y='18' width='4' height='9' rx='1.5' fill='%230C0F0D'/%3E%3Crect x='11' y='6' width='4' height='21' rx='1.5' fill='%231DB954'/%3E%3Crect x='17' y='13' width='4' height='14' rx='1.5' fill='%230C0F0D'/%3E%3Crect x='23' y='10' width='4' height='17' rx='1.5' fill='%230C0F0D'/%3E%3C/svg%3E">
+<title>spotify.ai — your listening, decoded</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -93,19 +85,15 @@ body {
 }
 .brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; letter-spacing: -0.02em; text-transform: lowercase; color: var(--ink); }
 .brand .ai { color: var(--green-deep); }
-.logo-mark {
-  width: 22px; height: 22px; display: inline-flex; align-items: flex-end;
-  gap: 3px; flex-shrink: 0;
+.logo-orb {
+  width: 24px; height: 24px; border-radius: 50%; position: relative; flex-shrink: 0;
+  background: radial-gradient(circle at 32% 28%, #A9F3C6 0%, #1DB954 44%, #0E5A2B 100%);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.7), inset 0 -3px 5px rgba(8, 48, 24, 0.5), 0 3px 9px rgba(29, 185, 84, 0.38);
 }
-.logo-mark i {
-  display: block; width: 3.5px; background: var(--ink); border-radius: 2px;
-  transform-origin: bottom center;
+.logo-orb::after {
+  content: ""; position: absolute; top: 3px; left: 5px; width: 10px; height: 5px;
+  border-radius: 50%; background: rgba(255, 255, 255, 0.8); transform: rotate(-18deg);
 }
-.logo-mark i:nth-child(1) { height: 40%; }
-.logo-mark i:nth-child(2) { height: 100%; background: var(--green); }
-.logo-mark i:nth-child(3) { height: 65%; }
-.logo-mark i:nth-child(4) { height: 82%; }
-
 .user-chip { display: flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 11px; color: var(--muted); background: rgba(12, 15, 13, 0.05); border: 1px solid rgba(255, 255, 255, 0.6); padding: 5px 13px 5px 6px; border-radius: 30px; }
 .user-chip img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
 .user-chip.no-img { padding-left: 13px; }
@@ -350,68 +338,6 @@ body {
 footer { margin-top: 70px; padding-top: 26px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10.5px; color: var(--faint); flex-wrap: wrap; }
 .logout { cursor: pointer; transition: var(--ease); background: none; border: none; font: inherit; color: inherit; }
 .logout:hover { color: var(--ink); }
-
-
-/* ---------- the diagnosis ---------- */
-.verdict-line {
-  font-family: var(--serif); font-style: italic; font-size: clamp(19px, 2.2vw, 24px); line-height: 1.35;
-  color: var(--ink); background: linear-gradient(180deg, transparent 60%, rgba(29,185,84,0.16) 60%);
-  padding: 4px 8px; align-self: flex-start; max-width: 64ch;
-}
-.diag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-@media (max-width: 640px) { .diag-grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
-.diag-card {
-  background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md);
-  padding: 18px; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden;
-}
-.diag-card.wide { grid-column: span 2; }
-@media (max-width: 640px) { .diag-card.wide { grid-column: span 2; } }
-.diag-card::after {
-  content: ""; position: absolute; right: -20px; top: -20px; width: 90px; height: 90px;
-  border-radius: 50%; background: radial-gradient(circle, rgba(29,185,84,0.10), transparent 65%);
-}
-.d-label { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--faint); }
-.d-value { font-size: 34px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; display: flex; align-items: baseline; gap: 3px; }
-.d-value small { font-size: 14px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
-.d-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
-.flag-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.flag {
-  font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 5px 11px; border-radius: 20px;
-  text-transform: lowercase;
-}
-.flag.red { background: rgba(239, 68, 68, 0.10); color: #B42222; border: 1px solid rgba(239,68,68,0.18); }
-.flag.green { background: var(--green-soft); color: var(--green-deep); border: 1px solid rgba(29,185,84,0.22); }
-.flag.none { background: rgba(12,15,13,0.05); color: var(--muted); }
-
-/* ---------- refinements ---------- */
-::selection { background: rgba(29,185,84,0.28); color: var(--ink); }
-button { font: inherit; }
-img { max-width: 100%; }
-.tab-btn:focus-visible, .pill:focus-visible, .btn:focus-visible, .mini-btn:focus-visible, .preset:focus-visible {
-  outline: 2px solid var(--green-deep); outline-offset: 3px;
-}
-.preset { position: relative; overflow: hidden; }
-.preset::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(circle at 80% 0%, rgba(29,185,84,0.14), transparent 55%);
-  opacity: 0; transition: opacity .3s ease;
-}
-.preset:hover::after { opacity: 1; }
-.btn:active { transform: translateY(0) scale(0.985); }
-.btn-green:focus-visible { box-shadow: 0 0 0 3px rgba(29,185,84,0.35); }
-.row:focus-within { background: #FFF; }
-.artist-card { will-change: transform; }
-.persona em { background: linear-gradient(180deg, transparent 62%, rgba(29,185,84,0.22) 62%); padding: 0 0.08em; }
-@media (max-width: 520px) {
-  .brand { font-size: 15px; }
-  .user-chip { font-size: 10px; padding: 4px 10px 4px 5px; }
-  .user-chip img { width: 22px; height: 22px; }
-  .top { padding: 9px 14px; border-radius: 32px; }
-  .persona { letter-spacing: -0.03em; }
-}
-/* subtle motion */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-#tabContent > * { animation: fadeUp .35s ease both; }
 </style>
 </head>
 <body>
@@ -429,9 +355,9 @@ const REDIRECT = location.origin + location.pathname;
 
 const app = document.getElementById("app");
 const store = {
-  get: k => localStorage.getItem("yms_" + k),
-  set: (k, v) => localStorage.setItem("yms_" + k, v),
-  del: k => localStorage.removeItem("yms_" + k),
+  get: k => localStorage.getItem("sai_tlm_" + k),
+  set: (k, v) => localStorage.setItem("sai_tlm_" + k, v),
+  del: k => localStorage.removeItem("sai_tlm_" + k),
 };
 
 const PALETTE = ["#1DB954", "#0E5A2B", "#7DE3A5", "#0C0F0D", "#8A958E", "#C9EFD8"];
@@ -668,16 +594,7 @@ function getMetrics() {
   const recentItems = DATA.recent?.items || [];
 
   const avgPop = pool.length ? pool.reduce((s, t) => s + (t.popularity || 0), 0) / pool.length : 50;
-  /* tougher curve: mainstream drags harder, deep-cut territory earns it.
-     jitter with a per-user hash so the score is never a lazy 40/50/70 */
-  const _rawObs = Math.max(0, 100 - avgPop);
-  const _curved = Math.pow(_rawObs / 100, 1.35) * 100 - 4;
-  const _seed = hashStr((DATA.me?.id || "guest") + "|" + (artists[0]?.name || "") + "|" + pool.length + "|" + Math.round(avgPop));
-  const _jitter = (_seed % 7) - 3; /* -3..+3 */
-  let obscurity = Math.max(1, Math.min(99, Math.round(_curved + _jitter)));
-  if (obscurity % 5 === 0) obscurity += (_seed & 1) ? -1 : 2;
-  if (obscurity % 10 === 0) obscurity -= (_seed & 2) ? 1 : -1;
-  obscurity = Math.max(1, Math.min(99, obscurity));
+  const obscurity = Math.round(100 - avgPop);
 
   const years = pool.map(t => parseInt((t.album?.release_date || "").slice(0, 4))).filter(Boolean);
   const avgYear = years.length ? Math.round(years.reduce((s, y) => s + y, 0) / years.length) : YEAR_NOW;
@@ -707,57 +624,6 @@ function getMetrics() {
   artists.forEach(a => (a.genres || []).forEach(g => { genreCounts[g] = (genreCounts[g] || 0) + 1; }));
   const genres = Object.entries(genreCounts).sort((a, b) => b[1] - a[1]);
 
-  /* ---- quirky, dashboard-ready diagnostics ---- */
-  /* delulu index: how detached the last-4-weeks self is from the all-time self */
-  const shortTop = new Set((DATA.topTracks.short_term?.items || []).slice(0, 20).map(t => t.id).filter(Boolean));
-  const longTop = new Set((DATA.topTracks.long_term?.items || []).slice(0, 20).map(t => t.id).filter(Boolean));
-  const _minSet = Math.max(1, Math.min(shortTop.size, longTop.size));
-  const _overlap = [...shortTop].filter(id => longTop.has(id)).length;
-  const delulu = shortTop.size && longTop.size ? Math.round((1 - _overlap / _minSet) * 100) : 50;
-
-  /* car-survival: total minutes of your top 5 on loop */
-  const _top5 = pool.slice(0, 5);
-  const _top5min = _top5.reduce((s, t) => s + (t.duration_ms || 210000), 0) / 60000;
-  const carHours = _top5min > 0 ? (_top5min / 60).toFixed(1) : "0.0";
-
-  /* recent play counts for extras */
-  const _rc = {};
-  (recentItems || []).forEach(i => { const id = i.track?.id; if (id) _rc[id] = (_rc[id] || 0) + 1; });
-  const top1Id = pool[0]?.id;
-  const numberOneStreak = top1Id ? (_rc[top1Id] || 0) : 0;
-
-  /* longest artist name in your top 20 — genuinely funny stat */
-  const longestArtistName = (artists.slice(0, 20).map(a => a.name).filter(Boolean)
-    .sort((a, b) => b.length - a.length)[0]) || null;
-
-  /* red / green flags */
-  const flags = [];
-  if (night >= 0.32) flags.push("nocturnal");
-  if (explicit >= 40) flags.push("unfiltered");
-  if (consistency >= 0.55) flags.push("same songs on loop");
-  if (uniqueArtists && pool.length && uniqueArtists / pool.length <= 0.5) flags.push("one-artist era");
-  if (obscurity >= 72) flags.push("gatekeeper energy");
-  if (delulu >= 70) flags.push("main character syndrome");
-  const greens = [];
-  if (variety >= 0.7) greens.push("actually curious");
-  if (avgYear && (YEAR_NOW - avgYear) <= 4 && avgYear >= YEAR_NOW - 6) greens.push("terminally current");
-  if (obscurity >= 55 && obscurity < 72) greens.push("taste, quietly");
-  if (explicit < 25 && night < 0.25) greens.push("well-adjusted (suspicious)");
-  if (delulu < 30) greens.push("emotionally stable");
-
-  /* verdict — one sassy line ranking the loudest signal */
-  let verdict;
-  if (obscurity >= 78) verdict = "your taste is a whole personality trait and everyone knows.";
-  else if (consistency >= 0.6) verdict = "you found your sound in 2022 and never left. respect.";
-  else if (delulu >= 70) verdict = "you are in an era. we can all tell. it\'s working for you.";
-  else if (night >= 0.4) verdict = "nothing you love was made for daylight.";
-  else if (variety >= 0.75 && obscurity < 40) verdict = "you have zero loyalty and a spotify-shaped attention span.";
-  else if (explicit >= 55) verdict = "your queue would not survive being aux at a family dinner.";
-  else verdict = "your taste is suspiciously well-behaved. that itself is a personality.";
-
-  /* love-language: one-liner from top genre */
-  const loveLanguage = genres[0]?.[0] || (artists[0]?.name ? "one artist, forever" : "vibes only");
-
   getMetrics._cache = {
     obscurity, avgYear, tasteAge, explicit, variety, uniqueArtists,
     consistency, night, nightPct: Math.round(night * 100), peak,
@@ -765,10 +631,6 @@ function getMetrics() {
     topGenre: genres[0]?.[0] || null,
     genres,
     poolSize: pool.length,
-    /* new */
-    delulu, carHours, numberOneStreak, longestArtistName,
-    flags, greens, verdict, loveLanguage,
-    top1Name: pool[0]?.name || null,
   };
   return getMetrics._cache;
 }
@@ -789,13 +651,11 @@ function obscureTop(n = 5, range) {
 }
 function hasGenreData() { return getMetrics().genres.length > 0; }
 function obscurityTitle(o) {
-  if (o >= 88) return "unwell in a beautiful way";
-  if (o >= 72) return "actual gatekeeper";
-  if (o >= 55) return "certified digger";
-  if (o >= 38) return "tastefully off-center";
-  if (o >= 22) return "radio friendly";
-  if (o >= 10) return "chart citizen";
-  return "you are the algorithm";
+  if (o >= 80) return "actual gatekeeper";
+  if (o >= 60) return "certified digger";
+  if (o >= 40) return "tastefully off-center";
+  if (o >= 20) return "radio friendly";
+  return "chart citizen";
 }
 
 /* ============================================================
@@ -806,7 +666,7 @@ const ARCHETYPES = {
     name: "the gatekeeper",
     vibe: "if it charts, it's over",
     openers: [
-      "your taste lives so far underground it pays rent to the earth's core. respectfully.",
+      "your taste lives so far underground it pays rent to the earth's core.",
       "you don't listen to music, you protect it. from other people. mostly out of spite.",
       "somewhere out there an algorithm tried to recommend you a hit song and you took it personally.",
     ],
@@ -1089,17 +949,17 @@ function renderLogin() {
   state.demo = false;
   app.innerHTML = `
     <div class="top">
-      <div class="brand"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>yourmusicstats<span class="ai">.ai</span></div>
+      <div class="brand"><span class="logo-orb"></span>spotify<span class="ai">.ai</span></div>
     </div>
     <div class="glass hero">
       <div class="hero-tag">✦ your listening, decoded</div>
-      <h1>Your Spotify, put on <em>trial</em>.</h1>
-      <p>Wrapped shouldn't come once a year. Get your listener archetype, a receipts panel, red flags, an obscurity score that actually judges you, deep cuts, fresh picks, one-tap playlists, and story cards built for posting.</p>
+      <h1>Your Spotify, but make it <em>interesting</em>.</h1>
+      <p>Wrapped shouldn't come once a year. Get your listener archetype, a lightly judgmental read on your taste, an obscurity score, your certified deep cuts, fresh song picks, one-tap playlists, and story cards built for posting.</p>
       <div class="btn-row">
         <button class="btn btn-green" id="loginBtn">connect spotify</button>
         <button class="btn btn-ghost" id="demoBtn">just looking — show me a demo</button>
       </div>
-      <div class="fine">runs entirely in your browser · nothing leaves your device · disconnect anytime</div>
+      <div class="fine">runs entirely in your browser · nothing leaves your device</div>
       <div class="feature-grid">
         <div class="feature"><span class="f-emoji">🔮</span><span class="f-name">the read</span><span class="f-desc">Your listener archetype plus a summary generated from your actual data. It will be accurate. It might be rude.</span></div>
         <div class="feature"><span class="f-emoji">🕳️</span><span class="f-name">certified deep cuts</span><span class="f-desc">The 5 songs in your rotation nobody else has found, with the receipts to prove it.</span></div>
@@ -1115,22 +975,22 @@ function renderShell() {
   const avatar = me.images?.[0]?.url;
   app.innerHTML = `
     <div class="top">
-      <div class="brand"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>yourmusicstats<span class="ai">.ai</span></div>
+      <div class="brand"><span class="logo-orb"></span>spotify<span class="ai">.ai</span></div>
       <div style="display:flex; align-items:center; gap:10px;">
         ${state.demo ? `<button class="btn btn-green" style="padding:8px 16px;" onclick="login()">connect for real</button>` : ""}
         <div class="user-chip ${avatar ? "" : "no-img"}">${avatar ? `<img src="${esc(avatar)}" alt="">` : ""}${state.demo ? "demo mode" : esc((me.display_name || "you").toLowerCase())}</div>
       </div>
     </div>
-    <nav class="tabs glass" role="tablist" aria-label="Sections">
-      <button class="tab-btn" role="tab" type="button" data-tab="dash" aria-selected="false">dashboard</button>
-      <button class="tab-btn" role="tab" type="button" data-tab="tracks" aria-selected="false">top tracks</button>
-      <button class="tab-btn" role="tab" type="button" data-tab="artists" aria-selected="false">top artists</button>
-      <button class="tab-btn" role="tab" type="button" data-tab="playlists" aria-selected="false">playlist studio</button>
-      <button class="tab-btn" role="tab" type="button" data-tab="story" aria-selected="false">story cards</button>
+    <nav class="tabs glass" aria-label="Sections">
+      <button class="tab-btn" data-tab="dash">dashboard</button>
+      <button class="tab-btn" data-tab="tracks">top tracks</button>
+      <button class="tab-btn" data-tab="artists">top artists</button>
+      <button class="tab-btn" data-tab="playlists">playlist studio</button>
+      <button class="tab-btn" data-tab="story">story cards</button>
     </nav>
     <div id="tabContent"></div>
     <footer>
-      <span>yourmusicstats.ai · not affiliated with spotify, obviously · your data never leaves this tab</span>
+      <span>spotify.ai — not affiliated with spotify, obviously</span>
       <button class="logout" onclick="store.del('token'); location.reload();">disconnect</button>
     </footer>`;
   app.querySelectorAll(".tab-btn").forEach(b => { b.onclick = () => setTab(b.dataset.tab); });
@@ -1139,7 +999,7 @@ function renderShell() {
 
 function setTab(tab) {
   state.tab = tab;
-  app.querySelectorAll(".tab-btn").forEach(b => { const on = b.dataset.tab === tab; b.classList.toggle("active", on); b.setAttribute("aria-selected", on); });
+  app.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
   const target = document.getElementById("tabContent");
   if (tab === "dash") target.innerHTML = viewDash();
   if (tab === "tracks") target.innerHTML = viewTracks();
@@ -1178,7 +1038,7 @@ function viewDash() {
             <span class="s-label">obscurity</span>
             <div class="dial-row">${dialSVG(m.obscurity)}</div>
             <span class="s-flair">${esc(obscurityTitle(m.obscurity))}</span>
-            <span class="s-desc">Graded on a curve. 100 is impossible. If it's over 70, you're insufferable at parties and you know it.</span>
+            <span class="s-desc">0 is pure chart music, 100 is songs only you and the artist's mom know.</span>
           </div>
           <div class="stat">
             <span class="s-label">taste age</span>
@@ -1201,50 +1061,6 @@ function viewDash() {
         </div>
       </div>
 
-      <div class="glass pane">
-        <div class="kicker">the diagnosis — quirky metrics, no science whatsoever</div>
-        <h2>The <em>diagnosis</em></h2>
-        <div class="verdict-line">"${esc(m.verdict)}"</div>
-        <div class="diag-grid">
-          <div class="diag-card">
-            <span class="d-label">delulu index</span>
-            <span class="d-value">${m.delulu}<small>%</small></span>
-            <span class="d-desc">${m.delulu >= 70 ? "your current-you and all-time-you would not recognize each other in a lineup." : m.delulu >= 40 ? "you\'re in a soft era. slightly rebranding." : "you\'ve been the same person musically forever. commitment behavior."}</span>
-          </div>
-          <div class="diag-card">
-            <span class="d-label">chronically online</span>
-            <span class="d-value">${m.nightPct}<small>%</small></span>
-            <span class="d-desc">${m.nightPct >= 40 ? "of your recent plays happen when normal people are asleep. your circadian rhythm is a suggestion." : m.nightPct >= 20 ? "you dabble in the 2am rotation. balanced. suspicious." : "you listen like someone who wakes up on purpose."}</span>
-          </div>
-          <div class="diag-card">
-            <span class="d-label">car-ride survival</span>
-            <span class="d-value">${m.carHours}<small>hrs</small></span>
-            <span class="d-desc">Locked in a car with only your top 5 on loop. That\'s how long before ${m.top1Name ? esc(m.top1Name) : "the first track"} starts sounding like a threat.</span>
-          </div>
-          <div class="diag-card">
-            <span class="d-label">#1 obsession</span>
-            <span class="d-value">×${m.numberOneStreak}</span>
-            <span class="d-desc">${m.numberOneStreak >= 4 ? "times you played your #1 in your last 50. we\'re telling on you." : m.numberOneStreak >= 1 ? "recent plays of your #1. a healthy little parasocial." : "your #1 didn\'t make it into your last 50. brave of you."}</span>
-          </div>
-          <div class="diag-card wide">
-            <span class="d-label">red flags detected</span>
-            <div class="flag-row">${m.flags.length ? m.flags.map(f => `<span class="flag red">🚩 ${esc(f)}</span>`).join("") : `<span class="flag none">clean as a whistle. weird.</span>`}</div>
-          </div>
-          <div class="diag-card wide">
-            <span class="d-label">green flags detected</span>
-            <div class="flag-row">${m.greens.length ? m.greens.map(f => `<span class="flag green">✿ ${esc(f)}</span>`).join("") : `<span class="flag none">taste is a hater. no green flags today.</span>`}</div>
-          </div>
-          ${m.longestArtistName ? `<div class="diag-card wide">
-            <span class="d-label">longest name in your rotation</span>
-            <span class="d-value" style="font-size:22px; text-transform:lowercase; letter-spacing:-0.02em;">${esc(m.longestArtistName)}</span>
-            <span class="d-desc">the artist your friends physically cannot remember the name of. that\'s your one.</span>
-          </div>` : ""}
-        </div>
-        <div class="read-actions">
-          <button class="btn btn-green" onclick="goStory('receipts')">share the receipts as a story</button>
-        </div>
-      </div>
-
       <div class="grid-2">
         <div class="stack">
           <div class="glass pane">
@@ -1257,7 +1073,7 @@ function viewDash() {
               <button class="mini-btn" onclick="goStory('deepcuts')">share ↗</button>
             </div>
             <div>${deepCutRows()}</div>
-            <button class="btn btn-ink" style="align-self:flex-start;" onclick="createPlaylist({name:'certified deep cuts', desc:'the songs nobody else found. made with yourmusicstats.ai', tracks: obscureTop(25)})">save 25 deep cuts as a playlist</button>
+            <button class="btn btn-ink" style="align-self:flex-start;" onclick="createPlaylist({name:'certified deep cuts', desc:'the songs nobody else found. made with spotify.ai', tracks: obscureTop(25)})">save 25 deep cuts as a playlist</button>
           </div>
 
           <div class="glass pane">
@@ -1366,7 +1182,7 @@ function recsBlock() {
         <span class="rec-reason">${esc(r.because)}</span>
       </div>`).join("")}
     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-      <button class="btn btn-green" onclick="createPlaylist({name:'${vault ? "bring these back" : "fresh finds"} · spotify.ai', desc:'${vault ? "songs i loved and abandoned." : "new songs picked from my own taste."} made with yourmusicstats.ai', tracks: state.recs.map(r => r.track)})">save all as playlist</button>
+      <button class="btn btn-green" onclick="createPlaylist({name:'${vault ? "bring these back" : "fresh finds"} · spotify.ai', desc:'${vault ? "songs i loved and abandoned." : "new songs picked from my own taste."} made with spotify.ai', tracks: state.recs.map(r => r.track)})">save all as playlist</button>
       <button class="btn btn-ghost" onclick="state.recs = null; generateRecs()">↻ new picks</button>
     </div>`;
 }
@@ -1720,11 +1536,11 @@ function viewPlaylists() {
     </div>`;
 }
 const PRESETS = {
-  rotation: () => ({ name: "rotation · " + new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }).toLowerCase(), desc: "my last 4 weeks, ranked. made with yourmusicstats.ai", range: "short_term", count: 25 }),
-  halfyear: () => ({ name: "the half-year heavy rotation", desc: "six months of my most played. made with yourmusicstats.ai", range: "medium_term", count: 50 }),
-  alltime: () => ({ name: "all-time favorites", desc: "the ones that never left. made with yourmusicstats.ai", range: "long_term", count: 50 }),
-  deepcuts: () => ({ name: "certified deep cuts", desc: "the songs nobody else found. made with yourmusicstats.ai", tracks: obscureTop(25) }),
-  throwbacks: () => ({ name: "the throwbacks", desc: "pre-2010 only. made with yourmusicstats.ai", range: "long_term", count: 50, filterBefore: 2010 }),
+  rotation: () => ({ name: "rotation · " + new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }).toLowerCase(), desc: "my last 4 weeks, ranked. made with spotify.ai", range: "short_term", count: 25 }),
+  halfyear: () => ({ name: "the half-year heavy rotation", desc: "six months of my most played. made with spotify.ai", range: "medium_term", count: 50 }),
+  alltime: () => ({ name: "all-time favorites", desc: "the ones that never left. made with spotify.ai", range: "long_term", count: 50 }),
+  deepcuts: () => ({ name: "certified deep cuts", desc: "the songs nobody else found. made with spotify.ai", tracks: obscureTop(25) }),
+  throwbacks: () => ({ name: "the throwbacks", desc: "pre-2010 only. made with spotify.ai", range: "long_term", count: 50, filterBefore: 2010 }),
 };
 document.addEventListener("click", e => {
   const btn = e.target.closest("[data-preset]");
@@ -1737,8 +1553,8 @@ function playlistResultChip() {
 }
 function createCustomPlaylist() {
   createPlaylist({
-    name: document.getElementById("plName").value.trim() || "my yourmusicstats.ai mix",
-    desc: document.getElementById("plDesc").value.trim() || "made with yourmusicstats.ai",
+    name: document.getElementById("plName").value.trim() || "my spotify.ai mix",
+    desc: document.getElementById("plDesc").value.trim() || "made with spotify.ai",
     range: document.getElementById("plRange").value,
     count: parseInt(document.getElementById("plCount").value),
     shuffle: document.getElementById("plShuffle").checked,
@@ -1764,7 +1580,7 @@ async function createPlaylist(opts) {
     toast("Creating your playlist…");
     const pl = await api(`/users/${DATA.me.id}/playlists`, {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: opts.name, description: opts.desc || "made with yourmusicstats.ai", public: !!opts.isPublic }),
+      body: JSON.stringify({ name: opts.name, description: opts.desc || "made with spotify.ai", public: !!opts.isPublic }),
     });
     if (!pl?.id) { toast("Spotify didn't accept that. Try disconnecting and reconnecting."); return; }
     await api(`/playlists/${pl.id}/tracks`, {
@@ -1805,7 +1621,7 @@ const STORY_THEMES = {
     ],
   },
 };
-const STORY_TEMPLATES = { read: "the read", receipts: "receipts", obscurity: "obscurity", deepcuts: "deep cuts", tracks: "top tracks", artists: "top artists" };
+const STORY_TEMPLATES = { read: "the read", obscurity: "obscurity", deepcuts: "deep cuts", tracks: "top tracks", artists: "top artists" };
 
 function viewStory() {
   const rangeMatters = ["tracks", "artists", "deepcuts"].includes(state.storyTemplate);
@@ -1950,17 +1766,16 @@ async function renderStoryCard() {
   ctx.stroke();
 
   /* header label */
-  const labels = { read: "THE READ", receipts: "THE RECEIPTS", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_SHORT[state.storyRange], tracks: "TOP TRACKS · " + RANGE_SHORT[state.storyRange], artists: "TOP ARTISTS · " + RANGE_SHORT[state.storyRange] };
+  const labels = { read: "THE READ", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_SHORT[state.storyRange], tracks: "TOP TRACKS · " + RANGE_SHORT[state.storyRange], artists: "TOP ARTISTS · " + RANGE_SHORT[state.storyRange] };
   ctx.textBaseline = "alphabetic";
   ctx.textAlign = "left";
   try { ctx.letterSpacing = "4px"; } catch (e) {}
   ctx.font = '600 23px "IBM Plex Mono", monospace';
   ctx.fillStyle = "#1DB954";
-  ctx.fillText(clipText(ctx, "YOURMUSICSTATS.AI · " + labels[tpl], cw - 148), cx + 74, cy + 116);
+  ctx.fillText(clipText(ctx, "SPOTIFY.AI · " + labels[tpl], cw - 148), cx + 74, cy + 116);
   try { ctx.letterSpacing = "0px"; } catch (e) {}
 
   if (tpl === "read") await storyRead(ctx, theme, cx, cy, cw, ch);
-  else if (tpl === "receipts") await storyReceipts(ctx, theme, cx, cy, cw, ch);
   else if (tpl === "obscurity") await storyObscurity(ctx, theme, cx, cy, cw, ch);
   else await storyList(ctx, theme, cx, cy, cw, ch, tpl);
 
@@ -1975,7 +1790,7 @@ async function renderStoryCard() {
   ctx.fillText(dateStr, cx + cw - 74, cy + ch - 66);
   ctx.textAlign = "center";
   ctx.font = '600 26px "IBM Plex Mono", monospace';
-  ctx.fillText("yourmusicstats.ai", W / 2, cy + ch + 92);
+  ctx.fillText("spotify.ai", W / 2, cy + ch + 92);
   ctx.textAlign = "left";
 }
 
@@ -2034,72 +1849,6 @@ async function storyRead(ctx, theme, cx, cy, cw, ch) {
     ctx.fillStyle = theme.ink;
     ctx.fillText(clipText(ctx, String(val), colW - 34), sx, stripY + 54);
   });
-}
-
-async function storyReceipts(ctx, theme, cx, cy, cw, ch) {
-  const m = getMetrics();
-  /* title */
-  drawMixedTitle(ctx, cx + 74, cy + 280, "the", "receipts", 104, theme.ink);
-  ctx.font = "500 34px Archivo, sans-serif";
-  ctx.fillStyle = theme.muted;
-  ctx.fillText("four stats. no defense.", cx + 74, cy + 342);
-
-  /* 2x2 grid of big stats */
-  const gridTop = cy + 470;
-  const gridLeft = cx + 74;
-  const gridW = cw - 148;
-  const colW = gridW / 2;
-  const rowH = 340;
-  const items = [
-    { label: "OBSCURITY", value: String(m.obscurity), suffix: "/100", flair: obscurityTitle(m.obscurity) },
-    { label: "TASTE AGE", value: String(m.tasteAge), suffix: "yrs", flair: "avg " + m.avgYear },
-    { label: "PEAK HOUR", value: (m.peak || "—").replace(/am|pm/, ""), suffix: (m.peak || "").match(/am|pm/)?.[0] || "", flair: m.night >= 0.35 ? "nocturnal" : "daylight" },
-    { label: "DELULU", value: String(m.delulu), suffix: "%", flair: m.delulu >= 60 ? "in an era" : m.delulu >= 30 ? "soft rebrand" : "same you, always" },
-  ];
-  items.forEach((it, i) => {
-    const col = i % 2, row = Math.floor(i / 2);
-    const x = gridLeft + col * colW;
-    const y = gridTop + row * rowH;
-    /* label */
-    ctx.font = '600 22px "IBM Plex Mono", monospace';
-    ctx.fillStyle = theme.faint;
-    try { ctx.letterSpacing = "3px"; } catch (e) {}
-    ctx.fillText(it.label, x, y);
-    try { ctx.letterSpacing = "0px"; } catch (e) {}
-    /* big value */
-    ctx.font = "900 148px Archivo, sans-serif";
-    ctx.fillStyle = theme.ink;
-    ctx.fillText(it.value, x, y + 148);
-    const valW = ctx.measureText(it.value).width;
-    /* suffix */
-    if (it.suffix) {
-      ctx.font = '600 34px "IBM Plex Mono", monospace';
-      ctx.fillStyle = theme.faint;
-      ctx.fillText(it.suffix, x + valW + 10, y + 148);
-    }
-    /* flair */
-    ctx.font = 'italic 400 38px "Instrument Serif", serif';
-    ctx.fillStyle = "#1DB954";
-    ctx.fillText(clipText(ctx, it.flair, colW - 30), x, y + 210);
-  });
-
-  /* verdict strip at the bottom */
-  const stripY = cy + ch - 250;
-  ctx.strokeStyle = theme.divider;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(cx + 74, stripY - 58);
-  ctx.lineTo(cx + cw - 74, stripY - 58);
-  ctx.stroke();
-  ctx.font = '600 21px "IBM Plex Mono", monospace';
-  ctx.fillStyle = theme.faint;
-  try { ctx.letterSpacing = "3px"; } catch (e) {}
-  ctx.fillText("THE VERDICT", cx + 74, stripY);
-  try { ctx.letterSpacing = "0px"; } catch (e) {}
-  ctx.font = 'italic 400 34px "Instrument Serif", serif';
-  ctx.fillStyle = theme.ink;
-  const vlines = wrapLines(ctx, '"' + m.verdict + '"', cw - 148, 3);
-  vlines.forEach((line, i) => ctx.fillText(line, cx + 74, stripY + 48 + i * 46));
 }
 
 async function storyObscurity(ctx, theme, cx, cy, cw, ch) {
