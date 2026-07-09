@@ -167,7 +167,7 @@ body {
 .track-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 26px; }
 @media (max-width: 880px) { .track-cols { grid-template-columns: 1fr; } }
 .row {
-  display: grid; grid-template-columns: 34px 46px 1fr 66px; gap: 14px; align-items: center;
+  display: grid; grid-template-columns: 34px 46px 1fr 94px; gap: 14px; align-items: center;
   padding: 9px 10px; border-radius: var(--r-sm); border-bottom: 1px solid rgba(12,15,13,0.04); transition: var(--ease);
 }
 .row:hover { background: #FFF; }
@@ -183,8 +183,9 @@ body {
 .row-meta .t-artist { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 .pop-cell { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .pop-cell .pop-num { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
-.pop-track { width: 52px; height: 4px; border-radius: 3px; background: rgba(12,15,13,0.07); overflow: hidden; }
+.pop-track { width: 60px; height: 4px; border-radius: 3px; background: rgba(12,15,13,0.07); overflow: hidden; }
 .pop-fill { height: 100%; border-radius: 3px; background: var(--green); }
+.pop-recent { font-family: var(--mono); font-size: 9px; font-weight: 600; color: var(--green-deep); background: var(--green-soft); padding: 1px 7px; border-radius: 20px; }
 .deep-pop { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--green-deep); background: var(--green-soft); padding: 3px 9px; border-radius: 20px; justify-self: end; }
 
 /* ---------- recommendations ---------- */
@@ -343,6 +344,7 @@ const store = {
 
 const PALETTE = ["#1DB954", "#0E5A2B", "#7DE3A5", "#0C0F0D", "#8A958E", "#C9EFD8"];
 const RANGE_LABEL = { short_term: "last 4 weeks", medium_term: "last 6 months", long_term: "all time" };
+const RANGE_SHORT = { short_term: "4 WEEKS", medium_term: "6 MONTHS", long_term: "ALL TIME" };
 const YEAR_NOW = new Date().getFullYear();
 
 let DATA = null;
@@ -391,6 +393,12 @@ function mulberry32(a) {
   };
 }
 const pickFrom = (rng, arr) => arr[Math.floor(rng() * arr.length)];
+function fmtFollowers(n) {
+  if (!n && n !== 0) return null;
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(".0", "") + "m";
+  if (n >= 1e3) return Math.round(n / 1e3) + "k";
+  return String(n);
+}
 
 /* ---------- OAuth (PKCE) ---------- */
 function randString(len) {
@@ -429,6 +437,15 @@ async function api(endpoint, opts = {}) {
   if (res.status === 204) return {};
   return res.json();
 }
+async function apiStrict(endpoint, opts = {}) {
+  const res = await fetch("https://api.spotify.com/v1" + endpoint, {
+    ...opts, headers: { ...opts.headers, Authorization: "Bearer " + store.get("token") },
+  });
+  if (res.status === 401) { store.del("token"); renderLogin(); throw new Error("expired"); }
+  if (!res.ok) throw new Error("http " + res.status);
+  if (res.status === 204) return {};
+  return res.json();
+}
 
 /* ---------- data ---------- */
 async function loadData() {
@@ -451,10 +468,51 @@ async function loadData() {
       topTracks: { short_term: tS, medium_term: tM, long_term: tL },
       topArtists: { short_term: aS, medium_term: aM, long_term: aL },
     };
+    await rehydrateData();
     renderShell();
   } catch (e) {
     if (e.message !== "expired") renderLogin();
   }
+}
+
+/* Spotify sometimes ships top-lists with zeroed popularity or empty genres.
+   Best-effort refetch from the canonical /tracks and /artists endpoints. */
+async function rehydrateData() {
+  try {
+    const byTrackId = {};
+    ["short_term", "medium_term", "long_term"].forEach(r =>
+      (DATA.topTracks[r]?.items || []).forEach(t => { if (t.id) (byTrackId[t.id] = byTrackId[t.id] || []).push(t); }));
+    const tIds = Object.keys(byTrackId);
+    const zeroShare = tIds.length ? tIds.filter(id => !(byTrackId[id][0].popularity > 0)).length / tIds.length : 0;
+    if (tIds.length && zeroShare > 0.4) {
+      for (let i = 0; i < tIds.length; i += 50) {
+        const res = await apiStrict("/tracks?ids=" + tIds.slice(i, i + 50).join(","));
+        (res.tracks || []).forEach(ft => {
+          if (ft && byTrackId[ft.id]) byTrackId[ft.id].forEach(t => {
+            t.popularity = ft.popularity;
+            if (!t.album?.release_date && ft.album) t.album = ft.album;
+          });
+        });
+      }
+    }
+  } catch (e) { /* keep whatever we had */ }
+  try {
+    const byArtistId = {};
+    ["short_term", "medium_term", "long_term"].forEach(r =>
+      (DATA.topArtists[r]?.items || []).forEach(a => { if (a.id) (byArtistId[a.id] = byArtistId[a.id] || []).push(a); }));
+    const aIds = Object.keys(byArtistId);
+    const emptyShare = aIds.length ? aIds.filter(id => !(byArtistId[id][0].genres || []).length).length / aIds.length : 0;
+    if (aIds.length && emptyShare > 0.5) {
+      for (let i = 0; i < aIds.length; i += 50) {
+        const res = await apiStrict("/artists?ids=" + aIds.slice(i, i + 50).join(","));
+        (res.artists || []).forEach(fa => {
+          if (fa && byArtistId[fa.id]) byArtistId[fa.id].forEach(a => {
+            if (!(a.genres || []).length) a.genres = fa.genres || [];
+          });
+        });
+      }
+    }
+  } catch (e) { /* keep whatever we had */ }
 }
 
 /* ============================================================
@@ -515,6 +573,16 @@ function getMetrics() {
     poolSize: pool.length,
   };
   return getMetrics._cache;
+}
+function recentPlayCounts() {
+  const counts = {};
+  (DATA.recent?.items || []).forEach(i => { const id = i.track?.id; if (id) counts[id] = (counts[id] || 0) + 1; });
+  return counts;
+}
+function estPlays(rank, range) {
+  const top1 = { short_term: 55, medium_term: 260, long_term: 900 }[range] || 100;
+  const floor = range === "long_term" ? 8 : 3;
+  return Math.max(floor, Math.round(top1 / Math.pow(rank, 0.72)));
 }
 function obscureTop(n = 5, range) {
   const pool = analysisPool(range).slice();
@@ -959,7 +1027,7 @@ function viewDash() {
           <div class="glass pane">
             <div class="kicker">the sound</div>
             <h2>What you're into</h2>
-            <div class="chips">${m.genres.slice(0, 8).map(([g, n]) => `<span class="chip">${esc(g)}<span class="c-count">×${n}</span></span>`).join("") || `<span class="empty-note">no genre data yet — keep listening.</span>`}</div>
+            <div class="chips">${m.genres.slice(0, 8).map(([g, n]) => `<span class="chip">${esc(g)}<span class="c-count">×${n}</span></span>`).join("") || `<span class="empty-note">spotify quietly stopped sharing genre data with apps in 2025, so this section is at their mercy. if they bring it back, it fills in on its own.</span>`}</div>
           </div>
         </div>
       </div>
@@ -1008,8 +1076,14 @@ function recsBlock() {
       <button class="btn btn-green" onclick="generateRecs()">find me songs</button>
       <span class="caption">pulls live from spotify — takes a couple seconds</span>
     </div>`;
-  if (!state.recs.length) return `<div class="empty-note">couldn't find anything you don't already have. genuinely impressive.</div>`;
+  if (!state.recs.length) return `
+    <div class="rec-empty">
+      <div class="empty-note" style="text-align:left; padding:6px 0;">${esc(state.recsNote || "couldn't find anything new right now.")}</div>
+      <button class="btn btn-ghost" onclick="state.recs = null; generateRecs()">↻ try again</button>
+    </div>`;
+  const vault = state.recsSource === "vault";
   return `
+    ${vault ? `<div class="caption" style="margin-bottom:8px;">${esc(state.recsNote || "")}</div>` : ""}
     ${state.recs.map(r => `
       <div class="rec-row">
         <div class="art"><img src="${esc(r.track.album?.images?.[2]?.url || r.track.album?.images?.[0]?.url || "")}" alt="" loading="lazy"></div>
@@ -1017,56 +1091,85 @@ function recsBlock() {
           <div class="t-name">${esc(r.track.name)}</div>
           <div class="t-artist">${esc(r.track.artists.map(a => a.name).join(", "))}</div>
         </div>
-        <span class="rec-reason">bc ${esc(r.because)}</span>
+        <span class="rec-reason">${esc(r.because)}</span>
       </div>`).join("")}
     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-      <button class="btn btn-green" onclick="createPlaylist({name:'fresh finds · spotify.ai', desc:'new songs picked from my own taste. made with spotify.ai', tracks: state.recs.map(r => r.track)})">save all as playlist</button>
+      <button class="btn btn-green" onclick="createPlaylist({name:'${vault ? "bring these back" : "fresh finds"} · spotify.ai', desc:'${vault ? "songs i loved and abandoned." : "new songs picked from my own taste."} made with spotify.ai', tracks: state.recs.map(r => r.track)})">save all as playlist</button>
       <button class="btn btn-ghost" onclick="state.recs = null; generateRecs()">↻ new picks</button>
     </div>`;
 }
 async function generateRecs() {
-  const target = document.getElementById("recsTarget");
-  if (state.demo) {
-    state.recs = demoRecs();
-    if (target) target.innerHTML = recsBlock();
-    return;
-  }
+  const paint = () => { const t = document.getElementById("recsTarget"); if (t) t.innerHTML = recsBlock(); };
+  if (state.demo) { state.recs = demoRecs(); state.recsSource = "live"; paint(); return; }
   state.recsLoading = true;
-  if (target) target.innerHTML = recsBlock();
+  state.recsNote = "";
+  paint();
+
+  const known = new Set();
+  ["short_term", "medium_term", "long_term"].forEach(r => (DATA.topTracks[r]?.items || []).forEach(t => known.add(t.id)));
+  (DATA.recent?.items || []).forEach(i => { if (i.track?.id) known.add(i.track.id); });
+  const seenNames = new Set();
+  const keyOf = t => (t.name + "::" + (t.artists?.[0]?.name || "")).toLowerCase();
+  const m = getMetrics();
+  const roster = bestArtists();
+  const seeds = roster.slice(3, 15);
+  let pool = [];
+  const addTrack = (t, because) => {
+    if (!t?.id || known.has(t.id) || seenNames.has(keyOf(t))) return;
+    seenNames.add(keyOf(t));
+    const popScore = m.obscurity >= 50 ? (100 - (t.popularity || 0)) : (t.popularity || 0);
+    pool.push({ track: t, because: "bc " + because, score: popScore + Math.random() * 20 });
+  };
+
+  let failures = 0, lastErr = "";
   try {
-    const roster = bestArtists();
-    const seeds = roster.slice(3, 13);
-    if (!seeds.length) { state.recs = []; state.recsLoading = false; if (target) target.innerHTML = recsBlock(); return; }
-
-    const known = new Set();
-    ["short_term", "medium_term", "long_term"].forEach(r => (DATA.topTracks[r]?.items || []).forEach(t => known.add(t.id)));
-
-    const m = getMetrics();
-    const results = await Promise.all(seeds.slice(0, 8).map(a =>
-      api(`/artists/${a.id}/top-tracks?market=US`).then(res => ({ artist: a, tracks: res.tracks || [] })).catch(() => ({ artist: a, tracks: [] }))
-    ));
-
-    const seen = new Set();
-    let pool = [];
-    results.forEach(({ artist, tracks }) => {
-      tracks.forEach(t => {
-        if (known.has(t.id) || seen.has(t.id)) return;
-        seen.add(t.id);
-        const popScore = m.obscurity >= 50 ? (100 - (t.popularity || 0)) : (t.popularity || 0);
-        pool.push({ track: t, because: artist.name, score: popScore + Math.random() * 20 });
+    /* tier 1 — artist top tracks (blocked with 403 for some newer dev-mode apps) */
+    if (seeds.length) {
+      const results = await Promise.all(seeds.slice(0, 8).map(a =>
+        apiStrict(`/artists/${a.id}/top-tracks?market=US`)
+          .then(res => ({ artist: a, tracks: res.tracks || [] }))
+          .catch(e => { if (e.message === "expired") throw e; failures++; lastErr = e.message; return { artist: a, tracks: [] }; })
+      ));
+      results.forEach(({ artist, tracks }) => tracks.forEach(t => addTrack(t, artist.name)));
+    }
+    /* tier 2 — search, still open to all apps */
+    if (!pool.length && seeds.length) {
+      const results = await Promise.all(seeds.slice(0, 6).map(a =>
+        apiStrict(`/search?type=track&limit=10&q=${encodeURIComponent('artist:"' + a.name + '"')}`)
+          .then(res => ({ artist: a, tracks: res.tracks?.items || [] }))
+          .catch(e => { if (e.message === "expired") throw e; lastErr = e.message; return { artist: a, tracks: [] }; })
+      ));
+      results.forEach(({ artist, tracks }) => tracks.forEach(t => addTrack(t, artist.name)));
+    }
+    if (pool.length) {
+      pool.sort((a, b) => b.score - a.score);
+      state.recs = pool.slice(0, 10);
+      state.recsSource = "live";
+    } else {
+      /* tier 3 — the vault: songs you loved and dropped. zero api calls, cannot fail. */
+      const shortIds = new Set((DATA.topTracks.short_term?.items || []).map(t => t.id));
+      const vaultSeen = new Set();
+      const vault = [];
+      [...(DATA.topTracks.medium_term?.items || []), ...(DATA.topTracks.long_term?.items || [])].forEach(t => {
+        if (!t?.id || shortIds.has(t.id) || vaultSeen.has(t.id)) return;
+        vaultSeen.add(t.id);
+        vault.push({ track: t, because: "you dropped this" });
       });
-    });
-    pool.sort((a, b) => b.score - a.score);
-    state.recs = pool.slice(0, 10);
-    state.recsLoading = false;
-    if (document.getElementById("recsTarget")) document.getElementById("recsTarget").innerHTML = recsBlock();
-    if (!state.recs.length) toast("Nothing new found — your charts already cover these artists.");
+      shuffleArr(vault);
+      state.recs = vault.slice(0, 10);
+      state.recsSource = "vault";
+      state.recsNote = state.recs.length
+        ? (failures ? `spotify blocks live picks for this app (${lastErr}) — so here are songs from your own history you've abandoned. bring one back.` : "nothing new found outside your charts — so here are songs you've abandoned. bring one back.")
+        : "spotify wouldn't give up anything new and your history is too consistent to mine. genuinely impressive.";
+    }
   } catch (e) {
-    state.recsLoading = false;
-    state.recs = null;
-    if (document.getElementById("recsTarget")) document.getElementById("recsTarget").innerHTML = recsBlock();
-    if (e.message !== "expired") toast("Couldn't pull recommendations. Try again in a minute.");
+    if (e.message === "expired") return;
+    state.recs = [];
+    state.recsNote = "couldn't reach spotify (" + e.message + "). give it a minute and try again.";
+    state.recsSource = "vault";
   }
+  state.recsLoading = false;
+  paint();
 }
 
 /* ---------- charts ---------- */
@@ -1142,7 +1245,7 @@ function viewTracks() {
     <div class="glass pane">
       <div class="kicker">the charts</div>
       <h2>Your top tracks, <em>ranked</em></h2>
-      <div class="sub">Straight from Spotify, in order. The bar shows worldwide popularity — shorter bar, deeper cut.</div>
+      <div class="sub">Straight from Spotify, in order. Heads up: Spotify doesn't share real lifetime play counts with any app — the ~ numbers are estimates based on your rankings, the green ×N chips are actual plays from your last 50, and the bar is worldwide popularity (shorter bar, deeper cut).</div>
       <div class="controls">
         <div class="pills">
           ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.trackRange === r}" onclick="setTrackRange('${r}')">${RANGE_LABEL[r]}</button>`).join("")}
@@ -1159,6 +1262,7 @@ function viewTracks() {
 function trackRows() {
   const items = (DATA.topTracks[state.trackRange]?.items || []).slice(0, state.trackLimit);
   if (!items.length) return `<div class="empty-note">nothing here yet — spotify needs a little more listening history for this window.</div>`;
+  const rc = recentPlayCounts();
   return items.map((t, i) => `
     <div class="row">
       <div class="rank ${i < 3 ? "medal" : ""}">${i + 1}</div>
@@ -1168,8 +1272,9 @@ function trackRows() {
         <div class="t-artist">${esc(t.artists.map(a => a.name).join(", "))}</div>
       </div>
       <div class="pop-cell">
-        <span class="pop-num">${t.popularity || 0}</span>
-        <div class="pop-track"><div class="pop-fill" style="width:${t.popularity || 0}%"></div></div>
+        <span class="pop-num">~${estPlays(i + 1, state.trackRange)} plays</span>
+        <div class="pop-track" title="worldwide popularity: ${t.popularity ?? "unknown"}/100"><div class="pop-fill" style="width:${t.popularity || 0}%"></div></div>
+        ${rc[t.id] ? `<span class="pop-recent">×${rc[t.id]} recent</span>` : ""}
       </div>
     </div>`).join("");
 }
@@ -1202,7 +1307,7 @@ function artistCards() {
       ${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : `<div class="a-fallback">${esc((a.name || "?")[0].toUpperCase())}</div>`}
       <div class="a-meta">
         <div class="a-name">${esc(a.name)}</div>
-        <div class="a-genres">${esc((a.genres || []).slice(0, 2).join(" · ") || "genre unknown")}</div>
+        <div class="a-genres">${esc((a.genres || []).slice(0, 2).join(" · ") || (fmtFollowers(a.followers?.total) ? fmtFollowers(a.followers.total) + " followers" : "—"))}</div>
       </div>
       <span class="a-rank">#${i + 1}</span>
     </div>`;
@@ -1519,13 +1624,13 @@ async function renderStoryCard() {
   ctx.stroke();
 
   /* header label */
-  const labels = { read: "THE READ", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_LABEL[state.storyRange].toUpperCase(), tracks: "TOP TRACKS · " + RANGE_LABEL[state.storyRange].toUpperCase(), artists: "TOP ARTISTS · " + RANGE_LABEL[state.storyRange].toUpperCase() };
+  const labels = { read: "THE READ", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_SHORT[state.storyRange], tracks: "TOP TRACKS · " + RANGE_SHORT[state.storyRange], artists: "TOP ARTISTS · " + RANGE_SHORT[state.storyRange] };
   ctx.textBaseline = "alphabetic";
   ctx.textAlign = "left";
-  try { ctx.letterSpacing = "6px"; } catch (e) {}
-  ctx.font = '600 25px "IBM Plex Mono", monospace';
+  try { ctx.letterSpacing = "4px"; } catch (e) {}
+  ctx.font = '600 23px "IBM Plex Mono", monospace';
   ctx.fillStyle = "#1DB954";
-  ctx.fillText("SPOTIFY.AI  ·  " + labels[tpl], cx + 74, cy + 116);
+  ctx.fillText(clipText(ctx, "SPOTIFY.AI · " + labels[tpl], cw - 148), cx + 74, cy + 116);
   try { ctx.letterSpacing = "0px"; } catch (e) {}
 
   if (tpl === "read") await storyRead(ctx, theme, cx, cy, cw, ch);
@@ -1556,61 +1661,65 @@ async function storyRead(ctx, theme, cx, cy, cw, ch) {
 
   ctx.font = "500 34px Archivo, sans-serif";
   ctx.fillStyle = theme.muted;
-  ctx.fillText("i am", cx + 74, cy + 210);
+  ctx.fillText("i am", cx + 74, cy + 214);
 
-  let size = 108;
-  ctx.font = `900 ${size}px Archivo, sans-serif`;
-  while (size > 60) {
+  let size = 104;
+  while (size > 56) {
     ctx.font = `900 ${size}px Archivo, sans-serif`;
     const wid1 = ctx.measureText(w1).width;
     ctx.font = `italic 400 ${size}px "Instrument Serif", serif`;
     const wid2 = ctx.measureText(" " + w2).width;
-    if (wid1 + wid2 + 40 < cw - 148) break;
+    if (wid1 + wid2 + 44 < cw - 148) break;
     size -= 6;
   }
-  drawMixedTitle(ctx, cx + 70, cy + 330, w1, w2, size, theme.ink);
+  drawMixedTitle(ctx, cx + 74, cy + 332, w1, w2, size, theme.ink);
 
-  ctx.font = '600 27px "IBM Plex Mono", monospace';
+  ctx.font = '600 26px "IBM Plex Mono", monospace';
   ctx.fillStyle = "#1DB954";
-  ctx.fillText(r.vibe, cx + 74, cy + 398);
+  ctx.fillText(clipText(ctx, r.vibe, cw - 148), cx + 74, cy + 400);
 
+  /* body — hard cap on line count so it can never run into the stats strip */
+  const stripY = cy + ch - 250;
+  const bodyTop = cy + 496;
+  const lineH = 58;
+  const maxLines = Math.floor((stripY - 90 - bodyTop) / lineH);
   ctx.font = "500 37px Archivo, sans-serif";
   ctx.fillStyle = theme.muted;
-  const lines = wrapLines(ctx, r.plain, cw - 148, 14);
-  lines.forEach((line, i) => ctx.fillText(line, cx + 74, cy + 490 + i * 56));
+  const lines = wrapLines(ctx, r.plain, cw - 148, maxLines);
+  lines.forEach((line, i) => ctx.fillText(line, cx + 74, bodyTop + i * lineH));
 
   /* stats strip */
-  const stripY = cy + ch - 260;
   ctx.strokeStyle = theme.divider;
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(cx + 74, stripY - 60);
-  ctx.lineTo(cx + cw - 74, stripY - 60);
+  ctx.moveTo(cx + 74, stripY - 58);
+  ctx.lineTo(cx + cw - 74, stripY - 58);
   ctx.stroke();
-  const stats = [["obscurity", m.obscurity + "/100"], ["taste age", m.tasteAge + " yrs"], ["top genre", (m.topGenre || "—")]];
+  const thirdStat = m.topGenre ? ["top genre", m.topGenre] : ["status", obscurityTitle(m.obscurity)];
+  const stats = [["obscurity", m.obscurity + "/100"], ["taste age", m.tasteAge + " yrs"], thirdStat];
   const colW = (cw - 148) / 3;
   stats.forEach(([label, val], i) => {
     const sx = cx + 74 + i * colW;
-    ctx.font = '600 22px "IBM Plex Mono", monospace';
+    ctx.font = '600 21px "IBM Plex Mono", monospace';
     ctx.fillStyle = theme.faint;
     ctx.fillText(label.toUpperCase(), sx, stripY);
-    ctx.font = "800 40px Archivo, sans-serif";
+    ctx.font = "800 38px Archivo, sans-serif";
     ctx.fillStyle = theme.ink;
-    ctx.fillText(clipText(ctx, String(val), colW - 30), sx, stripY + 56);
+    ctx.fillText(clipText(ctx, String(val), colW - 34), sx, stripY + 54);
   });
 }
 
 async function storyObscurity(ctx, theme, cx, cy, cw, ch) {
   const m = getMetrics();
-  drawMixedTitle(ctx, cx + 70, cy + 260, "the", "deep end", 104, theme.ink);
+  drawMixedTitle(ctx, cx + 74, cy + 256, "the", "deep end", 100, theme.ink);
   ctx.font = "500 34px Archivo, sans-serif";
   ctx.fillStyle = theme.muted;
-  ctx.fillText("my obscurity score", cx + 74, cy + 322);
+  ctx.fillText("my obscurity score", cx + 74, cy + 318);
 
-  /* giant number + arc */
-  const gx = cx + cw / 2, gy = cy + 760;
-  const R = 300;
-  ctx.lineWidth = 34;
+  /* gauge */
+  const gx = cx + cw / 2, gy = cy + 690;
+  const R = 265;
+  ctx.lineWidth = 30;
   ctx.lineCap = "round";
   ctx.strokeStyle = theme.divider;
   ctx.beginPath();
@@ -1618,33 +1727,33 @@ async function storyObscurity(ctx, theme, cx, cy, cw, ch) {
   ctx.stroke();
   ctx.strokeStyle = "#1DB954";
   ctx.beginPath();
-  ctx.arc(gx, gy, R, Math.PI * 0.8, Math.PI * (0.8 + 1.4 * (m.obscurity / 100)));
+  ctx.arc(gx, gy, R, Math.PI * 0.8, Math.PI * (0.8 + 1.4 * (Math.max(1, m.obscurity) / 100)));
   ctx.stroke();
 
   ctx.textAlign = "center";
-  ctx.font = "900 250px Archivo, sans-serif";
+  ctx.font = "900 215px Archivo, sans-serif";
   ctx.fillStyle = theme.ink;
-  ctx.fillText(String(m.obscurity), gx, gy + 60);
-  ctx.font = '600 34px "IBM Plex Mono", monospace';
+  ctx.fillText(String(m.obscurity), gx, gy + 50);
+  ctx.font = '600 32px "IBM Plex Mono", monospace';
   ctx.fillStyle = theme.faint;
-  ctx.fillText("/100", gx, gy + 130);
-  ctx.font = 'italic 400 62px "Instrument Serif", serif';
+  ctx.fillText("/100", gx, gy + 116);
+  ctx.font = 'italic 400 58px "Instrument Serif", serif';
   ctx.fillStyle = "#1DB954";
-  ctx.fillText(obscurityTitle(m.obscurity), gx, gy + R + 130);
+  ctx.fillText(obscurityTitle(m.obscurity), gx, gy + R + 106);
   ctx.textAlign = "left";
 
-  /* top 3 deepest cuts */
+  /* top 3 deepest cuts — sits well above the card footer */
   const cuts = obscureTop(3);
-  const listY = gy + R + 220;
-  ctx.font = '600 24px "IBM Plex Mono", monospace';
+  const listY = gy + R + 196;
+  ctx.font = '600 23px "IBM Plex Mono", monospace';
   ctx.fillStyle = theme.faint;
   ctx.fillText("MY DEEPEST CUTS", cx + 74, listY);
   cuts.forEach((t, i) => {
-    const y = listY + 62 + i * 58;
-    ctx.font = "700 34px Archivo, sans-serif";
+    const y = listY + 58 + i * 56;
+    ctx.font = "700 33px Archivo, sans-serif";
     ctx.fillStyle = theme.ink;
-    ctx.fillText(clipText(ctx, `${i + 1}. ${t.name}`, cw - 320), cx + 74, y);
-    ctx.font = '600 24px "IBM Plex Mono", monospace';
+    ctx.fillText(clipText(ctx, `${i + 1}. ${t.name}`, cw - 340), cx + 74, y);
+    ctx.font = '600 23px "IBM Plex Mono", monospace';
     ctx.fillStyle = "#1DB954";
     ctx.textAlign = "right";
     ctx.fillText((t.popularity || 0) + " pop", cx + cw - 74, y);
@@ -1711,7 +1820,7 @@ async function storyList(ctx, theme, cx, cy, cw, ch, tpl) {
     ctx.restore();
 
     const textX = artX + artSize + 44;
-    const maxTextW = cx + cw - 70 - textX - 110;
+    const maxTextW = cx + cw - 70 - textX - (isDeep ? 185 : 140);
     const subLine = useAlbum ? (it.artists || []).map(a => a.name).join(", ") : ((it.genres || [])[0] || "");
     ctx.font = "800 44px Archivo, sans-serif";
     ctx.fillStyle = theme.ink;
