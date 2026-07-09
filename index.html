@@ -3,592 +3,1093 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spotify.AI // Corporate Telemetry & Matrix Diagnostics</title>
+<title>spotify.ai — your listening, decoded</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-base: #ECEFF4;
-  --bg-card: rgba(255, 255, 255, 0.75);
-  --bg-card-solid: #FFFFFF;
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-inner-glow: rgba(255, 255, 255, 0.9);
-  --spotify-green: #1DB954; 
-  --spotify-green-hover: #1ed760;
-  --chart-line: #1473E6;
-  --gemini-purple: #7A5CFF;
-  --text-main: #11141A;
-  --text-muted: #4B5262; 
-  --text-light: #7E8696;
+  --bg: #EEF0F4;
+  --ink: #101319;
+  --muted: #4E5666;
+  --faint: #8A92A3;
+  --card: rgba(255, 255, 255, 0.72);
+  --card-solid: #FFFFFF;
+  --line: rgba(16, 19, 25, 0.07);
+  --green: #1DB954;
+  --green-hover: #1ed760;
+  --blue: #1473E6;
+  --purple: #7A5CFF;
+  --pink: #FF66B2;
+  --amber: #F5A300;
   --mono: 'IBM Plex Mono', monospace;
-  --disp: 'Archivo', sans-serif;
-  --radius-lg: 20px;
-  --radius-md: 14px;
-  --radius-sm: 8px;
-  --transition-smooth: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  --sans: 'Archivo', sans-serif;
+  --serif: 'Instrument Serif', serif;
+  --r-lg: 22px;
+  --r-md: 15px;
+  --r-sm: 10px;
+  --ease: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* --- Base Framework --- */
-* { margin: 0; padding: 0; box-sizing: border-box; letter-spacing: -0.01em; }
-html { scroll-behavior: smooth; font-size: 16px; background-color: var(--bg-base); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); }
 body {
-  color: var(--text-main); font-family: var(--disp); line-height: 1.6;
-  -webkit-font-smoothing: antialiased; overflow-x: hidden; min-height: 100vh;
-  background: var(--bg-base);
-  background-image: 
-    radial-gradient(circle at 0% 0%, rgba(15, 99, 255, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 100% 0%, rgba(235, 18, 18, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(17, 180, 74, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 0% 100%, rgba(233, 208, 44, 0.1) 0%, transparent 50%);
+  font-family: var(--sans); color: var(--ink); line-height: 1.55;
+  -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 8% -5%, rgba(20, 115, 230, 0.13) 0%, transparent 42%),
+    radial-gradient(circle at 96% 4%, rgba(29, 185, 84, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 92% 96%, rgba(255, 102, 178, 0.10) 0%, transparent 42%),
+    radial-gradient(circle at 4% 100%, rgba(122, 92, 255, 0.10) 0%, transparent 45%);
   background-attachment: fixed;
 }
-.wrap { max-width: 1440px; margin: 0 auto; padding: 40px 24px 120px; position: relative; z-index: 2; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 
+.wrap { max-width: 1280px; margin: 0 auto; padding: 28px 24px 100px; }
+@media (max-width: 640px) { .wrap { padding: 16px 14px 80px; } }
+
+/* ---------- glass surfaces ---------- */
 .glass {
-  background: var(--bg-card); backdrop-filter: blur(30px) saturate(190%); -webkit-backdrop-filter: blur(30px) saturate(190%);
-  border: 1px solid var(--glass-border); border-radius: var(--radius-lg); transition: var(--transition-smooth);
-  box-shadow: inset 0 1px 0 var(--glass-inner-glow), 0 4px 20px rgba(160, 175, 195, 0.15), 0 15px 45px rgba(30, 40, 55, 0.04);
+  background: var(--card);
+  backdrop-filter: blur(26px) saturate(170%);
+  -webkit-backdrop-filter: blur(26px) saturate(170%);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 4px 18px rgba(150, 162, 182, 0.14), 0 16px 44px rgba(28, 36, 52, 0.05);
+  transition: var(--ease);
 }
-.glass:hover { box-shadow: 0 20px 50px rgba(30, 40, 55, 0.07); }
 
-/* --- Full-Width Good Graces Minimal Landing Style --- */
-.landing-navbar { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 24px 40px; background: #11141A; border-radius: var(--radius-md); margin-bottom: 32px; }
-.landing-navbar .brand-name { font-size: 18px; font-weight: 800; color: #FFF; text-transform: uppercase; letter-spacing: 0.05em; }
-.landing-navbar .brand-name span { color: var(--spotify-green); }
-
-.full-hero-container { padding: 80px 40px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: 100%; margin-bottom: 40px; }
-.hero-tag { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--chart-line); background: rgba(20,115,230,0.06); padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; }
-.full-hero-container h2 { font-size: clamp(36px, 5vw, 54px); font-weight: 900; letter-spacing: -0.04em; color: var(--text-main); line-height: 1.15; max-width: 24ch; margin-bottom: 16px; }
-.full-hero-container h2 span { color: var(--spotify-green); }
-.full-hero-container p { font-size: 17px; color: var(--text-muted); max-width: 58ch; margin-bottom: 32px; line-height: 1.6; }
-
-.btn-spotify-connect {
-  font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
-  background: var(--spotify-green); color: #000000; border: none; padding: 18px 44px; border-radius: 50px;
-  cursor: pointer; transition: var(--transition-smooth); display: inline-flex; align-items: center;
+/* ---------- header ---------- */
+.top {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  background: var(--ink); color: #FFF; border-radius: var(--r-md);
+  padding: 16px 26px; margin-bottom: 22px;
 }
-.btn-spotify-connect:hover { background: var(--spotify-green-hover); transform: translateY(-1px); box-shadow: 0 10px 25px rgba(29,185,84,0.3); }
+.brand { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; text-transform: lowercase; }
+.brand span { color: var(--green); }
+.user-chip { display: flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.07); padding: 5px 13px 5px 6px; border-radius: 30px; }
+.user-chip img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+.user-chip.no-img { padding-left: 13px; }
 
-/* --- App Inside Dashboard Banner --- */
-.top-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 18px 32px; background: #11141A; color: #FFF; border-radius: var(--radius-md); margin-bottom: 32px; }
-.top-nav-bar .nav-brand { font-size: 18px; font-weight: 800; text-transform: uppercase; color: #fff; }
-.top-nav-bar .nav-brand span { color: var(--spotify-green); }
-.top-nav-bar .user-badge { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.08); padding: 5px 14px; border-radius: 30px; color: var(--text-light); }
+/* ---------- tab nav ---------- */
+.tabs {
+  display: flex; gap: 4px; padding: 5px; border-radius: 40px; width: fit-content;
+  margin: 0 auto 30px; max-width: 100%; overflow-x: auto; scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: lowercase;
+  letter-spacing: 0.02em; padding: 10px 19px; border: 0; border-radius: 30px;
+  background: transparent; color: var(--muted); cursor: pointer; white-space: nowrap; transition: var(--ease);
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { background: var(--ink); color: #FFF; }
+@media (max-width: 640px) { .tabs { justify-content: flex-start; width: 100%; } }
 
-.main-layout-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: start; }
-@media(max-width: 1150px) { .main-layout-grid { grid-template-columns: 1fr; } }
-.widget-stack { display: flex; flex-direction: column; gap: 32px; }
-.widget-pane { padding: 36px; display: flex; flex-direction: column; gap: 24px; position: relative; overflow: hidden; }
+/* ---------- panes & type ---------- */
+.pane { padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+@media (max-width: 640px) { .pane { padding: 20px 16px; } }
+.kicker { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px; }
+.kicker::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.pane h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+.pane h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green); letter-spacing: 0; }
+.pane .sub { font-size: 13.5px; color: var(--muted); max-width: 62ch; margin-top: -12px; }
+.caption { font-family: var(--mono); font-size: 10px; color: var(--faint); }
 
-.eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--text-light); text-transform: uppercase; display: flex; align-items: center; gap: 12px; font-weight: 600; }
-.eyebrow::after { content: ""; flex: 1; height: 1px; background: rgba(0, 0, 0, 0.04); }
-h2 { font-size: 24px; font-weight: 700; color: var(--text-main); letter-spacing: -0.02em; }
-.sub-narrative { font-size: 13.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.6; max-width: 65ch; }
+.grid-2 { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 24px; align-items: start; }
+@media (max-width: 1080px) { .grid-2 { grid-template-columns: 1fr; } }
+.stack { display: flex; flex-direction: column; gap: 24px; }
 
-/* --- Matrix Graph Visuals --- */
-.frequency-chart-stage { width: 100%; min-height: 250px; margin-top: 10px; position: relative; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.04); border-radius: var(--radius-md); padding: 24px; }
-.frequency-chart-stage svg { width: 100%; height: 210px; display: block; overflow: visible; }
-.freq-area-path { fill: url(#chartAreaGradient); }
-.freq-line-path { fill: none; stroke: var(--chart-line); stroke-width: 3; stroke-linecap: round; }
-.freq-node-dot { fill: #FFFFFF; stroke: var(--chart-line); stroke-width: 3; cursor: pointer; transition: var(--transition-smooth); }
-.freq-node-dot:hover { fill: var(--spotify-green); stroke: var(--spotify-green); r: 7; }
-.median-line-vector { stroke: var(--text-light); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; opacity: 0.7; }
-.axis-text { font-family: var(--mono); font-size: 10px; fill: var(--text-light); font-weight: 500; }
-.chart-hover-toast { position: absolute; background: #11141A; color: #FFF; padding: 6px 12px; border-radius: 8px; font-family: var(--mono); font-size: 11px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 10; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+/* ---------- buttons & controls ---------- */
+.btn {
+  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: lowercase;
+  border: none; border-radius: 40px; padding: 13px 26px; cursor: pointer; transition: var(--ease);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-green { background: var(--green); color: #04220F; }
+.btn-green:hover { background: var(--green-hover); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(29,185,84,0.3); }
+.btn-ink { background: var(--ink); color: #FFF; }
+.btn-ink:hover { background: #23272F; transform: translateY(-1px); }
+.btn-ghost { background: rgba(16,19,25,0.05); color: var(--ink); }
+.btn-ghost:hover { background: rgba(16,19,25,0.1); }
 
-/* --- Tables & Filters --- */
-.control-filter-cluster { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; width: 100%; border-bottom: 1px solid rgba(0,0,0,0.04); padding-bottom: 16px; }
-.toggle-bay { display: inline-flex; background: rgba(0, 0, 0, 0.04); padding: 3px; border-radius: 12px; }
-.toggleBayBtn { font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 14px; border: 0; background: transparent; color: var(--text-muted); border-radius: 9px; transition: var(--transition-smooth); cursor: pointer; }
-.toggleBayBtn[aria-pressed="true"] { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
-.btn-core { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; background: var(--text-main); color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 40px; cursor: pointer; transition: var(--transition-smooth); }
-.btn-core:hover { background: var(--spotify-green); transform: translateY(-1px); }
+.pills { display: inline-flex; background: rgba(16, 19, 25, 0.05); padding: 3px; border-radius: 12px; }
+.pill {
+  font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 7px 15px; border: 0;
+  background: transparent; color: var(--muted); border-radius: 9px; cursor: pointer; transition: var(--ease); white-space: nowrap;
+}
+.pill[aria-pressed="true"] { background: #FFF; color: var(--ink); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 
-.accordion-wrapper { border: 1px solid rgba(0,0,0,0.04); border-radius: var(--radius-md); overflow: hidden; background: rgba(0,0,0,0.01); width: 100%; }
-.accordion-trigger { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 14px 20px; background: rgba(255,255,255,0.7); border: none; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-main); cursor: pointer; }
-.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
-.accordion-wrapper.expanded .accordion-content { max-height: 620px; overflow-y: auto; padding: 12px; }
+/* ---------- stat cards ---------- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+@media (max-width: 640px) { .stats { grid-template-columns: 1fr 1fr; gap: 10px; } }
+.stat { background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.stat .s-label { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); }
+.stat .s-value { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; display: flex; align-items: baseline; gap: 3px; }
+.stat .s-value small { font-size: 13px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
+.stat .s-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+@media (max-width: 640px) { .stat { padding: 15px; } .stat .s-value { font-size: 25px; } }
 
-.music-table-view { display: flex; flex-direction: column; gap: 1px; padding: 4px; }
-.music-telemetry-row { display: grid; grid-template-columns: 36px 44px 1fr auto; gap: 20px; align-items: center; padding: 10px 12px; border-bottom: 1px solid rgba(0, 0, 0, 0.02); }
-.music-telemetry-row:hover { background: #FFFFFF; }
-.row-rank-index { font-family: var(--mono); font-size: 12px; color: var(--text-light); text-align: center; }
-.row-artwork-frame { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; background: rgba(0,0,0,0.02); }
-.row-artwork-frame img { width: 100%; height: 100%; object-fit: cover; }
-.row-data-payload { display: flex; flex-direction: column; min-width: 0; }
-.track-title-string { font-weight: 600; font-size: 14px; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 12px; }
-.track-artist-string { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
-.row-metric-tag { font-family: var(--mono); font-size: 11px; color: var(--text-light); background: rgba(0,0,0,0.03); padding: 2px 6px; border-radius: 4px; }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
-@media(max-width: 880px) { .two-col { grid-template-columns: 1fr; } }
+/* ---------- ranked track rows ---------- */
+.track-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 26px; }
+@media (max-width: 880px) { .track-cols { grid-template-columns: 1fr; } }
+.row {
+  display: grid; grid-template-columns: 34px 46px 1fr 66px; gap: 14px; align-items: center;
+  padding: 9px 10px; border-radius: var(--r-sm); border-bottom: 1px solid rgba(16,19,25,0.04); transition: var(--ease);
+}
+.row:hover { background: #FFF; }
+.rank { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--faint); text-align: center; }
+.rank.medal {
+  width: 26px; height: 26px; margin: 0 auto; border-radius: 50%; background: var(--green); color: #04220F;
+  font-weight: 600; display: flex; align-items: center; justify-content: center; font-size: 11px;
+}
+.art { width: 46px; height: 46px; border-radius: 8px; overflow: hidden; background: rgba(16,19,25,0.04); flex-shrink: 0; }
+.art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.row-meta { min-width: 0; }
+.row-meta .t-name { font-weight: 650; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row-meta .t-artist { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.pop-cell { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.pop-cell .pop-num { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
+.pop-track { width: 52px; height: 4px; border-radius: 3px; background: rgba(16,19,25,0.07); overflow: hidden; }
+.pop-fill { height: 100%; border-radius: 3px; background: var(--green); }
 
-/* --- Top Artist Web Bubble Cluster Architecture --- */
-.artists-web-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 6px 0; width: 100%; }
-.artist-bubble-node { display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.04); border-radius: 30px; box-shadow: 0 2px 6px rgba(0,0,0,0.01); transition: var(--transition-smooth); }
-.artist-bubble-node img { width: 24px; height: 28px; border-radius: 50%; object-fit: cover; }
-.artist-bubble-node .a-name { font-size: 13px; font-weight: 600; color: var(--text-main); text-transform: lowercase; }
-.artist-bubble-node .a-mins { font-family: var(--mono); font-size: 10px; color: var(--chart-line); font-weight: 600; background: rgba(20,115,230,0.05); padding: 1px 6px; border-radius: 20px; }
+/* ---------- artist cards ---------- */
+.artist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 14px; }
+@media (max-width: 640px) { .artist-grid { grid-template-columns: 1fr; } }
+.artist-card {
+  position: relative; display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); transition: var(--ease);
+}
+.artist-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(28,36,52,0.08); }
+.artist-card img, .artist-card .a-fallback { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: rgba(16,19,25,0.05); flex-shrink: 0; }
+.artist-card .a-fallback { display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--faint); }
+.artist-card .a-meta { min-width: 0; }
+.artist-card .a-name { font-weight: 700; font-size: 14.5px; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 28px; }
+.artist-card .a-genres { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.artist-card .a-rank { position: absolute; top: 10px; right: 12px; font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--faint); }
+.artist-card.top .a-rank { color: var(--green); }
 
-/* --- Restored Tiled Panels --- */
-.telemetry-cards-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; }
-.telemetry-node { padding: 24px; display: flex; flex-direction: column; gap: 12px; border-radius: var(--radius-md); background: #FFFFFF; border: 1px solid rgba(0,0,0,0.04); position: relative; }
-.telemetry-node .t-eyebrow { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.telemetry-node .t-value { font-size: 34px; font-weight: 900; color: #11141A; line-height: 1.1; display: flex; align-items: baseline; gap: 2px; }
-.telemetry-node .t-value small { font-size: 14px; font-weight: 600; color: var(--text-light); }
-.telemetry-node .t-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
-.variance-pill { position: absolute; top: 22px; right: 24px; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: rgba(29,185,84,0.08); color: var(--spotify-green); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; background: var(--card-solid);
+  border: 1px solid var(--line); border-radius: 30px; font-size: 12.5px; font-weight: 600; text-transform: lowercase;
+}
+.chip .c-count { font-family: var(--mono); font-size: 10px; color: var(--blue); background: rgba(20,115,230,0.06); padding: 1px 7px; border-radius: 20px; }
 
-/* --- Donut Diagrams & Weekly Timelines --- */
-.era-chamber { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 32px; align-items: center; width: 100%; }
-@media(max-width: 600px) { .era-chamber { grid-template-columns: 1fr; } }
-.donut-stage { display: flex; justify-content: center; align-items: center; position: relative; width: 100%; }
-.donut-center-lbl { position: absolute; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; text-align: center; line-height: 1.3; pointer-events: none; }
-.era-legend-list { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-.era-legend-item { display: flex; align-items: center; gap: 10px; font-size: 13.5px; padding: 10px 14px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.03); border-radius: var(--radius-sm); }
-.era-dot { width: 10px; height: 10px; border-radius: 50%; }
-.era-val { font-family: var(--mono); font-size: 11px; color: var(--text-light); margin-left: auto; font-weight: 600; }
+/* ---------- charts ---------- */
+.chart-box { background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px 18px 14px; }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 150px; }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; min-width: 0; }
+.bar-col .bar-val { font-family: var(--mono); font-size: 9.5px; color: var(--faint); }
+.bar-col .bar { width: 100%; max-width: 34px; border-radius: 5px 5px 2px 2px; background: rgba(16,19,25,0.06); min-height: 4px; transition: height 0.4s ease; }
+.bar-col .bar.on { background: var(--blue); }
+.bar-labels { display: flex; gap: 6px; margin-top: 8px; }
+.bar-labels span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--faint); text-align: center; overflow: hidden; white-space: nowrap; }
+.empty-note { font-size: 12.5px; color: var(--faint); text-align: center; padding: 34px 12px; }
 
-.day-selector-strip { display: flex; gap: 6px; flex-wrap: wrap; background: rgba(0,0,0,0.04); padding: 4px; border-radius: 12px; width: fit-content; }
-.day-btn { background: transparent; border: none; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 6px 14px; border-radius: 9px; color: var(--text-muted); cursor: pointer; }
-.day-btn.active { background: #FFFFFF; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-.circadian-canvas-stage { display: flex; align-items: flex-end; gap: 6px; height: 160px; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 24px 16px 0; width: 100%; position: relative; }
-.circadian-canvas-stage .hour-bar-column { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; z-index: 2; }
-.circadian-canvas-stage .hour-bar-column .bar-vector { background: rgba(0,0,0,0.04); border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.4s ease; }
-.circadian-canvas-stage .hour-bar-column .bar-vector.active-glow { background: var(--chart-line); }
+.era-split { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 26px; align-items: center; }
+@media (max-width: 600px) { .era-split { grid-template-columns: 1fr; } }
+.donut-stage { display: flex; justify-content: center; align-items: center; position: relative; }
+.donut-lbl { position: absolute; font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--faint); text-transform: uppercase; letter-spacing: 0.08em; pointer-events: none; }
+.legend { display: flex; flex-direction: column; gap: 8px; }
+.legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; padding: 9px 13px; background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-sm); }
+.legend-item .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.legend-item .l-val { font-family: var(--mono); font-size: 10.5px; color: var(--faint); margin-left: auto; }
 
-/* Unified Mean Baseline Element Node Layout */
-.weekly-mean-vector-line { position: absolute; left: 16px; right: 16px; height: 2px; border-top: 2px dashed var(--gemini-purple); pointer-events: none; z-index: 5; transition: top 0.35s ease; filter: drop-shadow(0 1px 4px rgba(122,92,255,0.3)); }
-.weekly-mean-badge-node { position: absolute; left: 24px; background: var(--bg-card-solid); border: 1px solid var(--glass-border); padding: 2px 8px; border-radius: 4px; font-family: var(--mono); font-size: 9px; font-weight: 600; color: var(--gemini-purple); z-index: 6; transition: top 0.35s ease; }
+/* ---------- playlist studio ---------- */
+.preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 14px; }
+.preset {
+  text-align: left; background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 20px; cursor: pointer; transition: var(--ease); font-family: var(--sans); display: flex; flex-direction: column; gap: 6px;
+}
+.preset:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(28,36,52,0.09); border-color: rgba(29,185,84,0.4); }
+.preset .p-emoji { font-size: 20px; }
+.preset .p-name { font-weight: 750; font-size: 15px; letter-spacing: -0.01em; }
+.preset .p-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.preset .p-tag { font-family: var(--mono); font-size: 9.5px; color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
 
-.circadian-labels-axis { display: flex; gap: 6px; margin-top: 8px; width: 100%; }
-.circadian-labels-axis span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--text-light); text-align: center; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); }
+.field input[type="text"], .field select {
+  font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--ink);
+  background: var(--card-solid); border: 1px solid rgba(16,19,25,0.12); border-radius: var(--r-sm);
+  padding: 12px 14px; width: 100%; transition: var(--ease); appearance: none;
+}
+.field input[type="text"]:focus, .field select:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 3px rgba(29,185,84,0.12); }
+.field input[type="range"] { accent-color: var(--green); width: 100%; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+.switch-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; }
+.switch-row .sw-label { font-size: 13px; font-weight: 600; }
+.switch-row .sw-hint { font-size: 11px; color: var(--faint); }
+.switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: pointer; z-index: 2; margin: 0; }
+.switch .knob { position: absolute; inset: 0; background: rgba(16,19,25,0.15); border-radius: 30px; transition: var(--ease); }
+.switch .knob::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #FFF; border-radius: 50%; transition: var(--ease); box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.switch input:checked + .knob { background: var(--green); }
+.switch input:checked + .knob::after { transform: translateX(18px); }
+.result-chip {
+  display: inline-flex; align-items: center; gap: 10px; background: rgba(29,185,84,0.08); border: 1px solid rgba(29,185,84,0.3);
+  border-radius: 40px; padding: 10px 18px; font-size: 13px; font-weight: 600;
+}
+.result-chip a { color: #12833B; font-weight: 700; text-decoration: none; }
+.result-chip a:hover { text-decoration: underline; }
 
-.system-boot-loader { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 35vh 0; font-family: var(--mono); font-size: 12px; color: var(--text-light); }
-.system-spinner-ring { width: 36px; height: 32px; border-radius: 50%; border: 3px solid rgba(0,0,0,0.05); border-top-color: var(--chart-line); animation: spinRing 0.75s linear infinite; }
-footer { margin-top: 80px; padding: 32px 24px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); font-family: var(--mono); font-size: 11px; color: var(--text-light); }
-.logout-trigger { cursor: pointer; transition: var(--transition-smooth); }
-.logout-trigger:hover { color: var(--chart-line); }
+/* ---------- story cards ---------- */
+.story-split { display: grid; grid-template-columns: 1fr 300px; gap: 30px; align-items: start; }
+@media (max-width: 880px) { .story-split { grid-template-columns: 1fr; } }
+.story-preview-frame { display: flex; justify-content: center; }
+#storyCanvas {
+  width: 100%; max-width: 262px; height: auto; border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(28,36,52,0.22); border: 1px solid var(--line); display: block;
+}
+.opt-group { display: flex; flex-direction: column; gap: 8px; }
 
-@keyframes spinRing { to { transform: rotate(360deg); } }
+/* ---------- login / loader / toast / footer ---------- */
+.hero { padding: 76px 46px; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+@media (max-width: 640px) { .hero { padding: 46px 22px; } }
+.hero-tag { font-family: var(--mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--blue); background: rgba(20,115,230,0.07); padding: 7px 15px; border-radius: 30px; }
+.hero h1 { font-size: clamp(34px, 5.4vw, 58px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.08; max-width: 21ch; }
+.hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green); letter-spacing: -0.01em; }
+.hero p { font-size: 16.5px; color: var(--muted); max-width: 54ch; }
+.hero .fine { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
+
+.loader { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 32vh 0; font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(16,19,25,0.06); border-top-color: var(--green); animation: spin 0.75s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.toast {
+  position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(16px);
+  background: var(--ink); color: #FFF; padding: 12px 24px; border-radius: 40px;
+  font-family: var(--mono); font-size: 11.5px; opacity: 0; pointer-events: none;
+  transition: var(--ease); z-index: 200; box-shadow: 0 14px 34px rgba(16,19,25,0.3); max-width: 90vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+footer { margin-top: 70px; padding-top: 26px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10.5px; color: var(--faint); flex-wrap: wrap; }
+.logout { cursor: pointer; transition: var(--ease); background: none; border: none; font: inherit; color: inherit; }
+.logout:hover { color: var(--ink); }
 </style>
 </head>
 <body>
 
-<div id="toastEngine" class="toast-alert-banner">
-  <span class="toast-icon">✦</span> <span id="toastMessageTarget">System Synchronized</span>
-</div>
-
-<div class="wrap">
-  <div id="appRootStage"></div>
-</div>
+<div id="toast" class="toast" role="status"></div>
+<div class="wrap"><div id="app"></div></div>
 
 <script>
-const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27"; 
+/* ============================================================
+   spotify.ai — config, auth (PKCE), data loading
+   ============================================================ */
+const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27";
 const SCOPES = "user-top-read user-read-recently-played playlist-modify-public playlist-modify-private";
 const REDIRECT = location.origin + location.pathname;
-const appStage = document.getElementById("appRootStage");
 
-const storageController = {
+const app = document.getElementById("app");
+const store = {
   get: k => localStorage.getItem("sai_tlm_" + k),
   set: (k, v) => localStorage.setItem("sai_tlm_" + k, v),
   del: k => localStorage.removeItem("sai_tlm_" + k),
 };
 
-const PALETTE_MATRIX = ["#1473E6", "#7A5CFF", "#FF66B2", "#FFAA00", "#00E5FF"];
-let DATA_STORE_NODE = null;
-let activeTrackLimitConfig = 25;   
-let currentActiveDayIndex = 1;
+const PALETTE = ["#1473E6", "#7A5CFF", "#FF66B2", "#F5A300", "#00C2D8", "#1DB954"];
+const RANGE_LABEL = { short_term: "last 4 weeks", medium_term: "last 6 months", long_term: "all time" };
 
-function displayNotificationToast(msg) {
-  const toast = document.getElementById("toastEngine");
-  document.getElementById("toastMessageTarget").textContent = msg;
-  toast.classList.add("active");
-  setTimeout(() => toast.classList.remove("active"), 3500);
+let DATA = null;
+const state = {
+  tab: "overview",
+  trackRange: "short_term",
+  trackLimit: 25,
+  artistRange: "short_term",
+  storyTemplate: "tracks",
+  storyRange: "short_term",
+  storyTheme: "glass",
+  lastPlaylist: null,
+};
+
+/* ---------- tiny utils ---------- */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 3400);
+}
+function shuffleArr(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-function generateRandomStateString(len) {
+/* ---------- OAuth (PKCE) ---------- */
+function randString(len) {
   const c = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const vals = crypto.getRandomValues(new Uint8Array(len));
   return Array.from(vals, v => c[v % c.length]).join("");
 }
-async function computeSha256Challenge(verifier) {
+async function sha256Challenge(verifier) {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
   return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
-async function initiateOAuthRoute() {
-  const verifier = generateRandomStateString(64);
-  storageController.set("verifier", verifier);
-  const challenge = await computeSha256Challenge(verifier);
+async function login() {
+  const verifier = randString(64);
+  store.set("verifier", verifier);
+  const challenge = await sha256Challenge(verifier);
   const params = new URLSearchParams({
     response_type: "code", client_id: CLIENT_ID, scope: SCOPES, redirect_uri: REDIRECT,
     code_challenge_method: "S256", code_challenge: challenge,
   });
   location.href = "https://accounts.spotify.com/authorize?" + params;
 }
-async function executeTokenExchange(code) {
+async function exchangeToken(code) {
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: storageController.get("verifier") }),
+    body: new URLSearchParams({ grant_type: "authorization_code", code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: store.get("verifier") }),
   });
   const payload = await res.json();
-  storageController.set("token", payload.access_token);
-  storageController.set("token_expiry", Date.now() + payload.expires_in * 1000);
+  store.set("token", payload.access_token);
+  store.set("token_expiry", Date.now() + payload.expires_in * 1000);
 }
-async function dispatchSecureApiCall(endpoint, parameters = {}) {
+async function api(endpoint, opts = {}) {
   const res = await fetch("https://api.spotify.com/v1" + endpoint, {
-    ...parameters, headers: { ...parameters.headers, Authorization: "Bearer " + storageController.get("token") },
+    ...opts, headers: { ...opts.headers, Authorization: "Bearer " + store.get("token") },
   });
-  if (res.status === 401) { storageController.del("token"); renderAuthorizationGate(); return; }
+  if (res.status === 401) { store.del("token"); renderLogin(); throw new Error("expired"); }
+  if (res.status === 204) return {};
   return res.json();
 }
 
-function computeWeeklyPlaybackIntervals(historyLog) {
-  const boundaryTimeLimit = Date.now() - 7 * 86400000;
-  const metricsCache = {};
-  const logs = historyLog?.items || [];
-  logs.forEach(logItem => {
-    if (new Date(logItem.played_at).getTime() < boundaryTimeLimit) return;
-    const trackingId = logItem.track.id;
-    if (!metricsCache[trackingId]) metricsCache[trackingId] = { track: logItem.track, telemetryCount: 0 };
-    metricsCache[trackingId].telemetryCount++;
-  });
-  return Object.values(metricsCache).sort((a, b) => b.telemetryCount - a.telemetryCount).slice(0, 5);
+/* ---------- data ---------- */
+async function loadData() {
+  app.innerHTML = `<div class="loader"><div class="spinner"></div>pulling your listening data…</div>`;
+  try {
+    const safe = p => p.catch(() => ({ items: [] }));
+    const [me, recent, tS, tM, tL, aS, aM, aL] = await Promise.all([
+      api("/me"),
+      safe(api("/me/player/recently-played?limit=50")),
+      safe(api("/me/top/tracks?time_range=short_term&limit=50")),
+      safe(api("/me/top/tracks?time_range=medium_term&limit=50")),
+      safe(api("/me/top/tracks?time_range=long_term&limit=50")),
+      safe(api("/me/top/artists?time_range=short_term&limit=50")),
+      safe(api("/me/top/artists?time_range=medium_term&limit=50")),
+      safe(api("/me/top/artists?time_range=long_term&limit=50")),
+    ]);
+    DATA = {
+      me,
+      recent,
+      topTracks: { short_term: tS, medium_term: tM, long_term: tL },
+      topArtists: { short_term: aS, medium_term: aM, long_term: aL },
+    };
+    renderShell();
+  } catch (e) {
+    if (e.message !== "expired") renderLogin();
+  }
 }
 
-function renderAuthorizationGate() {
-  appStage.innerHTML = `
-    <div class="landing-navbar">
-      <div class="brand-name">spotify<span>.ai</span></div>
-    </div>
-    <div class="landing-wrapper">
-      <div class="full-hero-container">
-        <div class="hero-tag">✦ Premium Architectural Diagnostics</div>
-        <h2>Your Entire Listening Rotations, <span>Quantized</span>.</h2>
-        <p>A pristine widescreen data environment translating account diagnostic metadata records into area-line metrics matrices, active ledger panes, and fluid cloud bubble web registries.</p>
-        <button class="btn-spotify-connect" id="bootTriggerBtn">Connect Spotify Account Profile</button>
-      </div>
-    </div>
-  `;
-  document.getElementById("bootTriggerBtn").onclick = () => initiateOAuthRoute();
+/* ---------- derived numbers ---------- */
+function analysisPool() {
+  const t = DATA.topTracks;
+  return (t.medium_term?.items?.length ? t.medium_term.items : (t.short_term?.items?.length ? t.short_term.items : (t.long_term?.items || [])));
+}
+function statObscurity() {
+  const pool = analysisPool();
+  if (!pool.length) return "—";
+  const avg = pool.reduce((s, t) => s + (t.popularity || 0), 0) / pool.length;
+  return Math.round(100 - avg);
+}
+function statAvgYear() {
+  const years = analysisPool().map(t => parseInt((t.album?.release_date || "").slice(0, 4))).filter(Boolean);
+  return years.length ? Math.round(years.reduce((s, y) => s + y, 0) / years.length) : "—";
+}
+function statExplicit() {
+  const pool = analysisPool();
+  return pool.length ? Math.round(100 * pool.filter(t => t.explicit).length / pool.length) : 0;
+}
+function topGenres(limit = 6) {
+  const arts = DATA.topArtists.medium_term?.items?.length ? DATA.topArtists.medium_term.items : (DATA.topArtists.short_term?.items || []);
+  const counts = {};
+  arts.forEach(a => (a.genres || []).forEach(g => { counts[g] = (counts[g] || 0) + 1; }));
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, limit);
+}
+function peakHour() {
+  const items = DATA.recent?.items || [];
+  if (!items.length) return null;
+  const hours = new Array(24).fill(0);
+  items.forEach(i => hours[new Date(i.played_at).getHours()]++);
+  const max = Math.max(...hours);
+  const h = hours.indexOf(max);
+  return h === 0 ? "12am" : h === 12 ? "12pm" : h > 12 ? (h - 12) + "pm" : h + "am";
 }
 
-function drawStructuralTelemetryRow(trackObject, index, visualTagString) {
+/* ============================================================
+   shell, tabs, login
+   ============================================================ */
+function renderLogin() {
+  state.tab = "overview";
+  app.innerHTML = `
+    <div class="top">
+      <div class="brand">spotify<span>.ai</span></div>
+    </div>
+    <div class="glass hero">
+      <div class="hero-tag">✦ your listening report</div>
+      <h1>See what you're <em>actually</em> listening to.</h1>
+      <p>Your top tracks, artists, and habits, pulled straight from your Spotify account. Rank your rotation, turn any chart into a real playlist, and download story cards made for sharing.</p>
+      <button class="btn btn-green" id="loginBtn">connect spotify</button>
+      <div class="fine">runs entirely in your browser · nothing is stored anywhere else</div>
+    </div>`;
+  document.getElementById("loginBtn").onclick = () => login();
+}
+
+function renderShell() {
+  const me = DATA.me || {};
+  const avatar = me.images?.[0]?.url;
+  app.innerHTML = `
+    <div class="top">
+      <div class="brand">spotify<span>.ai</span></div>
+      <div class="user-chip ${avatar ? "" : "no-img"}">${avatar ? `<img src="${esc(avatar)}" alt="">` : ""}${esc((me.display_name || "you").toLowerCase())}</div>
+    </div>
+    <nav class="tabs glass" aria-label="Sections">
+      <button class="tab-btn" data-tab="overview">overview</button>
+      <button class="tab-btn" data-tab="tracks">top tracks</button>
+      <button class="tab-btn" data-tab="artists">top artists</button>
+      <button class="tab-btn" data-tab="playlists">playlist studio</button>
+      <button class="tab-btn" data-tab="story">story cards</button>
+    </nav>
+    <div id="tabContent"></div>
+    <footer>
+      <span>spotify.ai — made for the plot</span>
+      <button class="logout" onclick="store.del('token'); location.reload();">disconnect</button>
+    </footer>`;
+  app.querySelectorAll(".tab-btn").forEach(b => { b.onclick = () => setTab(b.dataset.tab); });
+  setTab(state.tab);
+}
+
+function setTab(tab) {
+  state.tab = tab;
+  app.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  const target = document.getElementById("tabContent");
+  if (tab === "overview") target.innerHTML = viewOverview();
+  if (tab === "tracks") target.innerHTML = viewTracks();
+  if (tab === "artists") target.innerHTML = viewArtists();
+  if (tab === "playlists") target.innerHTML = viewPlaylists();
+  if (tab === "story") { target.innerHTML = viewStory(); renderStoryCard(); }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ============================================================
+   overview
+   ============================================================ */
+function viewOverview() {
+  const genres = topGenres();
+  const topGenre = genres[0] ? genres[0][0] : "—";
+  const peak = peakHour();
+  const decades = chartDecades();
   return `
-    <div class="music-telemetry-row">
-      <div class="row-rank-index">${String(index + 1).padStart(2, "0")}</div>
-      <div class="row-artwork-frame"><img src="${trackObject.album?.images?.[1]?.url || trackObject.album?.images?.[0]?.url || ''}" loading="lazy"></div>
-      <div class="row-data-payload">
-        <span class="track-title-string">${trackObject.name}</span>
-        <span class="track-artist-string">${trackObject.artists.map(a => a.name).join(", ")}</span>
+    <div class="stack">
+      <div class="glass pane">
+        <div class="kicker">the headlines</div>
+        <h2>Your taste, <em>at a glance</em></h2>
+        <div class="stats">
+          <div class="stat"><span class="s-label">obscurity</span><span class="s-value">${statObscurity()}<small>/100</small></span><span class="s-desc">0 is pure chart music, 100 is deep cuts only.</span></div>
+          <div class="stat"><span class="s-label">average era</span><span class="s-value">${statAvgYear()}</span><span class="s-desc">The average release year across your top songs.</span></div>
+          <div class="stat"><span class="s-label">explicit share</span><span class="s-value">${statExplicit()}<small>%</small></span><span class="s-desc">How much of your rotation carries the advisory tag.</span></div>
+          <div class="stat"><span class="s-label">peak hour</span><span class="s-value" style="text-transform:lowercase;">${peak || "—"}</span><span class="s-desc">When you press play the most, based on recent listening.</span></div>
+        </div>
       </div>
-      <div class="row-metric-tag">${visualTagString}</div>
+
+      <div class="grid-2">
+        <div class="stack">
+          <div class="glass pane">
+            <div class="kicker">this week</div>
+            <h2>Recent activity</h2>
+            <div class="sub">Plays per day over the last 7 days.</div>
+            <div class="chart-box">${chartRecentDays()}</div>
+            <div class="caption">based on your last 50 plays — that's all Spotify shares</div>
+          </div>
+          <div class="glass pane">
+            <div class="kicker">the clock</div>
+            <h2>When you listen</h2>
+            <div class="sub">Your recent plays mapped across the day.</div>
+            <div class="chart-box">${chartClock()}</div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="glass pane">
+            <div class="kicker">the eras</div>
+            <h2>Decades in your rotation</h2>
+            <div class="sub">Where your top songs come from, by release decade.</div>
+            <div class="era-split">
+              <div class="donut-stage">${decades.donut}</div>
+              <div class="legend">${decades.legend}</div>
+            </div>
+          </div>
+          <div class="glass pane">
+            <div class="kicker">the sound</div>
+            <h2>What you're into</h2>
+            <div class="sub">The genres that show up most across your top artists. Your defining one right now: <b style="text-transform:lowercase;">${esc(topGenre)}</b>.</div>
+            <div class="chips">${genres.map(([g, n]) => `<span class="chip">${esc(g)}<span class="c-count">×${n}</span></span>`).join("") || `<span class="empty-note">No genre data yet — keep listening.</span>`}</div>
+          </div>
+        </div>
+      </div>
     </div>`;
 }
 
-function toggleTracksAccordion() {
-  const acc = document.getElementById('tracksAccordionWrapper');
-  if (acc.classList.contains('expanded')) { acc.classList.remove('expanded'); } else { acc.classList.add('expanded'); }
-}
-
-function compileMasterReportLayout() {
-  const { me, topTracks, recent } = DATA_STORE_NODE;
-  const shortPool = topTracks?.short_term?.items || [];
-  const mediumPool = topTracks?.medium_term?.items || [];
-  const longPool = topTracks?.long_term?.items || [];
-  const activeProcessingArray = mediumPool.length ? mediumPool : (shortPool.length ? shortPool : longPool);
-  
-  const totalPopularitySum = activeProcessingArray.reduce((sum, track) => sum + (track?.popularity || 0), 0);
-  const averagePopularityIndex = activeProcessingArray.length ? (totalPopularitySum / activeProcessingArray.length) : 50;
-  const coreObscurityMetric = Math.round(100 - averagePopularityIndex);
-  
-  const calendarYearArray = activeProcessingArray.map(t => parseInt((t?.album?.release_date || "").slice(0, 4))).filter(Boolean);
-  const operationalMidpointYear = calendarYearArray.length ? Math.round(calendarYearArray.reduce((acc, y) => acc + y, 0) / calendarYearArray.length) : "—";
-  const parentalExplicitContentVolume = activeProcessingArray.length ? Math.round(100 * activeProcessingArray.filter(t => t?.explicit).length / activeProcessingArray.length) : 0;
-  const productionTimestamp = new Date();
-
-  appStage.innerHTML = `
-    <header class="glass" style="border:none; margin-bottom: 32px; border-radius:var(--radius-md); background:#11141A; color:#FFF; display:flex; justify-content:space-between; align-items:center; padding: 18px 32px;">
-      <div class="logo-container"><h1 style="color:#FFF; font-size:18px;">spotify<span>.ai</span></h1></div>
-      <div class="user-badge">${(me?.display_name || "User Node").toLowerCase()} // live metrics</div>
-    </header>
-
-    <div class="main-layout-grid">
-      <div class="widget-stack">
-        <div class="glass widget-pane">
-          <div class="eyebrow">Chronological Volume Ledger</div>
-          <div class="widget-title-area">
-            <h2>Annual Frequency Matrix</h2>
-            <div class="sub-narrative">Volumetric tracking showing minutes listened over space-time alongside an adaptive moving median line threshold block.</div>
-          </div>
-          <div class="frequency-chart-stage">
-            <div id="chartValueHoverToast" class="chart-hover-toast">0 Mins</div>
-            <div id="annualFrequencyChartContainer"></div>
-          </div>
-        </div>
-
-        <div class="glass widget-pane">
-          <div class="eyebrow">Framework Quantization Tables</div>
-          <div class="dynamic-action-bar" style="border:none; padding:0; margin-bottom:0;">
-            <div>
-              <h2>Rotation Track Diagnostics</h2>
-              <div class="sub-narrative">Verified chronological active item registers matching timeline diagnostics parameters.</div>
-            </div>
-          </div>
-          <div class="control-filter-cluster">
-            <div class="toggle-bay">
-              <button class="toggleBayBtn" data-type="range" data-value="short_term" aria-pressed="true">4 weeks</button>
-              <button class="toggleBayBtn" data-type="range" data-value="medium_term" aria-pressed="false">6 months</button>
-              <button class="toggleBayBtn" data-type="range" data-value="long_term" aria-pressed="false">all time</button>
-            </div>
-            <div class="toggle-bay">
-              <button class="toggleBayBtn" data-type="limit" data-value="25" aria-pressed="true">Top 25</button>
-              <button class="toggleBayBtn" data-type="limit" data-value="50" aria-pressed="false">Top 50</button>
-            </div>
-            <button class="btn-core" onclick="dispatchPlaylistDeploymentSequence()" style="margin-left:auto;">Export Playlist</button>
-          </div>
-          
-          <div class="accordion-wrapper expanded" id="tracksAccordionWrapper">
-            <button class="accordion-trigger" onclick="toggleTracksAccordion()"><span>Toggle Track Matrix Window View</span><span class="accordion-chevron">▼</span></button>
-            <div class="accordion-content"><div class="music-table-view two-col" id="tracksArrayTargetEngine"></div></div>
-          </div>
-        </div>
-
-        <div class="glass widget-pane">
-          <div class="eyebrow">Roster Standings Profile</div>
-          <div class="widget-title-area"><h2>Top Artist Bubble Web</h2><div class="sub-narrative">Dynamic algorithmic layout mapping core artists paired with estimated timeline listening durations.</div></div>
-          <div class="artists-web-container" id="artistsWebTargetEngine"></div>
-        </div>
-      </div>
-
-      <div class="widget-stack">
-        <div class="glass widget-pane">
-          <div class="eyebrow">Telemetry Analytics Ledger</div>
-          <h2>Structural Rotation Diagnostics</h2>
-          <div class="telemetry-cards-matrix">
-            <div class="telemetry-node accent-green"><span class="variance-pill">Verified</span><span class="t-eyebrow">AI Obscurity Model</span><span class="t-value" id="aiObscurityValueTarget">${coreObscurityMetric}<small>/100</small></span><span class="t-desc">Proportion of unique listening vectors outside standard commercial streaming networks.</span></div>
-            <div class="telemetry-node accent-purple"><span class="t-eyebrow">Temporal Center</span><span class="t-value">${operationalMidpointYear}</span><span class="t-desc">Release weight balanced coordinate marker.</span></div>
-            <div class="telemetry-node accent-pink"><span class="t-eyebrow">Explicit Allocation</span><span class="t-value">${parentalExplicitContentVolume}<small>%</small></span><span class="t-desc">Data assets marked with advisory identifiers.</span></div>
-          </div>
-        </div>
-
-        <div class="glass widget-pane">
-          <div class="eyebrow">Temporal Eras</div>
-          <h2>Chronological Era Density Profile</h2>
-          <div class="sub-narrative">Historical decade release balance map extracted from current active metadata.</div>
-          <div class="era-chamber">
-            <div class="donut-stage" id="decadesDonutTargetEngine"></div>
-            <div class="era-legend-list" id="decadesLegendMatrixTarget"></div>
-          </div>
-        </div>
-
-        <div class="glass widget-pane">
-          <div class="eyebrow">Circadian Resonance Index</div>
-          <h2>Temporal Listening Density Vector</h2>
-          <div class="sub-narrative">Toggle weekdays to inspect custom variations layered on top of your automated weekly mean benchmark.</div>
-          <div class="day-selector-strip">
-            <button class="day-btn" onclick="switchActiveListeningDay(1, this)">Mon</button>
-            <button class="day-btn" onclick="switchActiveListeningDay(2, this)">Tue</button>
-            <button class="day-btn" onclick="switchActiveListeningDay(3, this)">Wed</button>
-            <button class="day-btn" onclick="switchActiveListeningDay(4, this)">Thu</button>
-            <button class="day-btn" onclick="switchActiveListeningDay(5, this)">Fri</button>
-          </div>
-          <div class="circadian-canvas-stage" id="circadianBarsTargetEngine">
-            </div>
-          <div class="circadian-labels-axis" id="circadianLabelsTargetEngine"></div>
-        </div>
-      </div>
+function chartRecentDays() {
+  const items = DATA.recent?.items || [];
+  if (!items.length) return `<div class="empty-note">Play some music and check back — Spotify only shares your most recent plays.</div>`;
+  const days = [...Array(7)].map((_, i) => {
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - 6 + i);
+    return d;
+  });
+  const counts = days.map(d => items.filter(it => {
+    const p = new Date(it.played_at);
+    return p.getFullYear() === d.getFullYear() && p.getMonth() === d.getMonth() && p.getDate() === d.getDate();
+  }).length);
+  const max = Math.max(...counts, 1);
+  return `
+    <div class="bars">${counts.map(c => `
+      <div class="bar-col"><span class="bar-val">${c || ""}</span><div class="bar ${c ? "on" : ""}" style="height:${Math.max(c / max * 100, 3)}%"></div></div>`).join("")}
     </div>
+    <div class="bar-labels">${days.map(d => `<span>${d.toLocaleDateString("en-US", { weekday: "short" }).toLowerCase()}</span>`).join("")}</div>`;
+}
 
-    <footer><span>SPOTIFY.AI // LOG FRAMEWORK</span><span class="logout-trigger" onclick="storageController.del('token'); location.reload();">disconnect session</span></footer>`;
+function chartClock() {
+  const items = DATA.recent?.items || [];
+  if (!items.length) return `<div class="empty-note">No recent plays to map yet.</div>`;
+  const hours = new Array(24).fill(0);
+  items.forEach(i => hours[new Date(i.played_at).getHours()]++);
+  const max = Math.max(...hours, 1);
+  return `
+    <div class="bars" style="gap:3px;">${hours.map(h => `
+      <div class="bar-col"><div class="bar ${h ? "on" : ""}" style="height:${Math.max(h / max * 100, 3)}%"></div></div>`).join("")}
+    </div>
+    <div class="bar-labels" style="gap:3px;">${hours.map((_, i) => `<span>${i % 6 === 0 ? (i === 0 ? "12am" : i === 12 ? "12pm" : i > 12 ? (i - 12) + "pm" : i + "am") : ""}</span>`).join("")}</div>`;
+}
 
-  appStage.querySelectorAll(".toggleBayBtn").forEach(btnElement => {
-    btnElement.onclick = () => {
-      appStage.querySelectorAll(`.toggle-bay button[data-type="${btnElement.dataset.type}"]`).forEach(b => b.setAttribute("aria-pressed", b === btnElement));
-      const selectedRange = appStage.querySelector(".toggle-bay button[data-type='range'][aria-pressed='true']").dataset.value;
-      const selectedLimit = parseInt(appStage.querySelector(".toggle-bay button[data-type='limit'][aria-pressed='true']").dataset.value);
-      renderTracksDisplayDataPool(selectedRange, selectedLimit);
-    };
+function chartDecades() {
+  const pool = analysisPool();
+  const counts = {};
+  pool.forEach(t => {
+    const y = parseInt((t.album?.release_date || "").slice(0, 4));
+    if (!y) return;
+    const dec = Math.floor(y / 10) * 10;
+    counts[dec] = (counts[dec] || 0) + 1;
   });
+  const rows = Object.entries(counts).sort((a, b) => a[0] - b[0]);
+  const total = rows.reduce((s, [, v]) => s + v, 0) || 1;
+  if (!rows.length) return { donut: `<div class="empty-note">Not enough data yet.</div>`, legend: "" };
 
-  calculateAndDrawAreaFrequencyChart();
-  renderTracksDisplayDataPool("short_term", activeTrackLimitConfig);
-  renderArtistsWebCluster();
-  calculateDecadesDonutProfile();
-  calculateCircadianDensityProfile();
-}
-
-function calculateAndDrawAreaFrequencyChart() {
-  const stage = document.getElementById("annualFrequencyChartContainer");
-  if (!stage) return;
-  const segmentValuesArray = [1240, 1520, 1100, 1340, 1850, 1690, 2300, 1420, 1250, 1580, 1920, 2550];
-  const categoriesLabelArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const highestPeakVolume = Math.max(...segmentValuesArray, 3000);
-
-  let svgHeight = 210, svgWidth = 650, paddingBottom = 25, paddingTop = 15;
-  let graphHeight = svgHeight - paddingBottom - paddingTop;
-  let horizontalBarWidthSpace = svgWidth / segmentValuesArray.length;
-  let areaCoordinatesPointsArray = [], rawBarsStringHtml = "";
-  
-  segmentValuesArray.forEach((minutesVal, idx) => {
-    let scalarFactorHeight = (minutesVal / highestPeakVolume) * graphHeight;
-    let horizontalCoordX = (idx * horizontalBarWidthSpace) + (horizontalBarWidthSpace * 0.5);
-    let verticalCoordY = svgHeight - paddingBottom - scalarFactorHeight;
-    let computedWidth = horizontalBarWidthSpace * 0.6;
-    let barLeftX = horizontalCoordX - (computedWidth / 2);
-
-    areaCoordinatesPointsArray.push(`${horizontalCoordX},${verticalCoordY}`);
-    rawBarsStringHtml += `<rect class="freq-bar" x="${barLeftX}" y="${verticalCoordY}" width="${computedWidth}" height="${scalarFactorHeight}" fill="rgba(20,115,230,0.06)" rx="3" data-mins="${minutesVal}" data-label="${categoriesLabelArray[idx]}" onmouseover="executeBarHoverMetrics(event, true)" onmouseout="executeBarHoverMetrics(event, false)" /><text class="axis-text" x="${horizontalCoordX}" y="${svgHeight - 6}" text-anchor="middle">${categoriesLabelArray[idx]}</text>`;
+  let svg = `<svg viewBox="0 0 200 200" width="150" height="150" style="transform: rotate(-90deg);" aria-hidden="true">`;
+  let angle = 0;
+  rows.forEach(([dec, count], i) => {
+    const slice = (count / total) * 360;
+    if (rows.length === 1) {
+      svg += `<circle cx="100" cy="100" r="85" fill="${PALETTE[i % PALETTE.length]}"/>`;
+      angle += slice;
+      return;
+    }
+    const x1 = 100 + 85 * Math.cos(angle * Math.PI / 180);
+    const y1 = 100 + 85 * Math.sin(angle * Math.PI / 180);
+    angle += slice;
+    const x2 = 100 + 85 * Math.cos(angle * Math.PI / 180);
+    const y2 = 100 + 85 * Math.sin(angle * Math.PI / 180);
+    svg += `<path d="M 100 100 L ${x1} ${y1} A 85 85 0 ${slice > 180 ? 1 : 0} 1 ${x2} ${y2} Z" fill="${PALETTE[i % PALETTE.length]}" stroke="#FFFFFF" stroke-width="2.5"/>`;
   });
-
-  let linePointsCoordinatesString = areaCoordinatesPointsArray.join(" ");
-  stage.innerHTML = `
-    <svg viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;">
-      <defs><linearGradient id="chartAreaGradient" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(20,115,230,0.18)" /><stop offset="100%" stop-color="rgba(20,115,230,0.00)" /></linearGradient></defs>
-      <line x1="0" y1="${svgHeight - paddingBottom}" x2="${svgWidth}" y2="${svgHeight - paddingBottom}" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-      <path d="M ${svgWidth / segmentValuesArray.length / 2} ${svgHeight - paddingBottom} L ${linePointsCoordinatesString} L ${svgWidth - (svgWidth / segmentValuesArray.length / 2)} ${svgHeight - paddingBottom} Z" fill="url(#chartAreaGradient)" />
-      <polyline points="${linePointsCoordinatesString}" fill="none" stroke="var(--chart-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-      ${rawBarsStringHtml}
-    </svg>`;
+  svg += `<circle cx="100" cy="100" r="50" fill="#FFFFFF"/></svg><span class="donut-lbl">eras</span>`;
+  const legend = rows.map(([dec, count], i) =>
+    `<div class="legend-item"><span class="dot" style="background:${PALETTE[i % PALETTE.length]}"></span>${dec}s<span class="l-val">${Math.round(count / total * 100)}%</span></div>`).join("");
+  return { donut: svg, legend };
 }
-
-function executeBarHoverMetrics(event, isEntering) {
-  const toast = document.getElementById("chartValueHoverToast");
-  if (!toast) return;
-  if (!isEntering) { toast.style.opacity = "0"; return; }
-  const minsVal = event.target.getAttribute("data-mins");
-  const labelVal = event.target.getAttribute("data-label");
-  toast.innerHTML = `${labelVal}: <b>${parseInt(minsVal).toLocaleString()} Mins</b>`;
-  const parentBounds = event.target.ownerSVGElement.parentElement.getBoundingClientRect();
-  const targetBounds = event.target.getBoundingClientRect();
-  toast.style.left = `${targetBounds.left - parentBounds.left + (targetBounds.width / 2) - 55}px`;
-  toast.style.top = `${targetBounds.top - parentBounds.top - 35}px`;
-  toast.style.opacity = "1";
+/* ============================================================
+   top tracks
+   ============================================================ */
+function viewTracks() {
+  return `
+    <div class="glass pane">
+      <div class="kicker">the charts</div>
+      <h2>Your top tracks, <em>ranked</em></h2>
+      <div class="sub">Your most-played songs, straight from Spotify. The bar next to each one shows how popular it is worldwide — shorter bar, deeper cut.</div>
+      <div class="controls">
+        <div class="pills">
+          ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.trackRange === r}" onclick="setTrackRange('${r}')">${RANGE_LABEL[r]}</button>`).join("")}
+        </div>
+        <div class="pills">
+          ${[25, 50].map(n => `<button class="pill" aria-pressed="${state.trackLimit === n}" onclick="setTrackLimit(${n})">top ${n}</button>`).join("")}
+        </div>
+        <button class="btn btn-ink" style="margin-left:auto;" onclick="jumpToPlaylist()">make it a playlist</button>
+      </div>
+      <div class="track-cols" id="trackListTarget">${trackRows()}</div>
+    </div>`;
 }
-
-function renderTracksDisplayDataPool(timeRangeString, dataSliceLimit) {
-  const collectionItems = DATA_STORE_NODE.topTracks[timeRangeString]?.items || [];
-  const container = document.getElementById("tracksArrayTargetEngine");
-  if (!container) return;
-  container.innerHTML = collectionItems.slice(0, dataSliceLimit).map((track, i) => drawStructuralTelemetryRow(track, i, `Index <b>${track.popularity || 0}</b>`)).join("");
+function trackRows() {
+  const items = (DATA.topTracks[state.trackRange]?.items || []).slice(0, state.trackLimit);
+  if (!items.length) return `<div class="empty-note">Nothing here yet — Spotify needs a little more listening history for this window.</div>`;
+  return items.map((t, i) => `
+    <div class="row">
+      <div class="rank ${i < 3 ? "medal" : ""}">${i + 1}</div>
+      <div class="art"><img src="${esc(t.album?.images?.[2]?.url || t.album?.images?.[0]?.url || "")}" alt="" loading="lazy"></div>
+      <div class="row-meta">
+        <div class="t-name">${esc(t.name)}</div>
+        <div class="t-artist">${esc(t.artists.map(a => a.name).join(", "))}</div>
+      </div>
+      <div class="pop-cell">
+        <span class="pop-num">${t.popularity || 0}</span>
+        <div class="pop-track"><div class="pop-fill" style="width:${t.popularity || 0}%"></div></div>
+      </div>
+    </div>`).join("");
 }
+function setTrackRange(r) { state.trackRange = r; setTab("tracks"); }
+function setTrackLimit(n) { state.trackLimit = n; setTab("tracks"); }
+function jumpToPlaylist() { state.playlistPrefill = { range: state.trackRange, count: state.trackLimit }; setTab("playlists"); }
 
-function renderArtistsWebCluster() {
-  const datasetItems = DATA_STORE_NODE.topArtists.medium_term?.items || [];
-  const container = document.getElementById("artistsWebTargetEngine");
-  if (!container) return;
-  container.innerHTML = datasetItems.slice(0, 15).map((artist, idx) => {
-    const weightsValue = Math.round((datasetItems.length - idx) * 140 + 300);
-    return `<div class="artist-bubble-node"><img src="${artist.images?.[2]?.url || artist.images?.[0]?.url || ''}"><span>${artist.name.toLowerCase()}</span><span class="a-mins">${weightsValue}m</span></div>`;
+/* ============================================================
+   top artists
+   ============================================================ */
+function viewArtists() {
+  return `
+    <div class="glass pane">
+      <div class="kicker">the roster</div>
+      <h2>Your top artists, <em>ranked</em></h2>
+      <div class="sub">Who's been carrying your rotation, in order.</div>
+      <div class="controls">
+        <div class="pills">
+          ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.artistRange === r}" onclick="setArtistRange('${r}')">${RANGE_LABEL[r]}</button>`).join("")}
+        </div>
+      </div>
+      <div class="artist-grid">${artistCards()}</div>
+    </div>`;
+}
+function artistCards() {
+  const items = (DATA.topArtists[state.artistRange]?.items || []).slice(0, 24);
+  if (!items.length) return `<div class="empty-note">No artist data for this window yet.</div>`;
+  return items.map((a, i) => {
+    const img = a.images?.[1]?.url || a.images?.[0]?.url;
+    return `
+    <div class="artist-card ${i < 3 ? "top" : ""}">
+      ${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : `<div class="a-fallback">${esc((a.name || "?")[0].toUpperCase())}</div>`}
+      <div class="a-meta">
+        <div class="a-name">${esc(a.name)}</div>
+        <div class="a-genres">${esc((a.genres || []).slice(0, 2).join(" · ") || "genre unknown")}</div>
+      </div>
+      <span class="a-rank">#${i + 1}</span>
+    </div>`;
   }).join("");
 }
+function setArtistRange(r) { state.artistRange = r; setTab("artists"); }
 
-function calculateDecadesDonutProfile() {
-  const historyProfileTracks = DATA_STORE_NODE.topTracks.medium_term?.items || [];
-  const metricsCache = {};
-  historyProfileTracks.forEach(t => {
-    const structuralReleaseYearValue = parseInt((t.album?.release_date || "").slice(0, 4));
-    if (!structuralReleaseYearValue) return;
-    const computedDecadeBucketIndex = Math.floor(structuralReleaseYearValue / 10) * 10;
-    metricsCache[computedDecadeBucketIndex] = (metricsCache[computedDecadeBucketIndex] || 0) + 1;
-  });
-  const dataRowsSorted = Object.entries(metricsCache).sort((a, b) => a[0] - b[0]);
-  const totalWeightVolume = dataRowsSorted.reduce((s, [, v]) => s + v, 0) || 1;
-  
-  let svgHtml = `<svg viewBox="0 0 200 200" width="140" height="140" style="transform: rotate(-90deg);">`;
-  let runningAngleCoordinate = 0;
-  dataRowsSorted.forEach(([decade, count], i) => {
-    const pct = count / totalWeightVolume; const angle = pct * 360;
-    const xStart = 100 + 85 * Math.cos((runningAngleCoordinate) * Math.PI / 180);
-    const yStart = 100 + 85 * Math.sin((runningAngleCoordinate) * Math.PI / 180);
-    runningAngleCoordinate += angle;
-    const xEnd = 100 + 85 * Math.cos((runningAngleCoordinate) * Math.PI / 180);
-    const yEnd = 100 + 85 * Math.sin((runningAngleCoordinate) * Math.PI / 180);
-    svgHtml += `<path d="M 100 100 L ${xStart} ${yStart} A 85 85 0 ${angle > 180 ? 1 : 0} 1 ${xEnd} ${yEnd} Z" fill="${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}" stroke="#FFFFFF" stroke-width="2.5"/>`;
-  });
-  svgHtml += `<circle cx="100" cy="100" r="48" fill="#FFFFFF" /></svg><div class="donut-center-lbl">Eras</div>`;
-  document.getElementById("decadesDonutTargetEngine").innerHTML = svgHtml;
-  document.getElementById("decadesLegendMatrixTarget").innerHTML = dataRowsSorted.map(([decade, count], i) => `<div class="era-legend-item"><span style="width:10px; height:10px; border-radius:50%; background:${PALETTE_MATRIX[i % PALETTE_MATRIX.length]}"></span><span>${decade}s Framework</span><span style="margin-left:auto; font-family:var(--mono); font-size:11px; font-weight:600;">${count}</span></div>`).join("");
-}
-
-function switchActiveListeningDay(dayIdx, btnElement) {
-  document.querySelectorAll(".day-btn").forEach(b => b.classList.remove("active"));
-  btnElement.classList.add("active"); currentActiveDayIndex = dayIdx;
-  calculateCircadianDensityProfile();
-}
-
-function calculateCircadianDensityProfile() {
-  const hourlyArray = new Array(24).fill(0);
-  const playLogs = DATA_STORE_NODE.recent?.items || [];
-  
-  // Compiling dynamic structural parameters to calculate the absolute Weekly Mean Baseline threshold
-  let completeWeeklyTotalArray = new Array(24).fill(0);
-  playLogs.forEach(log => completeWeeklyTotalArray[new Date(log.played_at).getHours()]++);
-  const combinedMeanBaselineValue = (completeWeeklyTotalArray.reduce((s, c) => s + c, 0) / 24) || 1;
-
-  playLogs.forEach(playEventLog => {
-    if(new Date(playEventLog.played_at).getDay() === currentActiveDayIndex) { 
-      hourlyArray[new Date(playEventLog.played_at).getHours()]++; 
-    }
-  });
-  
-  const scalingMaximumPeak = Math.max(...hourlyArray, 1);
-  const containerHeightStage = 160; 
-  
-  // Calculate specific CSS horizontal line coordinate heights mapping directly to the processed mean 
-  const meanVectorTopPixelCoordinate = Math.max(20, containerHeightStage - 24 - ((combinedMeanBaselineValue / scalingMaximumPeak) * (containerHeightStage - 24)));
-
-  let inlineBarsHtmlPayload = `
-    <div class="weekly-mean-vector-line" style="top: ${meanVectorTopPixelCoordinate}px;"></div>
-    <div class="weekly-mean-badge-node" style="top: ${meanVectorTopPixelCoordinate - 10}px;">WEEKLY MEAN BASELINE: ${combinedMeanBaselineValue.toFixed(1)} UNITS</div>
-  `;
-
-  hourlyArray.forEach((hourlyCount) => {
-    inlineBarsHtmlPayload += `
-      <div class="hour-bar-column">
-        <div class="bar-vector ${hourlyCount > 0 ? 'active-glow' : ''}" style="height:${Math.max(hourlyCount / scalingMaximumPeak * 100, 4)}%;"></div>
+/* ============================================================
+   playlist studio
+   ============================================================ */
+function viewPlaylists() {
+  const monthName = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const prefill = state.playlistPrefill || {};
+  const defRange = prefill.range || "short_term";
+  const defCount = prefill.count || 25;
+  state.playlistPrefill = null;
+  return `
+    <div class="stack">
+      <div class="glass pane">
+        <div class="kicker">one-tap mixes</div>
+        <h2>Ready-made <em>playlists</em></h2>
+        <div class="sub">One tap creates a private playlist in your Spotify library. You can rename, reorder, or make it public from the app anytime.</div>
+        <div class="preset-grid">
+          <button class="preset" onclick="createPlaylist({name:'rotation · ${esc(monthName.toLowerCase())}', desc:'my last 4 weeks, ranked. made with spotify.ai', range:'short_term', count:25})">
+            <span class="p-emoji">🔁</span><span class="p-name">This month's rotation</span>
+            <span class="p-desc">Your top 25 from the last four weeks, in order.</span><span class="p-tag">25 tracks · last 4 weeks</span>
+          </button>
+          <button class="preset" onclick="createPlaylist({name:'the half-year heavy rotation', desc:'six months of my most played. made with spotify.ai', range:'medium_term', count:50})">
+            <span class="p-emoji">📈</span><span class="p-name">Half-year heavy rotation</span>
+            <span class="p-desc">The 50 songs that defined your last six months.</span><span class="p-tag">50 tracks · last 6 months</span>
+          </button>
+          <button class="preset" onclick="createPlaylist({name:'all-time favorites', desc:'the ones that never left. made with spotify.ai', range:'long_term', count:50})">
+            <span class="p-emoji">🏆</span><span class="p-name">All-time favorites</span>
+            <span class="p-desc">Your 50 most played songs since forever.</span><span class="p-tag">50 tracks · all time</span>
+          </button>
+          <button class="preset" onclick="createPlaylist({name:'the throwbacks', desc:'pre-2010 only. made with spotify.ai', range:'long_term', count:50, filterBefore:2010})">
+            <span class="p-emoji">📼</span><span class="p-name">The throwbacks</span>
+            <span class="p-desc">Only the pre-2010 releases hiding in your all-time chart.</span><span class="p-tag">released before 2010</span>
+          </button>
+        </div>
       </div>
-    `;
+
+      <div class="glass pane">
+        <div class="kicker">build your own</div>
+        <h2>Custom playlist</h2>
+        <div class="sub">Pick a source, size it, name it, and it lands in your library.</div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="plName">playlist name</label>
+            <input type="text" id="plName" value="my top ${defCount} · ${RANGE_LABEL[defRange]}" maxlength="100">
+          </div>
+          <div class="field">
+            <label for="plDesc">description (optional)</label>
+            <input type="text" id="plDesc" placeholder="what's this one for?" maxlength="200">
+          </div>
+          <div class="field">
+            <label for="plRange">pull songs from</label>
+            <select id="plRange">
+              ${["short_term", "medium_term", "long_term"].map(r => `<option value="${r}" ${r === defRange ? "selected" : ""}>${RANGE_LABEL[r]}</option>`).join("")}
+            </select>
+          </div>
+          <div class="field">
+            <label for="plCount">number of tracks — <span id="plCountVal">${defCount}</span></label>
+            <input type="range" id="plCount" min="10" max="50" step="5" value="${defCount}" oninput="document.getElementById('plCountVal').textContent = this.value">
+          </div>
+          <div class="switch-row">
+            <div><div class="sw-label">Shuffle the order</div><div class="sw-hint">Off keeps them ranked, most played first</div></div>
+            <label class="switch"><input type="checkbox" id="plShuffle"><span class="knob"></span></label>
+          </div>
+          <div class="switch-row">
+            <div><div class="sw-label">Make it public</div><div class="sw-hint">Off keeps it just for you</div></div>
+            <label class="switch"><input type="checkbox" id="plPublic"><span class="knob"></span></label>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="createCustomPlaylist()">create playlist</button>
+          <div id="playlistResult">${playlistResultChip()}</div>
+        </div>
+      </div>
+    </div>`;
+}
+function playlistResultChip() {
+  const p = state.lastPlaylist;
+  if (!p) return "";
+  return `<span class="result-chip">✓ "${esc(p.name)}" saved (${p.count} tracks)${p.url ? ` — <a href="${esc(p.url)}" target="_blank" rel="noopener">open in spotify</a>` : ""}</span>`;
+}
+function createCustomPlaylist() {
+  createPlaylist({
+    name: document.getElementById("plName").value.trim() || "my spotify.ai mix",
+    desc: document.getElementById("plDesc").value.trim() || "made with spotify.ai",
+    range: document.getElementById("plRange").value,
+    count: parseInt(document.getElementById("plCount").value),
+    shuffle: document.getElementById("plShuffle").checked,
+    isPublic: document.getElementById("plPublic").checked,
+  });
+}
+async function createPlaylist(opts) {
+  try {
+    if (!DATA.me?.id) { toast("Reconnect your account to create playlists."); return; }
+    const pool = DATA.topTracks[opts.range]?.items || [];
+    let tracks = opts.filterBefore
+      ? pool.filter(t => { const y = parseInt((t.album?.release_date || "").slice(0, 4)); return y && y < opts.filterBefore; })
+      : pool.slice();
+    if (tracks.length < 3) { toast(opts.filterBefore ? "Not enough older songs in your charts for that one." : "Not enough listening history for that window yet."); return; }
+    if (opts.shuffle) shuffleArr(tracks);
+    tracks = tracks.slice(0, opts.count);
+    toast("Creating your playlist…");
+    const pl = await api(`/users/${DATA.me.id}/playlists`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: opts.name, description: opts.desc || "made with spotify.ai", public: !!opts.isPublic }),
+    });
+    if (!pl?.id) { toast("Spotify didn't accept that. Try disconnecting and reconnecting."); return; }
+    await api(`/playlists/${pl.id}/tracks`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uris: tracks.map(t => t.uri) }),
+    });
+    state.lastPlaylist = { name: opts.name, url: pl.external_urls?.spotify, count: tracks.length };
+    toast(`"${opts.name}" is in your library.`);
+    const target = document.getElementById("playlistResult");
+    if (target) target.innerHTML = playlistResultChip();
+  } catch (e) {
+    if (e.message !== "expired") toast("Something went wrong creating the playlist. Try again.");
+  }
+}
+
+/* ============================================================
+   story cards
+   ============================================================ */
+const STORY_THEMES = {
+  glass: {
+    bg: "#EEF0F4", card: "rgba(255,255,255,0.86)", cardStroke: "rgba(16,19,25,0.07)",
+    ink: "#101319", muted: "#4E5666", faint: "#8A92A3", divider: "rgba(16,19,25,0.07)",
+    orbs: [
+      { x: 0.1, y: 0.02, r: 0.55, color: "rgba(20,115,230,0.20)" },
+      { x: 0.95, y: 0.08, r: 0.5, color: "rgba(29,185,84,0.22)" },
+      { x: 0.9, y: 0.95, r: 0.55, color: "rgba(255,102,178,0.18)" },
+      { x: 0.05, y: 0.9, r: 0.5, color: "rgba(122,92,255,0.16)" },
+    ],
+  },
+  ink: {
+    bg: "#0D1015", card: "rgba(22,26,34,0.82)", cardStroke: "rgba(255,255,255,0.08)",
+    ink: "#F4F6FA", muted: "#B7BECD", faint: "#6C7688", divider: "rgba(255,255,255,0.07)",
+    orbs: [
+      { x: 0.1, y: 0.02, r: 0.55, color: "rgba(29,185,84,0.20)" },
+      { x: 0.95, y: 0.1, r: 0.5, color: "rgba(20,115,230,0.18)" },
+      { x: 0.9, y: 0.95, r: 0.55, color: "rgba(122,92,255,0.18)" },
+      { x: 0.05, y: 0.9, r: 0.5, color: "rgba(255,102,178,0.14)" },
+    ],
+  },
+};
+
+function viewStory() {
+  return `
+    <div class="glass pane">
+      <div class="kicker">made for sharing</div>
+      <h2>Story cards, <em>ready to post</em></h2>
+      <div class="sub">A 1080×1920 image sized for Instagram and TikTok stories. Pick a look, hit download, post it.</div>
+      <div class="story-split">
+        <div class="stack" style="gap:18px;">
+          <div class="opt-group">
+            <label class="caption" style="letter-spacing:0.08em; text-transform:uppercase;">what to show</label>
+            <div class="pills">
+              <button class="pill" aria-pressed="${state.storyTemplate === "tracks"}" onclick="setStoryOpt('storyTemplate','tracks')">top tracks</button>
+              <button class="pill" aria-pressed="${state.storyTemplate === "artists"}" onclick="setStoryOpt('storyTemplate','artists')">top artists</button>
+            </div>
+          </div>
+          <div class="opt-group">
+            <label class="caption" style="letter-spacing:0.08em; text-transform:uppercase;">time window</label>
+            <div class="pills">
+              ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.storyRange === r}" onclick="setStoryOpt('storyRange','${r}')">${RANGE_LABEL[r]}</button>`).join("")}
+            </div>
+          </div>
+          <div class="opt-group">
+            <label class="caption" style="letter-spacing:0.08em; text-transform:uppercase;">look</label>
+            <div class="pills">
+              <button class="pill" aria-pressed="${state.storyTheme === "glass"}" onclick="setStoryOpt('storyTheme','glass')">glass</button>
+              <button class="pill" aria-pressed="${state.storyTheme === "ink"}" onclick="setStoryOpt('storyTheme','ink')">ink</button>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
+            <button class="btn btn-green" onclick="downloadStory()">download png</button>
+          </div>
+          <div class="caption">tip: post it and tag the artist — they might repost you</div>
+        </div>
+        <div class="story-preview-frame">
+          <canvas id="storyCanvas" width="1080" height="1920" aria-label="Story card preview"></canvas>
+        </div>
+      </div>
+    </div>`;
+}
+function setStoryOpt(key, val) { state[key] = val; setTab("story"); }
+
+function loadImg(url) {
+  return new Promise(res => {
+    if (!url) return res(null);
+    const im = new Image();
+    im.crossOrigin = "anonymous";
+    im.onload = () => res(im);
+    im.onerror = () => res(null);
+    im.src = url;
+  });
+}
+function rr(c, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath();
+}
+
+async function renderStoryCard() {
+  const cv = document.getElementById("storyCanvas");
+  if (!cv) return;
+  const ctx = cv.getContext("2d");
+  const W = 1080, H = 1920;
+  const theme = STORY_THEMES[state.storyTheme];
+  const isTracks = state.storyTemplate === "tracks";
+  const pool = isTracks
+    ? (DATA.topTracks[state.storyRange]?.items || [])
+    : (DATA.topArtists[state.storyRange]?.items || []);
+  const items = pool.slice(0, 5);
+
+  try {
+    await Promise.all([
+      document.fonts.load('900 96px Archivo'),
+      document.fonts.load('800 44px Archivo'),
+      document.fonts.load('500 30px Archivo'),
+      document.fonts.load('italic 400 96px "Instrument Serif"'),
+      document.fonts.load('600 26px "IBM Plex Mono"'),
+    ]);
+  } catch (e) { /* draw with fallbacks */ }
+
+  /* background + orbs */
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = theme.bg;
+  ctx.fillRect(0, 0, W, H);
+  theme.orbs.forEach(o => {
+    const g = ctx.createRadialGradient(o.x * W, o.y * H, 0, o.x * W, o.y * H, o.r * W);
+    g.addColorStop(0, o.color);
+    g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
   });
 
-  document.getElementById("circadianBarsTargetEngine").innerHTML = inlineBarsHtmlPayload;
-  document.getElementById("circadianLabelsTargetEngine").innerHTML = Array.from({ length: 24 }, (_, hourIndex) => `<span>${hourIndex % 6 === 0 ? (hourIndex === 0 ? "12am" : hourIndex === 12 ? "12pm" : hourIndex > 12 ? (hourIndex - 12) + "pm" : hourIndex + "am") : ""}</span>`).join("");
+  /* glass card */
+  const cx = 70, cy = 200, cw = W - 140, ch = 1520;
+  ctx.save();
+  ctx.shadowColor = "rgba(20,26,40,0.18)";
+  ctx.shadowBlur = 70;
+  ctx.shadowOffsetY = 26;
+  rr(ctx, cx, cy, cw, ch, 56);
+  ctx.fillStyle = theme.card;
+  ctx.fill();
+  ctx.restore();
+  rr(ctx, cx, cy, cw, ch, 56);
+  ctx.strokeStyle = theme.cardStroke;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  /* header */
+  const rangeText = RANGE_LABEL[state.storyRange].toUpperCase();
+  ctx.textBaseline = "alphabetic";
+  ctx.textAlign = "left";
+  try { ctx.letterSpacing = "6px"; } catch (e) {}
+  ctx.font = '600 25px "IBM Plex Mono", monospace';
+  ctx.fillStyle = "#1DB954";
+  ctx.fillText("SPOTIFY.AI  ·  " + rangeText, cx + 74, cy + 118);
+  try { ctx.letterSpacing = "0px"; } catch (e) {}
+
+  const word1 = isTracks ? "on" : "heavy";
+  const word2 = isTracks ? "repeat" : "rotation";
+  ctx.font = "900 104px Archivo, sans-serif";
+  ctx.fillStyle = theme.ink;
+  ctx.fillText(word1, cx + 70, cy + 246);
+  const w1 = ctx.measureText(word1).width;
+  ctx.font = 'italic 400 104px "Instrument Serif", serif';
+  ctx.fillText(" " + word2, cx + 70 + w1, cy + 246);
+  const w2 = ctx.measureText(" " + word2).width;
+  ctx.font = "900 104px Archivo, sans-serif";
+  ctx.fillStyle = "#1DB954";
+  ctx.fillText(".", cx + 70 + w1 + w2, cy + 246);
+
+  ctx.font = "500 30px Archivo, sans-serif";
+  ctx.fillStyle = theme.muted;
+  ctx.fillText(isTracks ? "my top 5 tracks right now" : "my top 5 artists right now", cx + 74, cy + 306);
+
+  /* rows */
+  const rowsTop = cy + 380;
+  const rowH = 200;
+  const artSize = 144;
+  const imgs = await Promise.all(items.map(it => {
+    const url = isTracks
+      ? (it.album?.images?.[0]?.url || it.album?.images?.[1]?.url)
+      : (it.images?.[0]?.url || it.images?.[1]?.url);
+    return loadImg(url);
+  }));
+
+  if (!items.length) {
+    ctx.font = "500 34px Archivo, sans-serif";
+    ctx.fillStyle = theme.faint;
+    ctx.fillText("not enough listening history for this window yet", cx + 74, rowsTop + 60);
+  }
+
+  items.forEach((it, i) => {
+    const ry = rowsTop + i * rowH;
+    const artX = cx + 70, artY = ry;
+
+    /* divider */
+    if (i > 0) {
+      ctx.strokeStyle = theme.divider;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx + 70, ry - 28);
+      ctx.lineTo(cx + cw - 70, ry - 28);
+      ctx.stroke();
+    }
+
+    /* artwork (rounded / circular for artists) */
+    ctx.save();
+    if (isTracks) { rr(ctx, artX, artY, artSize, artSize, 26); }
+    else { ctx.beginPath(); ctx.arc(artX + artSize / 2, artY + artSize / 2, artSize / 2, 0, Math.PI * 2); }
+    ctx.clip();
+    if (imgs[i]) {
+      ctx.drawImage(imgs[i], artX, artY, artSize, artSize);
+    } else {
+      ctx.fillStyle = PALETTE[i % PALETTE.length];
+      ctx.fillRect(artX, artY, artSize, artSize);
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.font = "800 64px Archivo, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText((it.name || "?")[0].toUpperCase(), artX + artSize / 2, artY + artSize / 2 + 22);
+      ctx.textAlign = "left";
+    }
+    ctx.restore();
+
+    /* text */
+    const textX = artX + artSize + 44;
+    const maxTextW = cx + cw - 70 - textX - 90;
+    const name = it.name || "";
+    const subLine = isTracks
+      ? (it.artists || []).map(a => a.name).join(", ")
+      : ((it.genres || [])[0] || "");
+    ctx.font = "800 44px Archivo, sans-serif";
+    ctx.fillStyle = theme.ink;
+    ctx.fillText(clipText(ctx, name, maxTextW), textX, ry + 68);
+    ctx.font = "500 32px Archivo, sans-serif";
+    ctx.fillStyle = theme.muted;
+    ctx.fillText(clipText(ctx, subLine, maxTextW), textX, ry + 116);
+
+    /* rank */
+    ctx.font = '600 30px "IBM Plex Mono", monospace';
+    ctx.fillStyle = i === 0 ? "#1DB954" : theme.faint;
+    ctx.textAlign = "right";
+    ctx.fillText(String(i + 1).padStart(2, "0"), cx + cw - 74, ry + 92);
+    ctx.textAlign = "left";
+  });
+
+  /* card footer */
+  const user = (DATA.me?.display_name || "me").toLowerCase();
+  const dateStr = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toLowerCase();
+  ctx.font = '500 26px "IBM Plex Mono", monospace';
+  ctx.fillStyle = theme.faint;
+  ctx.fillText("@" + user, cx + 74, cy + ch - 66);
+  ctx.textAlign = "right";
+  ctx.fillText(dateStr, cx + cw - 74, cy + ch - 66);
+  ctx.textAlign = "left";
+
+  /* page footer */
+  ctx.textAlign = "center";
+  ctx.font = '600 26px "IBM Plex Mono", monospace';
+  ctx.fillStyle = theme.faint;
+  ctx.fillText("spotify.ai", W / 2, cy + ch + 92);
+  ctx.textAlign = "left";
 }
 
-async function dispatchPlaylistDeploymentSequence() {
+function clipText(ctx, text, maxW) {
+  if (ctx.measureText(text).width <= maxW) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(t + "…").width > maxW) t = t.slice(0, -1);
+  return t + "…";
+}
+
+function downloadStory() {
+  const cv = document.getElementById("storyCanvas");
+  if (!cv) return;
   try {
-    const rangeToken = appStage.querySelector(".toggleBayBtn[data-type='range'][aria-pressed='true']").dataset.value;
-    const limitToken = parseInt(appStage.querySelector(".toggleBayBtn[data-type='limit'][aria-pressed='true']").dataset.value);
-    const tracks = DATA_STORE_NODE.topTracks[rangeToken]?.items || []; if (!tracks.length) return;
-    displayNotificationToast("Deploying platform automation track synchronization profiles...");
-    const playlist = await dispatchSecureApiCall(`/users/${DATA_STORE_NODE.me.id}/playlists`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: `Spotify.AI Generation Profile`, public: false }) });
-    await dispatchSecureApiCall(`/playlists/${playlist.id}/tracks`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ uris: tracks.slice(0, limitToken).map(t => t.uri) }) });
-    displayNotificationToast("Playlist integrated successfully.");
-  } catch (e) { displayNotificationToast("Pipeline handshake request rejected."); }
+    const a = document.createElement("a");
+    a.download = `spotify-ai-${state.storyTemplate}-${state.storyRange}.png`;
+    a.href = cv.toDataURL("image/png");
+    a.click();
+    toast("Story card downloaded.");
+  } catch (e) {
+    toast("Couldn't export the image — some album art blocked it. Try a different time window.");
+  }
 }
 
-async function loadComprehensiveDataAssets() {
-  appStage.innerHTML = `<div class="system-boot-loader"><div class="system-spinner-ring"></div>Synchronizing structural analytical framework interfaces…</div>`;
-  const parameterChronologicalRanges = ["short_term", "medium_term", "long_term"];
-  try {
-    const accountNodePayload = await dispatchSecureApiCall("/me").catch(() => ({ id: "guest", display_name: "Diagnostic Node" }));
-    const streamHistoryProfile = await dispatchSecureApiCall("/me/player/recently-played?limit=50").catch(() => ({ items: [] }));
-    const topTracksShort = await dispatchSecureApiCall("/me/top/tracks?time_range=short_term&limit=50").catch(() => ({ items: [] }));
-    const topTracksMedium = await dispatchSecureApiCall("/me/top/tracks?time_range=medium_term&limit=50").catch(() => ({ items: [] }));
-    const topTracksLong = await dispatchSecureApiCall("/me/top/tracks?time_range=long_term&limit=50").catch(() => ({ items: [] }));
-    const topArtistsShort = await dispatchSecureApiCall("/me/top/artists?time_range=short_term&limit=50").catch(() => ({ items: [] }));
-    const topArtistsMedium = await dispatchSecureApiCall("/me/top/artists?time_range=medium_term&limit=50").catch(() => ({ items: [] }));
-    const topArtistsLong = await dispatchSecureApiCall("/me/top/artists?time_range=long_term&limit=50").catch(() => ({ items: [] }));
-    DATA_STORE_NODE = { me: accountNodePayload, recent: streamHistoryProfile, topTracks: { short_term: topTracksShort, medium_term: topTracksMedium, long_term: topTracksLong }, topArtists: { short_term: topArtistsShort, medium_term: topArtistsMedium, long_term: topArtistsLong } };
-    compileMasterReportLayout();
-  } catch (e) { renderAuthorizationGate(); }
-}
-
-(async function coreBootstrapSequence() {
-  const processUrlParameters = new URLSearchParams(location.search);
-  if (processUrlParameters.get("code")) { await executeTokenExchange(processUrlParameters.get("code")); history.replaceState({}, "", REDIRECT); }
-  if (storageController.get("token") && Date.now() < +(storageController.get("token_expiry") || 0)) { await loadComprehensiveDataAssets(); } else { renderAuthorizationGate(); }
+/* ============================================================
+   boot
+   ============================================================ */
+(async function boot() {
+  const params = new URLSearchParams(location.search);
+  if (params.get("code")) {
+    await exchangeToken(params.get("code"));
+    history.replaceState({}, "", REDIRECT);
+  }
+  if (store.get("token") && Date.now() < +(store.get("token_expiry") || 0)) {
+    await loadData();
+  } else {
+    renderLogin();
+  }
 })();
+
 </script>
 </body>
 </html>
