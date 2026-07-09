@@ -9,25 +9,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #EEF0F4;
-  --ink: #101319;
-  --muted: #4E5666;
-  --faint: #8A92A3;
-  --card: rgba(255, 255, 255, 0.72);
+  --bg: #F2F5F3;
+  --ink: #0C0F0D;
+  --muted: #4A544E;
+  --faint: #8A958E;
+  --card: rgba(255, 255, 255, 0.62);
   --card-solid: #FFFFFF;
-  --line: rgba(16, 19, 25, 0.07);
+  --line: rgba(12, 15, 13, 0.07);
   --green: #1DB954;
+  --green-deep: #0E5A2B;
+  --green-soft: rgba(29, 185, 84, 0.09);
   --green-hover: #1ed760;
-  --blue: #1473E6;
-  --purple: #7A5CFF;
-  --pink: #FF66B2;
-  --amber: #F5A300;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'Archivo', sans-serif;
   --serif: 'Instrument Serif', serif;
-  --r-lg: 22px;
-  --r-md: 15px;
-  --r-sm: 10px;
+  --r-lg: 26px;
+  --r-md: 16px;
+  --r-sm: 11px;
   --ease: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -38,10 +36,10 @@ body {
   -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden;
   background: var(--bg);
   background-image:
-    radial-gradient(circle at 8% -5%, rgba(20, 115, 230, 0.13) 0%, transparent 42%),
-    radial-gradient(circle at 96% 4%, rgba(29, 185, 84, 0.14) 0%, transparent 45%),
-    radial-gradient(circle at 92% 96%, rgba(255, 102, 178, 0.10) 0%, transparent 42%),
-    radial-gradient(circle at 4% 100%, rgba(122, 92, 255, 0.10) 0%, transparent 45%);
+    radial-gradient(circle at 12% -6%, rgba(29, 185, 84, 0.18) 0%, transparent 44%),
+    radial-gradient(circle at 98% 6%, rgba(12, 15, 13, 0.07) 0%, transparent 42%),
+    radial-gradient(circle at 90% 98%, rgba(29, 185, 84, 0.14) 0%, transparent 44%),
+    radial-gradient(circle at 2% 96%, rgba(125, 227, 165, 0.16) 0%, transparent 46%);
   background-attachment: fixed;
 }
 :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 6px; }
@@ -50,22 +48,34 @@ body {
 .wrap { max-width: 1280px; margin: 0 auto; padding: 28px 24px 100px; }
 @media (max-width: 640px) { .wrap { padding: 16px 14px 80px; } }
 
-/* ---------- glass surfaces ---------- */
+/* ---------- liquid glass surfaces ---------- */
 .glass {
+  position: relative;
   background: var(--card);
-  backdrop-filter: blur(26px) saturate(170%);
-  -webkit-backdrop-filter: blur(26px) saturate(170%);
-  border: 1px solid var(--line);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
   border-radius: var(--r-lg);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 4px 18px rgba(150, 162, 182, 0.14), 0 16px 44px rgba(28, 36, 52, 0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(12, 15, 13, 0.03),
+    0 4px 18px rgba(110, 130, 118, 0.13),
+    0 20px 55px rgba(14, 24, 18, 0.06);
   transition: var(--ease);
 }
+.glass::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(118deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 38%);
+  opacity: 0.65;
+}
+.glass > * { position: relative; }
 
 /* ---------- header ---------- */
 .top {
   display: flex; justify-content: space-between; align-items: center; gap: 12px;
   background: var(--ink); color: #FFF; border-radius: var(--r-md);
   padding: 16px 26px; margin-bottom: 22px;
+  box-shadow: 0 14px 34px rgba(12, 15, 13, 0.18);
 }
 .brand { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; text-transform: lowercase; }
 .brand span { color: var(--green); }
@@ -94,13 +104,21 @@ body {
 .kicker { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); display: flex; align-items: center; gap: 12px; }
 .kicker::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .pane h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
-.pane h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green); letter-spacing: 0; }
+.pane h2 em, .persona em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green-deep); letter-spacing: 0; }
 .pane .sub { font-size: 13.5px; color: var(--muted); max-width: 62ch; margin-top: -12px; }
 .caption { font-family: var(--mono); font-size: 10px; color: var(--faint); }
 
-.grid-2 { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 24px; align-items: start; }
+.grid-2 { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 24px; align-items: start; }
 @media (max-width: 1080px) { .grid-2 { grid-template-columns: 1fr; } }
 .stack { display: flex; flex-direction: column; gap: 24px; }
+
+/* ---------- the read (hero) ---------- */
+.persona { font-size: clamp(34px, 4.6vw, 52px); font-weight: 900; letter-spacing: -0.035em; line-height: 1.05; }
+.persona em { color: var(--green); }
+.persona-vibe { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: lowercase; color: var(--green-deep); background: var(--green-soft); padding: 6px 14px; border-radius: 30px; width: fit-content; }
+.read-body { font-size: 16px; color: var(--muted); line-height: 1.7; max-width: 64ch; }
+.read-body b { color: var(--ink); font-weight: 700; }
+.read-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
 /* ---------- buttons & controls ---------- */
 .btn {
@@ -109,13 +127,20 @@ body {
   display: inline-flex; align-items: center; gap: 8px;
 }
 .btn-green { background: var(--green); color: #04220F; }
-.btn-green:hover { background: var(--green-hover); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(29,185,84,0.3); }
+.btn-green:hover { background: var(--green-hover); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(29,185,84,0.32); }
 .btn-ink { background: var(--ink); color: #FFF; }
-.btn-ink:hover { background: #23272F; transform: translateY(-1px); }
-.btn-ghost { background: rgba(16,19,25,0.05); color: var(--ink); }
-.btn-ghost:hover { background: rgba(16,19,25,0.1); }
+.btn-ink:hover { background: #1C211E; transform: translateY(-1px); }
+.btn-ghost { background: rgba(12,15,13,0.05); color: var(--ink); }
+.btn-ghost:hover { background: rgba(12,15,13,0.1); }
+.mini-btn {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 600; text-transform: lowercase; letter-spacing: 0.03em;
+  background: rgba(12,15,13,0.05); color: var(--muted); border: none; border-radius: 30px; padding: 7px 14px;
+  cursor: pointer; transition: var(--ease); white-space: nowrap;
+}
+.mini-btn:hover { background: var(--green-soft); color: var(--green-deep); }
 
-.pills { display: inline-flex; background: rgba(16, 19, 25, 0.05); padding: 3px; border-radius: 12px; }
+.pills { display: inline-flex; background: rgba(12, 15, 13, 0.05); padding: 3px; border-radius: 12px; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.pills::-webkit-scrollbar { display: none; }
 .pill {
   font-family: var(--mono); font-size: 10.5px; font-weight: 600; padding: 7px 15px; border: 0;
   background: transparent; color: var(--muted); border-radius: 9px; cursor: pointer; transition: var(--ease); white-space: nowrap;
@@ -124,21 +149,26 @@ body {
 .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 
 /* ---------- stat cards ---------- */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); gap: 16px; }
 @media (max-width: 640px) { .stats { grid-template-columns: 1fr 1fr; gap: 10px; } }
 .stat { background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; display: flex; flex-direction: column; gap: 8px; }
 .stat .s-label { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); }
 .stat .s-value { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; display: flex; align-items: baseline; gap: 3px; }
 .stat .s-value small { font-size: 13px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
 .stat .s-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.stat .s-flair { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--green-deep); }
 @media (max-width: 640px) { .stat { padding: 15px; } .stat .s-value { font-size: 25px; } }
 
-/* ---------- ranked track rows ---------- */
+/* obscurity dial */
+.dial-row { display: flex; align-items: center; gap: 6px; }
+.dial-row svg { flex-shrink: 0; }
+
+/* ---------- ranked rows ---------- */
 .track-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 26px; }
 @media (max-width: 880px) { .track-cols { grid-template-columns: 1fr; } }
 .row {
   display: grid; grid-template-columns: 34px 46px 1fr 66px; gap: 14px; align-items: center;
-  padding: 9px 10px; border-radius: var(--r-sm); border-bottom: 1px solid rgba(16,19,25,0.04); transition: var(--ease);
+  padding: 9px 10px; border-radius: var(--r-sm); border-bottom: 1px solid rgba(12,15,13,0.04); transition: var(--ease);
 }
 .row:hover { background: #FFF; }
 .rank { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--faint); text-align: center; }
@@ -146,15 +176,26 @@ body {
   width: 26px; height: 26px; margin: 0 auto; border-radius: 50%; background: var(--green); color: #04220F;
   font-weight: 600; display: flex; align-items: center; justify-content: center; font-size: 11px;
 }
-.art { width: 46px; height: 46px; border-radius: 8px; overflow: hidden; background: rgba(16,19,25,0.04); flex-shrink: 0; }
+.art { width: 46px; height: 46px; border-radius: 9px; overflow: hidden; background: rgba(12,15,13,0.04); flex-shrink: 0; }
 .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .row-meta { min-width: 0; }
 .row-meta .t-name { font-weight: 650; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .row-meta .t-artist { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 .pop-cell { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .pop-cell .pop-num { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
-.pop-track { width: 52px; height: 4px; border-radius: 3px; background: rgba(16,19,25,0.07); overflow: hidden; }
+.pop-track { width: 52px; height: 4px; border-radius: 3px; background: rgba(12,15,13,0.07); overflow: hidden; }
 .pop-fill { height: 100%; border-radius: 3px; background: var(--green); }
+.deep-pop { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--green-deep); background: var(--green-soft); padding: 3px 9px; border-radius: 20px; justify-self: end; }
+
+/* ---------- recommendations ---------- */
+.rec-row {
+  display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: center;
+  padding: 9px 10px; border-radius: var(--r-sm); border-bottom: 1px solid rgba(12,15,13,0.04); transition: var(--ease);
+}
+.rec-row:hover { background: #FFF; }
+.rec-reason { font-family: var(--mono); font-size: 9px; font-weight: 600; color: var(--green-deep); background: var(--green-soft); padding: 3px 9px; border-radius: 20px; white-space: nowrap; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 640px) { .rec-reason { display: none; } }
+.rec-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 8px 0; }
 
 /* ---------- artist cards ---------- */
 .artist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 14px; }
@@ -163,8 +204,8 @@ body {
   position: relative; display: flex; align-items: center; gap: 14px; padding: 14px 16px;
   background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); transition: var(--ease);
 }
-.artist-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(28,36,52,0.08); }
-.artist-card img, .artist-card .a-fallback { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: rgba(16,19,25,0.05); flex-shrink: 0; }
+.artist-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(14,24,18,0.09); }
+.artist-card img, .artist-card .a-fallback { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: rgba(12,15,13,0.05); flex-shrink: 0; }
 .artist-card .a-fallback { display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--faint); }
 .artist-card .a-meta { min-width: 0; }
 .artist-card .a-name { font-weight: 700; font-size: 14.5px; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 28px; }
@@ -177,18 +218,18 @@ body {
   display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; background: var(--card-solid);
   border: 1px solid var(--line); border-radius: 30px; font-size: 12.5px; font-weight: 600; text-transform: lowercase;
 }
-.chip .c-count { font-family: var(--mono); font-size: 10px; color: var(--blue); background: rgba(20,115,230,0.06); padding: 1px 7px; border-radius: 20px; }
+.chip .c-count { font-family: var(--mono); font-size: 10px; color: var(--green-deep); background: var(--green-soft); padding: 1px 7px; border-radius: 20px; }
 
 /* ---------- charts ---------- */
 .chart-box { background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px 18px 14px; }
-.bars { display: flex; align-items: flex-end; gap: 6px; height: 150px; }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 140px; }
 .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; min-width: 0; }
 .bar-col .bar-val { font-family: var(--mono); font-size: 9.5px; color: var(--faint); }
-.bar-col .bar { width: 100%; max-width: 34px; border-radius: 5px 5px 2px 2px; background: rgba(16,19,25,0.06); min-height: 4px; transition: height 0.4s ease; }
-.bar-col .bar.on { background: var(--blue); }
+.bar-col .bar { width: 100%; max-width: 34px; border-radius: 5px 5px 2px 2px; background: rgba(12,15,13,0.06); min-height: 4px; transition: height 0.4s ease; }
+.bar-col .bar.on { background: var(--green); }
 .bar-labels { display: flex; gap: 6px; margin-top: 8px; }
 .bar-labels span { flex: 1; font-family: var(--mono); font-size: 9px; color: var(--faint); text-align: center; overflow: hidden; white-space: nowrap; }
-.empty-note { font-size: 12.5px; color: var(--faint); text-align: center; padding: 34px 12px; }
+.empty-note { font-size: 12.5px; color: var(--faint); text-align: center; padding: 30px 12px; }
 
 .era-split { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 26px; align-items: center; }
 @media (max-width: 600px) { .era-split { grid-template-columns: 1fr; } }
@@ -205,20 +246,20 @@ body {
   text-align: left; background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md);
   padding: 20px; cursor: pointer; transition: var(--ease); font-family: var(--sans); display: flex; flex-direction: column; gap: 6px;
 }
-.preset:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(28,36,52,0.09); border-color: rgba(29,185,84,0.4); }
+.preset:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(14,24,18,0.1); border-color: rgba(29,185,84,0.4); }
 .preset .p-emoji { font-size: 20px; }
 .preset .p-name { font-weight: 750; font-size: 15px; letter-spacing: -0.01em; }
 .preset .p-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
-.preset .p-tag { font-family: var(--mono); font-size: 9.5px; color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+.preset .p-tag { font-family: var(--mono); font-size: 9.5px; color: var(--green-deep); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
 
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); }
 .field input[type="text"], .field select {
   font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--ink);
-  background: var(--card-solid); border: 1px solid rgba(16,19,25,0.12); border-radius: var(--r-sm);
+  background: var(--card-solid); border: 1px solid rgba(12,15,13,0.12); border-radius: var(--r-sm);
   padding: 12px 14px; width: 100%; transition: var(--ease); appearance: none;
 }
-.field input[type="text"]:focus, .field select:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 3px rgba(29,185,84,0.12); }
+.field input[type="text"]:focus, .field select:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 3px rgba(29,185,84,0.13); }
 .field input[type="range"] { accent-color: var(--green); width: 100%; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
@@ -227,15 +268,15 @@ body {
 .switch-row .sw-hint { font-size: 11px; color: var(--faint); }
 .switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
 .switch input { opacity: 0; width: 100%; height: 100%; position: absolute; cursor: pointer; z-index: 2; margin: 0; }
-.switch .knob { position: absolute; inset: 0; background: rgba(16,19,25,0.15); border-radius: 30px; transition: var(--ease); }
+.switch .knob { position: absolute; inset: 0; background: rgba(12,15,13,0.15); border-radius: 30px; transition: var(--ease); }
 .switch .knob::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #FFF; border-radius: 50%; transition: var(--ease); box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
 .switch input:checked + .knob { background: var(--green); }
 .switch input:checked + .knob::after { transform: translateX(18px); }
 .result-chip {
-  display: inline-flex; align-items: center; gap: 10px; background: rgba(29,185,84,0.08); border: 1px solid rgba(29,185,84,0.3);
+  display: inline-flex; align-items: center; gap: 10px; background: var(--green-soft); border: 1px solid rgba(29,185,84,0.32);
   border-radius: 40px; padding: 10px 18px; font-size: 13px; font-weight: 600;
 }
-.result-chip a { color: #12833B; font-weight: 700; text-decoration: none; }
+.result-chip a { color: var(--green-deep); font-weight: 700; text-decoration: none; }
 .result-chip a:hover { text-decoration: underline; }
 
 /* ---------- story cards ---------- */
@@ -244,28 +285,28 @@ body {
 .story-preview-frame { display: flex; justify-content: center; }
 #storyCanvas {
   width: 100%; max-width: 262px; height: auto; border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(28,36,52,0.22); border: 1px solid var(--line); display: block;
+  box-shadow: 0 28px 65px rgba(14, 24, 18, 0.24); border: 1px solid var(--line); display: block;
 }
 .opt-group { display: flex; flex-direction: column; gap: 8px; }
 
 /* ---------- login / loader / toast / footer ---------- */
 .hero { padding: 76px 46px; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
 @media (max-width: 640px) { .hero { padding: 46px 22px; } }
-.hero-tag { font-family: var(--mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--blue); background: rgba(20,115,230,0.07); padding: 7px 15px; border-radius: 30px; }
+.hero-tag { font-family: var(--mono); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--green-deep); background: var(--green-soft); padding: 7px 15px; border-radius: 30px; }
 .hero h1 { font-size: clamp(34px, 5.4vw, 58px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.08; max-width: 21ch; }
 .hero h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green); letter-spacing: -0.01em; }
 .hero p { font-size: 16.5px; color: var(--muted); max-width: 54ch; }
 .hero .fine { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
 
 .loader { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 32vh 0; font-family: var(--mono); font-size: 12px; color: var(--faint); }
-.spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(16,19,25,0.06); border-top-color: var(--green); animation: spin 0.75s linear infinite; }
+.spinner { width: 34px; height: 34px; border-radius: 50%; border: 3px solid rgba(12,15,13,0.06); border-top-color: var(--green); animation: spin 0.75s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .toast {
   position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(16px);
   background: var(--ink); color: #FFF; padding: 12px 24px; border-radius: 40px;
   font-family: var(--mono); font-size: 11.5px; opacity: 0; pointer-events: none;
-  transition: var(--ease); z-index: 200; box-shadow: 0 14px 34px rgba(16,19,25,0.3); max-width: 90vw; text-align: center;
+  transition: var(--ease); z-index: 200; box-shadow: 0 14px 34px rgba(12,15,13,0.3); max-width: 90vw; text-align: center;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -281,7 +322,7 @@ footer { margin-top: 70px; padding-top: 26px; display: flex; justify-content: sp
 
 <script>
 /* ============================================================
-   spotify.ai — config, auth (PKCE), data loading
+   spotify.ai — config, auth (PKCE), data
    ============================================================ */
 const CLIENT_ID = "8bda4fd165494fd5bfc4646ad1fc6d27";
 const SCOPES = "user-top-read user-read-recently-played playlist-modify-public playlist-modify-private";
@@ -294,19 +335,23 @@ const store = {
   del: k => localStorage.removeItem("sai_tlm_" + k),
 };
 
-const PALETTE = ["#1473E6", "#7A5CFF", "#FF66B2", "#F5A300", "#00C2D8", "#1DB954"];
+const PALETTE = ["#1DB954", "#0E5A2B", "#7DE3A5", "#0C0F0D", "#8A958E", "#C9EFD8"];
 const RANGE_LABEL = { short_term: "last 4 weeks", medium_term: "last 6 months", long_term: "all time" };
+const YEAR_NOW = new Date().getFullYear();
 
 let DATA = null;
 const state = {
-  tab: "overview",
+  tab: "dash",
   trackRange: "short_term",
   trackLimit: 25,
   artistRange: "short_term",
-  storyTemplate: "tracks",
+  storyTemplate: "read",
   storyRange: "short_term",
   storyTheme: "glass",
   lastPlaylist: null,
+  recs: null,
+  recsLoading: false,
+  readNonce: 0,
 };
 
 /* ---------- tiny utils ---------- */
@@ -325,6 +370,20 @@ function shuffleArr(a) {
   }
   return a;
 }
+function hashStr(s) {
+  let h = 2166136261;
+  for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const pickFrom = (rng, arr) => arr[Math.floor(rng() * arr.length)];
 
 /* ---------- OAuth (PKCE) ---------- */
 function randString(len) {
@@ -366,7 +425,7 @@ async function api(endpoint, opts = {}) {
 
 /* ---------- data ---------- */
 async function loadData() {
-  app.innerHTML = `<div class="loader"><div class="spinner"></div>pulling your listening data…</div>`;
+  app.innerHTML = `<div class="loader"><div class="spinner"></div>reading your history. no judgment. some judgment.</div>`;
   try {
     const safe = p => p.catch(() => ({ items: [] }));
     const [me, recent, tS, tM, tL, aS, aM, aL] = await Promise.all([
@@ -391,56 +450,235 @@ async function loadData() {
   }
 }
 
-/* ---------- derived numbers ---------- */
-function analysisPool() {
+/* ============================================================
+   metrics — everything the read + cards are built from
+   ============================================================ */
+function analysisPool(range) {
+  if (range) return DATA.topTracks[range]?.items || [];
   const t = DATA.topTracks;
   return (t.medium_term?.items?.length ? t.medium_term.items : (t.short_term?.items?.length ? t.short_term.items : (t.long_term?.items || [])));
 }
-function statObscurity() {
+function bestArtists() {
+  const a = DATA.topArtists;
+  return (a.medium_term?.items?.length ? a.medium_term.items : (a.short_term?.items?.length ? a.short_term.items : (a.long_term?.items || [])));
+}
+function getMetrics() {
+  if (getMetrics._cache) return getMetrics._cache;
   const pool = analysisPool();
-  if (!pool.length) return "—";
-  const avg = pool.reduce((s, t) => s + (t.popularity || 0), 0) / pool.length;
-  return Math.round(100 - avg);
+  const artists = bestArtists();
+  const recentItems = DATA.recent?.items || [];
+
+  const avgPop = pool.length ? pool.reduce((s, t) => s + (t.popularity || 0), 0) / pool.length : 50;
+  const obscurity = Math.round(100 - avgPop);
+
+  const years = pool.map(t => parseInt((t.album?.release_date || "").slice(0, 4))).filter(Boolean);
+  const avgYear = years.length ? Math.round(years.reduce((s, y) => s + y, 0) / years.length) : YEAR_NOW;
+  const tasteAge = Math.max(0, YEAR_NOW - avgYear);
+
+  const explicit = pool.length ? Math.round(100 * pool.filter(t => t.explicit).length / pool.length) : 0;
+
+  const uniqueArtists = new Set(pool.map(t => t.artists?.[0]?.id).filter(Boolean)).size;
+  const variety = pool.length ? uniqueArtists / pool.length : 0.6;
+
+  const shortIds = new Set((DATA.topTracks.short_term?.items || []).map(t => t.id));
+  const longItems = DATA.topTracks.long_term?.items || [];
+  const overlap = longItems.filter(t => shortIds.has(t.id)).length;
+  const consistency = (shortIds.size && longItems.length) ? overlap / Math.min(shortIds.size, longItems.length) : 0;
+
+  let night = 0, peak = null;
+  if (recentItems.length) {
+    const hours = new Array(24).fill(0);
+    recentItems.forEach(i => hours[new Date(i.played_at).getHours()]++);
+    const nightPlays = recentItems.filter(i => { const h = new Date(i.played_at).getHours(); return h >= 22 || h < 4; }).length;
+    night = nightPlays / recentItems.length;
+    const h = hours.indexOf(Math.max(...hours));
+    peak = h === 0 ? "12am" : h === 12 ? "12pm" : h > 12 ? (h - 12) + "pm" : h + "am";
+  }
+
+  const genreCounts = {};
+  artists.forEach(a => (a.genres || []).forEach(g => { genreCounts[g] = (genreCounts[g] || 0) + 1; }));
+  const genres = Object.entries(genreCounts).sort((a, b) => b[1] - a[1]);
+
+  getMetrics._cache = {
+    obscurity, avgYear, tasteAge, explicit, variety, uniqueArtists,
+    consistency, night, nightPct: Math.round(night * 100), peak,
+    topArtist: artists[0]?.name || null,
+    topGenre: genres[0]?.[0] || null,
+    genres,
+    poolSize: pool.length,
+  };
+  return getMetrics._cache;
 }
-function statAvgYear() {
-  const years = analysisPool().map(t => parseInt((t.album?.release_date || "").slice(0, 4))).filter(Boolean);
-  return years.length ? Math.round(years.reduce((s, y) => s + y, 0) / years.length) : "—";
+function obscureTop(n = 5, range) {
+  const pool = analysisPool(range).slice();
+  pool.sort((a, b) => (a.popularity || 0) - (b.popularity || 0));
+  return pool.slice(0, n);
 }
-function statExplicit() {
-  const pool = analysisPool();
-  return pool.length ? Math.round(100 * pool.filter(t => t.explicit).length / pool.length) : 0;
-}
-function topGenres(limit = 6) {
-  const arts = DATA.topArtists.medium_term?.items?.length ? DATA.topArtists.medium_term.items : (DATA.topArtists.short_term?.items || []);
-  const counts = {};
-  arts.forEach(a => (a.genres || []).forEach(g => { counts[g] = (counts[g] || 0) + 1; }));
-  return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, limit);
-}
-function peakHour() {
-  const items = DATA.recent?.items || [];
-  if (!items.length) return null;
-  const hours = new Array(24).fill(0);
-  items.forEach(i => hours[new Date(i.played_at).getHours()]++);
-  const max = Math.max(...hours);
-  const h = hours.indexOf(max);
-  return h === 0 ? "12am" : h === 12 ? "12pm" : h > 12 ? (h - 12) + "pm" : h + "am";
+function obscurityTitle(o) {
+  if (o >= 80) return "actual gatekeeper";
+  if (o >= 60) return "certified digger";
+  if (o >= 40) return "tastefully off-center";
+  if (o >= 20) return "radio friendly";
+  return "chart citizen";
 }
 
+/* ============================================================
+   the read — persona + summary engine
+   ============================================================ */
+const ARCHETYPES = {
+  gatekeeper: {
+    name: "the gatekeeper",
+    vibe: "if it charts, it's over",
+    openers: [
+      "your taste lives so far underground it pays rent to the earth's core.",
+      "you don't listen to music, you protect it. from other people. mostly out of spite.",
+      "somewhere out there an algorithm tried to recommend you a hit song and you took it personally.",
+    ],
+  },
+  chart_citizen: {
+    name: "the people's champ",
+    vibe: "hits only, no shame",
+    openers: [
+      "you like hit songs because they're good. revolutionary behavior, honestly.",
+      "your taste is extremely public knowledge and you've decided that's fine. respect.",
+      "no deep cuts, no pretending — you heard the song everyone heard and you simply liked it more.",
+    ],
+  },
+  time_traveler: {
+    name: "the time traveler",
+    vibe: "born in the wrong decade, allegedly",
+    openers: [
+      "your library is a museum and you're the only staff member who works there.",
+      "you're technically alive now but musically you never left.",
+      "your playlists have carbon dating results.",
+    ],
+  },
+  loyalist: {
+    name: "the ride or die",
+    vibe: "same songs, forever",
+    openers: [
+      "your top songs have not changed in months and honestly? neither have you. this is a safe space.",
+      "some people chase novelty. you chase the same 40 songs in a circle, like a comfort ritual.",
+      "you found your sound and you closed the tab. commitment looks good on you.",
+    ],
+  },
+  monogamist: {
+    name: "the serial monogamist",
+    vibe: "one artist at a time, intensely",
+    openers: [
+      "you don't have top artists. you have eras. and whoever's in the current one should feel honored and slightly watched.",
+      "when you like an artist, you LIKE an artist. their streaming numbers are basically your doing.",
+      "your rotation isn't a rotation, it's a residency.",
+    ],
+  },
+  free_agent: {
+    name: "the free agent",
+    vibe: "loyal to no one, curious about everyone",
+    openers: [
+      "your library has no main character and that's the point — everybody gets one song and then you're gone.",
+      "you treat artists like tapas. a little of everything, committed to nothing.",
+      "your top 50 has almost 50 different artists in it. musically, you have never settled down once.",
+    ],
+  },
+  night_creature: {
+    name: "the night creature",
+    vibe: "peak hours: unholy",
+    openers: [
+      "your listening data suggests the sun is more of a rumor to you.",
+      "most of your plays happen when reasonable people are asleep. the music hits different at 1am and you have the receipts.",
+      "your speakers work the night shift.",
+    ],
+  },
+  omnivore: {
+    name: "the omnivore",
+    vibe: "a little of everything, all of the time",
+    openers: [
+      "your taste refuses to be summarized, which is honestly a flex and a problem.",
+      "the data says you're balanced. suspiciously balanced. what are you hiding.",
+      "you like what you like across decades, genres, and popularity tiers. the algorithm has given up trying to box you in.",
+    ],
+  },
+};
+
+function pickArchetype(m) {
+  const candidates = [
+    ["gatekeeper", (m.obscurity - 50) / 50],
+    ["chart_citizen", (28 - m.obscurity) / 28],
+    ["time_traveler", (m.tasteAge - 16) / 14],
+    ["loyalist", (m.consistency - 0.35) / 0.4],
+    ["monogamist", (0.42 - m.variety) / 0.3],
+    ["free_agent", (m.variety - 0.78) / 0.2],
+    ["night_creature", (m.night - 0.32) / 0.3],
+  ];
+  candidates.sort((a, b) => b[1] - a[1]);
+  const [key, score] = candidates[0];
+  return score > 0.12 ? key : "omnivore";
+}
+
+function buildRead() {
+  const m = getMetrics();
+  const key = pickArchetype(m);
+  const arch = ARCHETYPES[key];
+  const seed = hashStr((DATA.me?.id || "guest") + "::" + key + "::" + state.readNonce);
+  const rng = mulberry32(seed);
+
+  const parts = [pickFrom(rng, arch.openers)];
+
+  if (m.topArtist && m.topGenre) {
+    parts.push(pickFrom(rng, [
+      `<b>${esc(m.topArtist)}</b> is basically your roommate at this point, and <b>${esc(m.topGenre)}</b> is doing most of the emotional heavy lifting.`,
+      `the numbers say <b>${esc(m.topArtist)}</b> owns real estate in your queue, and <b>${esc(m.topGenre)}</b> is your love language.`,
+      `your top artist is <b>${esc(m.topArtist)}</b>. your defining genre is <b>${esc(m.topGenre)}</b>. the math is math-ing.`,
+    ]));
+  } else if (m.topArtist) {
+    parts.push(`<b>${esc(m.topArtist)}</b> has been carrying your entire queue and deserves a thank-you note.`);
+  }
+
+  if (m.peak) {
+    parts.push(m.night >= 0.35
+      ? pickFrom(rng, [
+          `also, <b>${m.nightPct}%</b> of your recent listening happens after 10pm, which is either romantic or concerning.`,
+          `peak listening hour: <b>${m.peak}</b>. the moon knows your playlists better than the sun does.`,
+        ])
+      : pickFrom(rng, [
+          `you peak at <b>${m.peak}</b> like a person with a functioning circadian rhythm. congratulations.`,
+          `your busiest listening hour is <b>${m.peak}</b>, which is almost suspiciously well-adjusted.`,
+        ]));
+  }
+
+  const closers = [];
+  if (m.explicit >= 55) closers.push(`and <b>${m.explicit}%</b> of your top songs are explicit. your aux privileges are under review.`);
+  if (m.tasteAge >= 21) closers.push(`your average song came out in <b>${m.avgYear}</b> — old enough to legally drink. let that sink in.`);
+  else if (m.tasteAge >= 12) closers.push(`your average song is from <b>${m.avgYear}</b>. not old, just... seasoned.`);
+  if (m.obscurity <= 25) closers.push(`obscurity score: <b>${m.obscurity}/100</b>. you like hits. own it loudly.`);
+  if (m.obscurity >= 70) closers.push(`obscurity score: <b>${m.obscurity}/100</b>. nobody at the function can play their music around you and everyone knows it.`);
+  if (m.consistency >= 0.45) closers.push(`you've kept basically the same top songs all year. we're calling it devotion, not a rut.`);
+  if (!closers.length) closers.push(`final verdict: <b>${m.obscurity}/100</b> obscurity, taste age <b>${m.tasteAge}</b>. genuinely one of the listeners of all time.`);
+  parts.push(pickFrom(rng, closers));
+
+  return { key, name: arch.name, vibe: arch.vibe, text: parts.join(" ") };
+}
+function readPlainText() {
+  const r = buildRead();
+  const div = document.createElement("div");
+  div.innerHTML = r.text;
+  return { ...r, plain: div.textContent };
+}
 /* ============================================================
    shell, tabs, login
    ============================================================ */
 function renderLogin() {
-  state.tab = "overview";
+  state.tab = "dash";
   app.innerHTML = `
     <div class="top">
       <div class="brand">spotify<span>.ai</span></div>
     </div>
     <div class="glass hero">
-      <div class="hero-tag">✦ your listening report</div>
-      <h1>See what you're <em>actually</em> listening to.</h1>
-      <p>Your top tracks, artists, and habits, pulled straight from your Spotify account. Rank your rotation, turn any chart into a real playlist, and download story cards made for sharing.</p>
+      <div class="hero-tag">✦ your listening, decoded</div>
+      <h1>Your Spotify, but make it <em>interesting</em>.</h1>
+      <p>Not just another top-tracks list. Get your listener archetype, a personalized (lightly judgmental) read on your taste, an obscurity score, your certified deep cuts, fresh song picks, one-tap playlists, and story cards built for posting.</p>
       <button class="btn btn-green" id="loginBtn">connect spotify</button>
-      <div class="fine">runs entirely in your browser · nothing is stored anywhere else</div>
+      <div class="fine">runs entirely in your browser · nothing leaves your device</div>
     </div>`;
   document.getElementById("loginBtn").onclick = () => login();
 }
@@ -454,7 +692,7 @@ function renderShell() {
       <div class="user-chip ${avatar ? "" : "no-img"}">${avatar ? `<img src="${esc(avatar)}" alt="">` : ""}${esc((me.display_name || "you").toLowerCase())}</div>
     </div>
     <nav class="tabs glass" aria-label="Sections">
-      <button class="tab-btn" data-tab="overview">overview</button>
+      <button class="tab-btn" data-tab="dash">dashboard</button>
       <button class="tab-btn" data-tab="tracks">top tracks</button>
       <button class="tab-btn" data-tab="artists">top artists</button>
       <button class="tab-btn" data-tab="playlists">playlist studio</button>
@@ -462,7 +700,7 @@ function renderShell() {
     </nav>
     <div id="tabContent"></div>
     <footer>
-      <span>spotify.ai — made for the plot</span>
+      <span>spotify.ai — not affiliated with spotify, obviously</span>
       <button class="logout" onclick="store.del('token'); location.reload();">disconnect</button>
     </footer>`;
   app.querySelectorAll(".tab-btn").forEach(b => { b.onclick = () => setTab(b.dataset.tab); });
@@ -473,56 +711,104 @@ function setTab(tab) {
   state.tab = tab;
   app.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
   const target = document.getElementById("tabContent");
-  if (tab === "overview") target.innerHTML = viewOverview();
+  if (tab === "dash") target.innerHTML = viewDash();
   if (tab === "tracks") target.innerHTML = viewTracks();
   if (tab === "artists") target.innerHTML = viewArtists();
   if (tab === "playlists") target.innerHTML = viewPlaylists();
   if (tab === "story") { target.innerHTML = viewStory(); renderStoryCard(); }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+function goStory(tpl) { state.storyTemplate = tpl; setTab("story"); }
 
 /* ============================================================
-   overview
+   dashboard
    ============================================================ */
-function viewOverview() {
-  const genres = topGenres();
-  const topGenre = genres[0] ? genres[0][0] : "—";
-  const peak = peakHour();
+function viewDash() {
+  const m = getMetrics();
+  const read = buildRead();
   const decades = chartDecades();
   return `
     <div class="stack">
       <div class="glass pane">
-        <div class="kicker">the headlines</div>
-        <h2>Your taste, <em>at a glance</em></h2>
+        <div class="kicker">the read — generated from your actual data</div>
+        <span class="persona-vibe">${esc(read.vibe)}</span>
+        <div class="persona">you are <em>${esc(read.name)}</em>.</div>
+        <p class="read-body">${read.text}</p>
+        <div class="read-actions">
+          <button class="btn btn-green" onclick="goStory('read')">share as story</button>
+          <button class="btn btn-ghost" onclick="rerollRead()">↻ run it back</button>
+        </div>
+      </div>
+
+      <div class="glass pane">
+        <div class="kicker">the numbers</div>
+        <h2>Receipts</h2>
         <div class="stats">
-          <div class="stat"><span class="s-label">obscurity</span><span class="s-value">${statObscurity()}<small>/100</small></span><span class="s-desc">0 is pure chart music, 100 is deep cuts only.</span></div>
-          <div class="stat"><span class="s-label">average era</span><span class="s-value">${statAvgYear()}</span><span class="s-desc">The average release year across your top songs.</span></div>
-          <div class="stat"><span class="s-label">explicit share</span><span class="s-value">${statExplicit()}<small>%</small></span><span class="s-desc">How much of your rotation carries the advisory tag.</span></div>
-          <div class="stat"><span class="s-label">peak hour</span><span class="s-value" style="text-transform:lowercase;">${peak || "—"}</span><span class="s-desc">When you press play the most, based on recent listening.</span></div>
+          <div class="stat">
+            <span class="s-label">obscurity</span>
+            <div class="dial-row">${dialSVG(m.obscurity)}</div>
+            <span class="s-flair">${esc(obscurityTitle(m.obscurity))}</span>
+            <span class="s-desc">0 is pure chart music, 100 is songs only you and the artist's mom know.</span>
+          </div>
+          <div class="stat">
+            <span class="s-label">taste age</span>
+            <span class="s-value">${m.tasteAge}<small>yrs</small></span>
+            <span class="s-flair">avg release: ${m.avgYear}</span>
+            <span class="s-desc">${tasteAgeLine(m.tasteAge)}</span>
+          </div>
+          <div class="stat">
+            <span class="s-label">range</span>
+            <span class="s-value">${m.uniqueArtists}<small>/${m.poolSize || 50}</small></span>
+            <span class="s-flair">${m.variety >= 0.75 ? "commitment issues" : m.variety <= 0.45 ? "ride or die energy" : "healthy balance"}</span>
+            <span class="s-desc">Unique artists across your top songs. Higher means you get around.</span>
+          </div>
+          <div class="stat">
+            <span class="s-label">peak hour</span>
+            <span class="s-value" style="text-transform:lowercase;">${m.peak || "—"}</span>
+            <span class="s-flair">${m.night >= 0.35 ? "nocturnal, noted" : "daylight approved"}</span>
+            <span class="s-desc">When you press play the most, from your recent listening.</span>
+          </div>
         </div>
       </div>
 
       <div class="grid-2">
         <div class="stack">
           <div class="glass pane">
+            <div class="kicker">nobody knows these but you</div>
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div>
+                <h2>Your certified <em>deep cuts</em></h2>
+                <div class="sub" style="margin-top:6px;">The 5 least popular songs in your rotation. The number is worldwide popularity — lower means fewer people on earth have found it.</div>
+              </div>
+              <button class="mini-btn" onclick="goStory('deepcuts')">share ↗</button>
+            </div>
+            <div>${deepCutRows()}</div>
+            <button class="btn btn-ink" style="align-self:flex-start;" onclick="createPlaylist({name:'certified deep cuts', desc:'the songs nobody else found. made with spotify.ai', tracks: obscureTop(25)})">save 25 deep cuts as a playlist</button>
+          </div>
+
+          <div class="glass pane">
+            <div class="kicker">fresh finds</div>
+            <h2>Songs you'll <em>probably</em> like</h2>
+            <div class="sub">Picked from artists deeper in your roster — filtered against everything already in your charts, and tuned to your obscurity score.</div>
+            <div id="recsTarget">${recsBlock()}</div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="glass pane">
             <div class="kicker">this week</div>
             <h2>Recent activity</h2>
-            <div class="sub">Plays per day over the last 7 days.</div>
             <div class="chart-box">${chartRecentDays()}</div>
-            <div class="caption">based on your last 50 plays — that's all Spotify shares</div>
+            <div class="caption">based on your last 50 plays — that's all spotify shares</div>
           </div>
           <div class="glass pane">
             <div class="kicker">the clock</div>
             <h2>When you listen</h2>
-            <div class="sub">Your recent plays mapped across the day.</div>
             <div class="chart-box">${chartClock()}</div>
           </div>
-        </div>
-        <div class="stack">
           <div class="glass pane">
             <div class="kicker">the eras</div>
             <h2>Decades in your rotation</h2>
-            <div class="sub">Where your top songs come from, by release decade.</div>
             <div class="era-split">
               <div class="donut-stage">${decades.donut}</div>
               <div class="legend">${decades.legend}</div>
@@ -531,17 +817,115 @@ function viewOverview() {
           <div class="glass pane">
             <div class="kicker">the sound</div>
             <h2>What you're into</h2>
-            <div class="sub">The genres that show up most across your top artists. Your defining one right now: <b style="text-transform:lowercase;">${esc(topGenre)}</b>.</div>
-            <div class="chips">${genres.map(([g, n]) => `<span class="chip">${esc(g)}<span class="c-count">×${n}</span></span>`).join("") || `<span class="empty-note">No genre data yet — keep listening.</span>`}</div>
+            <div class="chips">${m.genres.slice(0, 8).map(([g, n]) => `<span class="chip">${esc(g)}<span class="c-count">×${n}</span></span>`).join("") || `<span class="empty-note">no genre data yet — keep listening.</span>`}</div>
           </div>
         </div>
       </div>
     </div>`;
 }
+function rerollRead() { state.readNonce++; setTab("dash"); }
+function tasteAgeLine(age) {
+  if (age >= 21) return "Your average song can legally drink.";
+  if (age >= 16) return "Your average song is old enough to drive.";
+  if (age >= 8) return "Your average song is in elementary school.";
+  if (age >= 3) return "Your average song is a toddler.";
+  return "Your average song is basically a newborn. Fresh ears.";
+}
+function dialSVG(v) {
+  const pct = Math.max(0, Math.min(100, v)) / 100;
+  const len = 188.5; /* half circumference of r=60 */
+  return `
+  <svg viewBox="0 0 150 88" width="150" height="88" role="img" aria-label="Obscurity ${v} out of 100">
+    <path d="M 15 78 A 60 60 0 0 1 135 78" fill="none" stroke="rgba(12,15,13,0.08)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M 15 78 A 60 60 0 0 1 135 78" fill="none" stroke="#1DB954" stroke-width="12" stroke-linecap="round"
+      stroke-dasharray="${(pct * len).toFixed(1)} ${len}"/>
+    <text x="75" y="66" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="900" font-size="30" fill="#0C0F0D">${v}</text>
+    <text x="75" y="82" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9" fill="#8A958E">/100</text>
+  </svg>`;
+}
+function deepCutRows() {
+  const cuts = obscureTop(5);
+  if (!cuts.length) return `<div class="empty-note">not enough listening history yet.</div>`;
+  return cuts.map((t, i) => `
+    <div class="row" style="grid-template-columns:34px 46px 1fr auto;">
+      <div class="rank ${i === 0 ? "medal" : ""}">${i + 1}</div>
+      <div class="art"><img src="${esc(t.album?.images?.[2]?.url || t.album?.images?.[0]?.url || "")}" alt="" loading="lazy"></div>
+      <div class="row-meta">
+        <div class="t-name">${esc(t.name)}</div>
+        <div class="t-artist">${esc(t.artists.map(a => a.name).join(", "))}</div>
+      </div>
+      <span class="deep-pop">${t.popularity || 0} pop</span>
+    </div>`).join("");
+}
 
+/* ---------- recommendations ---------- */
+function recsBlock() {
+  if (state.recsLoading) return `<div class="empty-note">digging through crates…</div>`;
+  if (!state.recs) return `
+    <div class="rec-empty">
+      <button class="btn btn-green" onclick="generateRecs()">find me songs</button>
+      <span class="caption">pulls live from spotify — takes a couple seconds</span>
+    </div>`;
+  if (!state.recs.length) return `<div class="empty-note">couldn't find anything you don't already have. genuinely impressive.</div>`;
+  return `
+    ${state.recs.map(r => `
+      <div class="rec-row">
+        <div class="art"><img src="${esc(r.track.album?.images?.[2]?.url || r.track.album?.images?.[0]?.url || "")}" alt="" loading="lazy"></div>
+        <div class="row-meta">
+          <div class="t-name">${esc(r.track.name)}</div>
+          <div class="t-artist">${esc(r.track.artists.map(a => a.name).join(", "))}</div>
+        </div>
+        <span class="rec-reason">bc ${esc(r.because)}</span>
+      </div>`).join("")}
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+      <button class="btn btn-green" onclick="createPlaylist({name:'fresh finds · spotify.ai', desc:'new songs picked from my own taste. made with spotify.ai', tracks: state.recs.map(r => r.track)})">save all as playlist</button>
+      <button class="btn btn-ghost" onclick="state.recs = null; generateRecs()">↻ new picks</button>
+    </div>`;
+}
+async function generateRecs() {
+  const target = document.getElementById("recsTarget");
+  state.recsLoading = true;
+  if (target) target.innerHTML = recsBlock();
+  try {
+    const roster = bestArtists();
+    const seeds = roster.slice(3, 13);
+    if (!seeds.length) { state.recs = []; state.recsLoading = false; if (target) target.innerHTML = recsBlock(); return; }
+
+    const known = new Set();
+    ["short_term", "medium_term", "long_term"].forEach(r => (DATA.topTracks[r]?.items || []).forEach(t => known.add(t.id)));
+
+    const m = getMetrics();
+    const results = await Promise.all(seeds.slice(0, 8).map(a =>
+      api(`/artists/${a.id}/top-tracks?market=US`).then(res => ({ artist: a, tracks: res.tracks || [] })).catch(() => ({ artist: a, tracks: [] }))
+    ));
+
+    const seen = new Set();
+    let pool = [];
+    results.forEach(({ artist, tracks }) => {
+      tracks.forEach(t => {
+        if (known.has(t.id) || seen.has(t.id)) return;
+        seen.add(t.id);
+        const popScore = m.obscurity >= 50 ? (100 - (t.popularity || 0)) : (t.popularity || 0);
+        pool.push({ track: t, because: artist.name, score: popScore + Math.random() * 20 });
+      });
+    });
+    pool.sort((a, b) => b.score - a.score);
+    state.recs = pool.slice(0, 10);
+    state.recsLoading = false;
+    if (document.getElementById("recsTarget")) document.getElementById("recsTarget").innerHTML = recsBlock();
+    if (!state.recs.length) toast("Nothing new found — your charts already cover these artists.");
+  } catch (e) {
+    state.recsLoading = false;
+    state.recs = null;
+    if (document.getElementById("recsTarget")) document.getElementById("recsTarget").innerHTML = recsBlock();
+    if (e.message !== "expired") toast("Couldn't pull recommendations. Try again in a minute.");
+  }
+}
+
+/* ---------- charts ---------- */
 function chartRecentDays() {
   const items = DATA.recent?.items || [];
-  if (!items.length) return `<div class="empty-note">Play some music and check back — Spotify only shares your most recent plays.</div>`;
+  if (!items.length) return `<div class="empty-note">play some music and check back — spotify only shares your most recent plays.</div>`;
   const days = [...Array(7)].map((_, i) => {
     const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - 6 + i);
     return d;
@@ -557,10 +941,9 @@ function chartRecentDays() {
     </div>
     <div class="bar-labels">${days.map(d => `<span>${d.toLocaleDateString("en-US", { weekday: "short" }).toLowerCase()}</span>`).join("")}</div>`;
 }
-
 function chartClock() {
   const items = DATA.recent?.items || [];
-  if (!items.length) return `<div class="empty-note">No recent plays to map yet.</div>`;
+  if (!items.length) return `<div class="empty-note">no recent plays to map yet.</div>`;
   const hours = new Array(24).fill(0);
   items.forEach(i => hours[new Date(i.played_at).getHours()]++);
   const max = Math.max(...hours, 1);
@@ -570,7 +953,6 @@ function chartClock() {
     </div>
     <div class="bar-labels" style="gap:3px;">${hours.map((_, i) => `<span>${i % 6 === 0 ? (i === 0 ? "12am" : i === 12 ? "12pm" : i > 12 ? (i - 12) + "pm" : i + "am") : ""}</span>`).join("")}</div>`;
 }
-
 function chartDecades() {
   const pool = analysisPool();
   const counts = {};
@@ -582,7 +964,7 @@ function chartDecades() {
   });
   const rows = Object.entries(counts).sort((a, b) => a[0] - b[0]);
   const total = rows.reduce((s, [, v]) => s + v, 0) || 1;
-  if (!rows.length) return { donut: `<div class="empty-note">Not enough data yet.</div>`, legend: "" };
+  if (!rows.length) return { donut: `<div class="empty-note">not enough data yet.</div>`, legend: "" };
 
   let svg = `<svg viewBox="0 0 200 200" width="150" height="150" style="transform: rotate(-90deg);" aria-hidden="true">`;
   let angle = 0;
@@ -606,14 +988,14 @@ function chartDecades() {
   return { donut: svg, legend };
 }
 /* ============================================================
-   top tracks
+   top tracks / top artists
    ============================================================ */
 function viewTracks() {
   return `
     <div class="glass pane">
       <div class="kicker">the charts</div>
       <h2>Your top tracks, <em>ranked</em></h2>
-      <div class="sub">Your most-played songs, straight from Spotify. The bar next to each one shows how popular it is worldwide — shorter bar, deeper cut.</div>
+      <div class="sub">Straight from Spotify, in order. The bar shows worldwide popularity — shorter bar, deeper cut.</div>
       <div class="controls">
         <div class="pills">
           ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.trackRange === r}" onclick="setTrackRange('${r}')">${RANGE_LABEL[r]}</button>`).join("")}
@@ -623,12 +1005,13 @@ function viewTracks() {
         </div>
         <button class="btn btn-ink" style="margin-left:auto;" onclick="jumpToPlaylist()">make it a playlist</button>
       </div>
-      <div class="track-cols" id="trackListTarget">${trackRows()}</div>
+      <div class="track-cols">${trackRows()}</div>
+      <button class="mini-btn" style="align-self:flex-start;" onclick="state.storyRange = state.trackRange; goStory('tracks')">share top 5 as story ↗</button>
     </div>`;
 }
 function trackRows() {
   const items = (DATA.topTracks[state.trackRange]?.items || []).slice(0, state.trackLimit);
-  if (!items.length) return `<div class="empty-note">Nothing here yet — Spotify needs a little more listening history for this window.</div>`;
+  if (!items.length) return `<div class="empty-note">nothing here yet — spotify needs a little more listening history for this window.</div>`;
   return items.map((t, i) => `
     <div class="row">
       <div class="rank ${i < 3 ? "medal" : ""}">${i + 1}</div>
@@ -647,9 +1030,6 @@ function setTrackRange(r) { state.trackRange = r; setTab("tracks"); }
 function setTrackLimit(n) { state.trackLimit = n; setTab("tracks"); }
 function jumpToPlaylist() { state.playlistPrefill = { range: state.trackRange, count: state.trackLimit }; setTab("playlists"); }
 
-/* ============================================================
-   top artists
-   ============================================================ */
 function viewArtists() {
   return `
     <div class="glass pane">
@@ -660,13 +1040,14 @@ function viewArtists() {
         <div class="pills">
           ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.artistRange === r}" onclick="setArtistRange('${r}')">${RANGE_LABEL[r]}</button>`).join("")}
         </div>
+        <button class="mini-btn" style="margin-left:auto;" onclick="state.storyRange = state.artistRange; goStory('artists')">share top 5 as story ↗</button>
       </div>
       <div class="artist-grid">${artistCards()}</div>
     </div>`;
 }
 function artistCards() {
   const items = (DATA.topArtists[state.artistRange]?.items || []).slice(0, 24);
-  if (!items.length) return `<div class="empty-note">No artist data for this window yet.</div>`;
+  if (!items.length) return `<div class="empty-note">no artist data for this window yet.</div>`;
   return items.map((a, i) => {
     const img = a.images?.[1]?.url || a.images?.[0]?.url;
     return `
@@ -686,7 +1067,7 @@ function setArtistRange(r) { state.artistRange = r; setTab("artists"); }
    playlist studio
    ============================================================ */
 function viewPlaylists() {
-  const monthName = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const monthName = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }).toLowerCase();
   const prefill = state.playlistPrefill || {};
   const defRange = prefill.range || "short_term";
   const defCount = prefill.count || 25;
@@ -696,21 +1077,25 @@ function viewPlaylists() {
       <div class="glass pane">
         <div class="kicker">one-tap mixes</div>
         <h2>Ready-made <em>playlists</em></h2>
-        <div class="sub">One tap creates a private playlist in your Spotify library. You can rename, reorder, or make it public from the app anytime.</div>
+        <div class="sub">One tap creates a private playlist in your library. Rename it, reorder it, make it public — it's yours.</div>
         <div class="preset-grid">
-          <button class="preset" onclick="createPlaylist({name:'rotation · ${esc(monthName.toLowerCase())}', desc:'my last 4 weeks, ranked. made with spotify.ai', range:'short_term', count:25})">
+          <button class="preset" data-preset="rotation">
             <span class="p-emoji">🔁</span><span class="p-name">This month's rotation</span>
             <span class="p-desc">Your top 25 from the last four weeks, in order.</span><span class="p-tag">25 tracks · last 4 weeks</span>
           </button>
-          <button class="preset" onclick="createPlaylist({name:'the half-year heavy rotation', desc:'six months of my most played. made with spotify.ai', range:'medium_term', count:50})">
+          <button class="preset" data-preset="halfyear">
             <span class="p-emoji">📈</span><span class="p-name">Half-year heavy rotation</span>
             <span class="p-desc">The 50 songs that defined your last six months.</span><span class="p-tag">50 tracks · last 6 months</span>
           </button>
-          <button class="preset" onclick="createPlaylist({name:'all-time favorites', desc:'the ones that never left. made with spotify.ai', range:'long_term', count:50})">
+          <button class="preset" data-preset="alltime">
             <span class="p-emoji">🏆</span><span class="p-name">All-time favorites</span>
             <span class="p-desc">Your 50 most played songs since forever.</span><span class="p-tag">50 tracks · all time</span>
           </button>
-          <button class="preset" onclick="createPlaylist({name:'the throwbacks', desc:'pre-2010 only. made with spotify.ai', range:'long_term', count:50, filterBefore:2010})">
+          <button class="preset" data-preset="deepcuts">
+            <span class="p-emoji">🕳️</span><span class="p-name">Certified deep cuts</span>
+            <span class="p-desc">The 25 least popular songs you love. Gatekeep responsibly.</span><span class="p-tag">25 tracks · lowest popularity</span>
+          </button>
+          <button class="preset" data-preset="throwbacks">
             <span class="p-emoji">📼</span><span class="p-name">The throwbacks</span>
             <span class="p-desc">Only the pre-2010 releases hiding in your all-time chart.</span><span class="p-tag">released before 2010</span>
           </button>
@@ -720,7 +1105,7 @@ function viewPlaylists() {
       <div class="glass pane">
         <div class="kicker">build your own</div>
         <h2>Custom playlist</h2>
-        <div class="sub">Pick a source, size it, name it, and it lands in your library.</div>
+        <div class="sub">Pick a source, size it, name it, done.</div>
         <div class="form-grid">
           <div class="field">
             <label for="plName">playlist name</label>
@@ -756,6 +1141,17 @@ function viewPlaylists() {
       </div>
     </div>`;
 }
+const PRESETS = {
+  rotation: () => ({ name: "rotation · " + new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }).toLowerCase(), desc: "my last 4 weeks, ranked. made with spotify.ai", range: "short_term", count: 25 }),
+  halfyear: () => ({ name: "the half-year heavy rotation", desc: "six months of my most played. made with spotify.ai", range: "medium_term", count: 50 }),
+  alltime: () => ({ name: "all-time favorites", desc: "the ones that never left. made with spotify.ai", range: "long_term", count: 50 }),
+  deepcuts: () => ({ name: "certified deep cuts", desc: "the songs nobody else found. made with spotify.ai", tracks: obscureTop(25) }),
+  throwbacks: () => ({ name: "the throwbacks", desc: "pre-2010 only. made with spotify.ai", range: "long_term", count: 50, filterBefore: 2010 }),
+};
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-preset]");
+  if (btn && PRESETS[btn.dataset.preset]) createPlaylist(PRESETS[btn.dataset.preset]());
+});
 function playlistResultChip() {
   const p = state.lastPlaylist;
   if (!p) return "";
@@ -774,13 +1170,18 @@ function createCustomPlaylist() {
 async function createPlaylist(opts) {
   try {
     if (!DATA.me?.id) { toast("Reconnect your account to create playlists."); return; }
-    const pool = DATA.topTracks[opts.range]?.items || [];
-    let tracks = opts.filterBefore
-      ? pool.filter(t => { const y = parseInt((t.album?.release_date || "").slice(0, 4)); return y && y < opts.filterBefore; })
-      : pool.slice();
+    let tracks;
+    if (opts.tracks) {
+      tracks = opts.tracks.slice();
+    } else {
+      const pool = DATA.topTracks[opts.range]?.items || [];
+      tracks = opts.filterBefore
+        ? pool.filter(t => { const y = parseInt((t.album?.release_date || "").slice(0, 4)); return y && y < opts.filterBefore; })
+        : pool.slice();
+    }
     if (tracks.length < 3) { toast(opts.filterBefore ? "Not enough older songs in your charts for that one." : "Not enough listening history for that window yet."); return; }
     if (opts.shuffle) shuffleArr(tracks);
-    tracks = tracks.slice(0, opts.count);
+    if (opts.count) tracks = tracks.slice(0, opts.count);
     toast("Creating your playlist…");
     const pl = await api(`/users/${DATA.me.id}/playlists`, {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -801,52 +1202,54 @@ async function createPlaylist(opts) {
 }
 
 /* ============================================================
-   story cards
+   story cards — one per data point
    ============================================================ */
 const STORY_THEMES = {
   glass: {
-    bg: "#EEF0F4", card: "rgba(255,255,255,0.86)", cardStroke: "rgba(16,19,25,0.07)",
-    ink: "#101319", muted: "#4E5666", faint: "#8A92A3", divider: "rgba(16,19,25,0.07)",
+    bg: "#F2F5F3", card: "rgba(255,255,255,0.88)", cardStroke: "rgba(12,15,13,0.07)",
+    ink: "#0C0F0D", muted: "#4A544E", faint: "#8A958E", divider: "rgba(12,15,13,0.07)",
     orbs: [
-      { x: 0.1, y: 0.02, r: 0.55, color: "rgba(20,115,230,0.20)" },
-      { x: 0.95, y: 0.08, r: 0.5, color: "rgba(29,185,84,0.22)" },
-      { x: 0.9, y: 0.95, r: 0.55, color: "rgba(255,102,178,0.18)" },
-      { x: 0.05, y: 0.9, r: 0.5, color: "rgba(122,92,255,0.16)" },
+      { x: 0.1, y: 0.02, r: 0.55, color: "rgba(29,185,84,0.26)" },
+      { x: 0.95, y: 0.08, r: 0.5, color: "rgba(12,15,13,0.10)" },
+      { x: 0.9, y: 0.95, r: 0.55, color: "rgba(29,185,84,0.20)" },
+      { x: 0.05, y: 0.9, r: 0.5, color: "rgba(125,227,165,0.24)" },
     ],
   },
   ink: {
-    bg: "#0D1015", card: "rgba(22,26,34,0.82)", cardStroke: "rgba(255,255,255,0.08)",
-    ink: "#F4F6FA", muted: "#B7BECD", faint: "#6C7688", divider: "rgba(255,255,255,0.07)",
+    bg: "#0B0E0C", card: "rgba(20,25,22,0.86)", cardStroke: "rgba(255,255,255,0.09)",
+    ink: "#F3F7F4", muted: "#B5C0B9", faint: "#69746D", divider: "rgba(255,255,255,0.08)",
     orbs: [
-      { x: 0.1, y: 0.02, r: 0.55, color: "rgba(29,185,84,0.20)" },
-      { x: 0.95, y: 0.1, r: 0.5, color: "rgba(20,115,230,0.18)" },
-      { x: 0.9, y: 0.95, r: 0.55, color: "rgba(122,92,255,0.18)" },
-      { x: 0.05, y: 0.9, r: 0.5, color: "rgba(255,102,178,0.14)" },
+      { x: 0.1, y: 0.02, r: 0.55, color: "rgba(29,185,84,0.26)" },
+      { x: 0.95, y: 0.1, r: 0.5, color: "rgba(29,185,84,0.12)" },
+      { x: 0.9, y: 0.95, r: 0.55, color: "rgba(125,227,165,0.16)" },
+      { x: 0.05, y: 0.9, r: 0.5, color: "rgba(255,255,255,0.06)" },
     ],
   },
 };
+const STORY_TEMPLATES = { read: "the read", obscurity: "obscurity", deepcuts: "deep cuts", tracks: "top tracks", artists: "top artists" };
 
 function viewStory() {
+  const rangeMatters = ["tracks", "artists", "deepcuts"].includes(state.storyTemplate);
   return `
     <div class="glass pane">
-      <div class="kicker">made for sharing</div>
-      <h2>Story cards, <em>ready to post</em></h2>
-      <div class="sub">A 1080×1920 image sized for Instagram and TikTok stories. Pick a look, hit download, post it.</div>
+      <div class="kicker">made for posting</div>
+      <h2>Story cards, <em>ready to go</em></h2>
+      <div class="sub">1080×1920, sized for Instagram and TikTok stories. Every data point gets its own card — pick one, pick a look, download, post.</div>
       <div class="story-split">
         <div class="stack" style="gap:18px;">
           <div class="opt-group">
             <label class="caption" style="letter-spacing:0.08em; text-transform:uppercase;">what to show</label>
             <div class="pills">
-              <button class="pill" aria-pressed="${state.storyTemplate === "tracks"}" onclick="setStoryOpt('storyTemplate','tracks')">top tracks</button>
-              <button class="pill" aria-pressed="${state.storyTemplate === "artists"}" onclick="setStoryOpt('storyTemplate','artists')">top artists</button>
+              ${Object.entries(STORY_TEMPLATES).map(([k, label]) => `<button class="pill" aria-pressed="${state.storyTemplate === k}" onclick="setStoryOpt('storyTemplate','${k}')">${label}</button>`).join("")}
             </div>
           </div>
+          ${rangeMatters ? `
           <div class="opt-group">
             <label class="caption" style="letter-spacing:0.08em; text-transform:uppercase;">time window</label>
             <div class="pills">
               ${["short_term", "medium_term", "long_term"].map(r => `<button class="pill" aria-pressed="${state.storyRange === r}" onclick="setStoryOpt('storyRange','${r}')">${RANGE_LABEL[r]}</button>`).join("")}
             </div>
-          </div>
+          </div>` : ""}
           <div class="opt-group">
             <label class="caption" style="letter-spacing:0.08em; text-transform:uppercase;">look</label>
             <div class="pills">
@@ -857,7 +1260,7 @@ function viewStory() {
           <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
             <button class="btn btn-green" onclick="downloadStory()">download png</button>
           </div>
-          <div class="caption">tip: post it and tag the artist — they might repost you</div>
+          <div class="caption">tip: post it and tag the artist. they might repost you. manifest it.</div>
         </div>
         <div class="story-preview-frame">
           <canvas id="storyCanvas" width="1080" height="1920" aria-label="Story card preview"></canvas>
@@ -887,6 +1290,42 @@ function rr(c, x, y, w, h, r) {
   c.arcTo(x, y, x + w, y, r);
   c.closePath();
 }
+function clipText(ctx, text, maxW) {
+  if (ctx.measureText(text).width <= maxW) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(t + "…").width > maxW) t = t.slice(0, -1);
+  return t + "…";
+}
+function wrapLines(ctx, text, maxW, maxLines) {
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = "";
+  for (const w of words) {
+    const test = line ? line + " " + w : w;
+    if (ctx.measureText(test).width > maxW && line) {
+      lines.push(line);
+      line = w;
+      if (lines.length === maxLines - 1) break;
+    } else line = test;
+  }
+  if (line && lines.length < maxLines) lines.push(line);
+  if (lines.length === maxLines && words.join(" ").length > lines.join(" ").length) {
+    lines[maxLines - 1] = clipText(ctx, lines[maxLines - 1] + "…", maxW);
+  }
+  return lines;
+}
+function drawMixedTitle(ctx, x, y, w1, w2, size, inkColor) {
+  ctx.font = `900 ${size}px Archivo, sans-serif`;
+  ctx.fillStyle = inkColor;
+  ctx.fillText(w1, x, y);
+  const width1 = ctx.measureText(w1).width;
+  ctx.font = `italic 400 ${size}px "Instrument Serif", serif`;
+  ctx.fillText(" " + w2, x + width1, y);
+  const width2 = ctx.measureText(" " + w2).width;
+  ctx.font = `900 ${size}px Archivo, sans-serif`;
+  ctx.fillStyle = "#1DB954";
+  ctx.fillText(".", x + width1 + width2, y);
+}
 
 async function renderStoryCard() {
   const cv = document.getElementById("storyCanvas");
@@ -894,21 +1333,15 @@ async function renderStoryCard() {
   const ctx = cv.getContext("2d");
   const W = 1080, H = 1920;
   const theme = STORY_THEMES[state.storyTheme];
-  const isTracks = state.storyTemplate === "tracks";
-  const pool = isTracks
-    ? (DATA.topTracks[state.storyRange]?.items || [])
-    : (DATA.topArtists[state.storyRange]?.items || []);
-  const items = pool.slice(0, 5);
+  const tpl = state.storyTemplate;
 
   try {
     await Promise.all([
-      document.fonts.load('900 96px Archivo'),
-      document.fonts.load('800 44px Archivo'),
-      document.fonts.load('500 30px Archivo'),
-      document.fonts.load('italic 400 96px "Instrument Serif"'),
+      document.fonts.load('900 104px Archivo'), document.fonts.load('800 44px Archivo'),
+      document.fonts.load('500 34px Archivo'), document.fonts.load('italic 400 104px "Instrument Serif"'),
       document.fonts.load('600 26px "IBM Plex Mono"'),
     ]);
-  } catch (e) { /* draw with fallbacks */ }
+  } catch (e) { /* fallback fonts */ }
 
   /* background + orbs */
   ctx.clearRect(0, 0, W, H);
@@ -925,7 +1358,7 @@ async function renderStoryCard() {
   /* glass card */
   const cx = 70, cy = 200, cw = W - 140, ch = 1520;
   ctx.save();
-  ctx.shadowColor = "rgba(20,26,40,0.18)";
+  ctx.shadowColor = "rgba(10,20,14,0.2)";
   ctx.shadowBlur = 70;
   ctx.shadowOffsetY = 26;
   rr(ctx, cx, cy, cw, ch, 56);
@@ -937,41 +1370,160 @@ async function renderStoryCard() {
   ctx.lineWidth = 2;
   ctx.stroke();
 
-  /* header */
-  const rangeText = RANGE_LABEL[state.storyRange].toUpperCase();
+  /* header label */
+  const labels = { read: "THE READ", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_LABEL[state.storyRange].toUpperCase(), tracks: "TOP TRACKS · " + RANGE_LABEL[state.storyRange].toUpperCase(), artists: "TOP ARTISTS · " + RANGE_LABEL[state.storyRange].toUpperCase() };
   ctx.textBaseline = "alphabetic";
   ctx.textAlign = "left";
   try { ctx.letterSpacing = "6px"; } catch (e) {}
   ctx.font = '600 25px "IBM Plex Mono", monospace';
   ctx.fillStyle = "#1DB954";
-  ctx.fillText("SPOTIFY.AI  ·  " + rangeText, cx + 74, cy + 118);
+  ctx.fillText("SPOTIFY.AI  ·  " + labels[tpl], cx + 74, cy + 116);
   try { ctx.letterSpacing = "0px"; } catch (e) {}
 
-  const word1 = isTracks ? "on" : "heavy";
-  const word2 = isTracks ? "repeat" : "rotation";
-  ctx.font = "900 104px Archivo, sans-serif";
-  ctx.fillStyle = theme.ink;
-  ctx.fillText(word1, cx + 70, cy + 246);
-  const w1 = ctx.measureText(word1).width;
-  ctx.font = 'italic 400 104px "Instrument Serif", serif';
-  ctx.fillText(" " + word2, cx + 70 + w1, cy + 246);
-  const w2 = ctx.measureText(" " + word2).width;
-  ctx.font = "900 104px Archivo, sans-serif";
-  ctx.fillStyle = "#1DB954";
-  ctx.fillText(".", cx + 70 + w1 + w2, cy + 246);
+  if (tpl === "read") await storyRead(ctx, theme, cx, cy, cw, ch);
+  else if (tpl === "obscurity") await storyObscurity(ctx, theme, cx, cy, cw, ch);
+  else await storyList(ctx, theme, cx, cy, cw, ch, tpl);
 
-  ctx.font = "500 30px Archivo, sans-serif";
+  /* footers */
+  const user = (DATA.me?.display_name || "me").toLowerCase();
+  const dateStr = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toLowerCase();
+  ctx.font = '500 26px "IBM Plex Mono", monospace';
+  ctx.fillStyle = theme.faint;
+  ctx.textAlign = "left";
+  ctx.fillText("@" + user, cx + 74, cy + ch - 66);
+  ctx.textAlign = "right";
+  ctx.fillText(dateStr, cx + cw - 74, cy + ch - 66);
+  ctx.textAlign = "center";
+  ctx.font = '600 26px "IBM Plex Mono", monospace';
+  ctx.fillText("spotify.ai", W / 2, cy + ch + 92);
+  ctx.textAlign = "left";
+}
+
+async function storyRead(ctx, theme, cx, cy, cw, ch) {
+  const m = getMetrics();
+  const r = readPlainText();
+  const nameWords = r.name.split(" ");
+  const w1 = nameWords[0];
+  const w2 = nameWords.slice(1).join(" ");
+
+  ctx.font = "500 34px Archivo, sans-serif";
   ctx.fillStyle = theme.muted;
-  ctx.fillText(isTracks ? "my top 5 tracks right now" : "my top 5 artists right now", cx + 74, cy + 306);
+  ctx.fillText("i am", cx + 74, cy + 210);
 
-  /* rows */
-  const rowsTop = cy + 380;
+  let size = 108;
+  ctx.font = `900 ${size}px Archivo, sans-serif`;
+  while (size > 60) {
+    ctx.font = `900 ${size}px Archivo, sans-serif`;
+    const wid1 = ctx.measureText(w1).width;
+    ctx.font = `italic 400 ${size}px "Instrument Serif", serif`;
+    const wid2 = ctx.measureText(" " + w2).width;
+    if (wid1 + wid2 + 40 < cw - 148) break;
+    size -= 6;
+  }
+  drawMixedTitle(ctx, cx + 70, cy + 330, w1, w2, size, theme.ink);
+
+  ctx.font = '600 27px "IBM Plex Mono", monospace';
+  ctx.fillStyle = "#1DB954";
+  ctx.fillText(r.vibe, cx + 74, cy + 398);
+
+  ctx.font = "500 37px Archivo, sans-serif";
+  ctx.fillStyle = theme.muted;
+  const lines = wrapLines(ctx, r.plain, cw - 148, 14);
+  lines.forEach((line, i) => ctx.fillText(line, cx + 74, cy + 490 + i * 56));
+
+  /* stats strip */
+  const stripY = cy + ch - 260;
+  ctx.strokeStyle = theme.divider;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx + 74, stripY - 60);
+  ctx.lineTo(cx + cw - 74, stripY - 60);
+  ctx.stroke();
+  const stats = [["obscurity", m.obscurity + "/100"], ["taste age", m.tasteAge + " yrs"], ["top genre", (m.topGenre || "—")]];
+  const colW = (cw - 148) / 3;
+  stats.forEach(([label, val], i) => {
+    const sx = cx + 74 + i * colW;
+    ctx.font = '600 22px "IBM Plex Mono", monospace';
+    ctx.fillStyle = theme.faint;
+    ctx.fillText(label.toUpperCase(), sx, stripY);
+    ctx.font = "800 40px Archivo, sans-serif";
+    ctx.fillStyle = theme.ink;
+    ctx.fillText(clipText(ctx, String(val), colW - 30), sx, stripY + 56);
+  });
+}
+
+async function storyObscurity(ctx, theme, cx, cy, cw, ch) {
+  const m = getMetrics();
+  drawMixedTitle(ctx, cx + 70, cy + 260, "the", "deep end", 104, theme.ink);
+  ctx.font = "500 34px Archivo, sans-serif";
+  ctx.fillStyle = theme.muted;
+  ctx.fillText("my obscurity score", cx + 74, cy + 322);
+
+  /* giant number + arc */
+  const gx = cx + cw / 2, gy = cy + 760;
+  const R = 300;
+  ctx.lineWidth = 34;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = theme.divider;
+  ctx.beginPath();
+  ctx.arc(gx, gy, R, Math.PI * 0.8, Math.PI * 2.2);
+  ctx.stroke();
+  ctx.strokeStyle = "#1DB954";
+  ctx.beginPath();
+  ctx.arc(gx, gy, R, Math.PI * 0.8, Math.PI * (0.8 + 1.4 * (m.obscurity / 100)));
+  ctx.stroke();
+
+  ctx.textAlign = "center";
+  ctx.font = "900 250px Archivo, sans-serif";
+  ctx.fillStyle = theme.ink;
+  ctx.fillText(String(m.obscurity), gx, gy + 60);
+  ctx.font = '600 34px "IBM Plex Mono", monospace';
+  ctx.fillStyle = theme.faint;
+  ctx.fillText("/100", gx, gy + 130);
+  ctx.font = 'italic 400 62px "Instrument Serif", serif';
+  ctx.fillStyle = "#1DB954";
+  ctx.fillText(obscurityTitle(m.obscurity), gx, gy + R + 130);
+  ctx.textAlign = "left";
+
+  /* top 3 deepest cuts */
+  const cuts = obscureTop(3);
+  const listY = gy + R + 220;
+  ctx.font = '600 24px "IBM Plex Mono", monospace';
+  ctx.fillStyle = theme.faint;
+  ctx.fillText("MY DEEPEST CUTS", cx + 74, listY);
+  cuts.forEach((t, i) => {
+    const y = listY + 62 + i * 58;
+    ctx.font = "700 34px Archivo, sans-serif";
+    ctx.fillStyle = theme.ink;
+    ctx.fillText(clipText(ctx, `${i + 1}. ${t.name}`, cw - 320), cx + 74, y);
+    ctx.font = '600 24px "IBM Plex Mono", monospace';
+    ctx.fillStyle = "#1DB954";
+    ctx.textAlign = "right";
+    ctx.fillText((t.popularity || 0) + " pop", cx + cw - 74, y);
+    ctx.textAlign = "left";
+  });
+}
+
+async function storyList(ctx, theme, cx, cy, cw, ch, tpl) {
+  const isTracks = tpl === "tracks";
+  const isDeep = tpl === "deepcuts";
+  const items = isDeep
+    ? obscureTop(5, state.storyRange)
+    : (isTracks ? (DATA.topTracks[state.storyRange]?.items || []) : (DATA.topArtists[state.storyRange]?.items || [])).slice(0, 5);
+
+  const titles = { tracks: ["on", "repeat"], artists: ["heavy", "rotation"], deepcuts: ["deep", "cuts"] };
+  drawMixedTitle(ctx, cx + 70, cy + 260, titles[tpl][0], titles[tpl][1], 104, theme.ink);
+  ctx.font = "500 34px Archivo, sans-serif";
+  ctx.fillStyle = theme.muted;
+  const subs = { tracks: "my top 5 tracks right now", artists: "my top 5 artists right now", deepcuts: "the 5 least popular songs i love" };
+  ctx.fillText(subs[tpl], cx + 74, cy + 322);
+
+  const rowsTop = cy + 420;
   const rowH = 200;
   const artSize = 144;
+  const useAlbum = isTracks || isDeep;
   const imgs = await Promise.all(items.map(it => {
-    const url = isTracks
-      ? (it.album?.images?.[0]?.url || it.album?.images?.[1]?.url)
-      : (it.images?.[0]?.url || it.images?.[1]?.url);
+    const url = useAlbum ? (it.album?.images?.[0]?.url || it.album?.images?.[1]?.url) : (it.images?.[0]?.url || it.images?.[1]?.url);
     return loadImg(url);
   }));
 
@@ -979,13 +1531,12 @@ async function renderStoryCard() {
     ctx.font = "500 34px Archivo, sans-serif";
     ctx.fillStyle = theme.faint;
     ctx.fillText("not enough listening history for this window yet", cx + 74, rowsTop + 60);
+    return;
   }
 
   items.forEach((it, i) => {
     const ry = rowsTop + i * rowH;
     const artX = cx + 70, artY = ry;
-
-    /* divider */
     if (i > 0) {
       ctx.strokeStyle = theme.divider;
       ctx.lineWidth = 2;
@@ -994,10 +1545,8 @@ async function renderStoryCard() {
       ctx.lineTo(cx + cw - 70, ry - 28);
       ctx.stroke();
     }
-
-    /* artwork (rounded / circular for artists) */
     ctx.save();
-    if (isTracks) { rr(ctx, artX, artY, artSize, artSize, 26); }
+    if (useAlbum) rr(ctx, artX, artY, artSize, artSize, 26);
     else { ctx.beginPath(); ctx.arc(artX + artSize / 2, artY + artSize / 2, artSize / 2, 0, Math.PI * 2); }
     ctx.clip();
     if (imgs[i]) {
@@ -1013,51 +1562,22 @@ async function renderStoryCard() {
     }
     ctx.restore();
 
-    /* text */
     const textX = artX + artSize + 44;
-    const maxTextW = cx + cw - 70 - textX - 90;
-    const name = it.name || "";
-    const subLine = isTracks
-      ? (it.artists || []).map(a => a.name).join(", ")
-      : ((it.genres || [])[0] || "");
+    const maxTextW = cx + cw - 70 - textX - 110;
+    const subLine = useAlbum ? (it.artists || []).map(a => a.name).join(", ") : ((it.genres || [])[0] || "");
     ctx.font = "800 44px Archivo, sans-serif";
     ctx.fillStyle = theme.ink;
-    ctx.fillText(clipText(ctx, name, maxTextW), textX, ry + 68);
+    ctx.fillText(clipText(ctx, it.name || "", maxTextW), textX, ry + 68);
     ctx.font = "500 32px Archivo, sans-serif";
     ctx.fillStyle = theme.muted;
     ctx.fillText(clipText(ctx, subLine, maxTextW), textX, ry + 116);
 
-    /* rank */
     ctx.font = '600 30px "IBM Plex Mono", monospace';
-    ctx.fillStyle = i === 0 ? "#1DB954" : theme.faint;
+    ctx.fillStyle = (isDeep || i === 0) ? "#1DB954" : theme.faint;
     ctx.textAlign = "right";
-    ctx.fillText(String(i + 1).padStart(2, "0"), cx + cw - 74, ry + 92);
+    ctx.fillText(isDeep ? (it.popularity || 0) + " pop" : String(i + 1).padStart(2, "0"), cx + cw - 74, ry + 92);
     ctx.textAlign = "left";
   });
-
-  /* card footer */
-  const user = (DATA.me?.display_name || "me").toLowerCase();
-  const dateStr = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }).toLowerCase();
-  ctx.font = '500 26px "IBM Plex Mono", monospace';
-  ctx.fillStyle = theme.faint;
-  ctx.fillText("@" + user, cx + 74, cy + ch - 66);
-  ctx.textAlign = "right";
-  ctx.fillText(dateStr, cx + cw - 74, cy + ch - 66);
-  ctx.textAlign = "left";
-
-  /* page footer */
-  ctx.textAlign = "center";
-  ctx.font = '600 26px "IBM Plex Mono", monospace';
-  ctx.fillStyle = theme.faint;
-  ctx.fillText("spotify.ai", W / 2, cy + ch + 92);
-  ctx.textAlign = "left";
-}
-
-function clipText(ctx, text, maxW) {
-  if (ctx.measureText(text).width <= maxW) return text;
-  let t = text;
-  while (t.length > 1 && ctx.measureText(t + "…").width > maxW) t = t.slice(0, -1);
-  return t + "…";
 }
 
 function downloadStory() {
@@ -1065,12 +1585,12 @@ function downloadStory() {
   if (!cv) return;
   try {
     const a = document.createElement("a");
-    a.download = `spotify-ai-${state.storyTemplate}-${state.storyRange}.png`;
+    a.download = `spotify-ai-${state.storyTemplate}.png`;
     a.href = cv.toDataURL("image/png");
     a.click();
-    toast("Story card downloaded.");
+    toast("Story card downloaded. Go post it.");
   } catch (e) {
-    toast("Couldn't export the image — some album art blocked it. Try a different time window.");
+    toast("Couldn't export — some album art blocked it. Try a different template or window.");
   }
 }
 
