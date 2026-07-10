@@ -171,6 +171,48 @@ body {
 .stat .s-value { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; display: flex; align-items: baseline; gap: 3px; }
 .stat .s-value small { font-size: 13px; font-weight: 600; color: var(--faint); letter-spacing: 0; }
 .stat .s-value.txt { font-size: 17.5px; line-height: 1.3; letter-spacing: -0.01em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ---------- side quest cards: art-forward tiles ---------- */
+.quest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+@media (max-width: 640px) { .quest-grid { grid-template-columns: 1fr; } }
+.quest-card {
+  display: flex; align-items: center; gap: 16px; padding: 16px;
+  background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); transition: var(--ease);
+}
+.quest-card:hover { transform: translateY(-2px) rotate(-0.4deg); box-shadow: 0 14px 30px rgba(14, 24, 18, 0.1); }
+.quest-card .q-art {
+  width: 74px; height: 74px; border-radius: 14px; overflow: hidden; flex-shrink: 0;
+  background: var(--green-soft); display: flex; align-items: center; justify-content: center; font-size: 28px;
+  transform: rotate(-2.5deg); box-shadow: 0 6px 16px rgba(14, 24, 18, 0.16); border: 2px solid #FFF;
+}
+.quest-card .q-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.quest-card .q-body { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.quest-card .q-label { font-family: var(--mono); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green-deep); background: var(--green-soft); padding: 3px 9px; border-radius: 20px; width: fit-content; }
+.quest-card .q-value { font-size: 16.5px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.quest-card .q-flair { font-family: var(--serif); font-style: italic; font-size: 13.5px; color: var(--muted); line-height: 1.35; }
+
+/* ---------- horizontal bar charts ---------- */
+.hbars { display: flex; flex-direction: column; gap: 10px; }
+.hbar-row { display: grid; grid-template-columns: 118px 1fr 30px; gap: 10px; align-items: center; }
+.hbar-label { font-family: var(--mono); font-size: 9.5px; font-weight: 600; color: var(--muted); text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbar-track { height: 13px; border-radius: 8px; background: rgba(12, 15, 13, 0.06); overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: 8px; background: var(--green); min-width: 5px; }
+.hbar-fill.alt { background: var(--green-deep); }
+.hbar-count { font-family: var(--mono); font-size: 10px; color: var(--faint); text-align: right; }
+
+/* ---------- chart tooltip ---------- */
+.chart-box { position: relative; }
+.chart-tip {
+  position: absolute; background: var(--ink); color: #FFF; font-family: var(--mono); font-size: 10.5px;
+  padding: 7px 12px; border-radius: 8px; pointer-events: none; opacity: 0; transition: opacity 0.15s;
+  white-space: nowrap; z-index: 20; box-shadow: 0 10px 24px rgba(12, 15, 13, 0.28);
+}
+
+/* ---------- lore charts ---------- */
+.pane h3 { font-size: 17px; font-weight: 800; letter-spacing: -0.015em; }
+.lore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+@media (max-width: 880px) { .lore-grid { grid-template-columns: 1fr; } }
+.lore-col { display: flex; flex-direction: column; gap: 14px; }
 .stat .s-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
 .stat .s-flair { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--green-deep); }
 @media (max-width: 640px) { .stat { padding: 15px; } .stat .s-value { font-size: 25px; } }
@@ -679,14 +721,14 @@ function sideQuests() {
   Object.entries(rc).forEach(([id, n]) => { if (n > loopN) { loopN = n; loopId = id; } });
   if (loopN >= 2) {
     const it = recentItems.find(i => i.track?.id === loopId)?.track;
-    if (it) q.push({ label: "on loop", value: it.name, flair: `×${loopN} in your last 50 plays. ${loopN >= 5 ? "blink twice if you need help." : loopN >= 3 ? "it's giving fixation." : "twice is a pattern."}` });
+    if (it) q.push({ label: "on loop", value: it.name, img: it.album?.images?.[1]?.url || it.album?.images?.[0]?.url, flair: `×${loopN} in your last 50 plays. ${loopN >= 5 ? "blink twice if you need help." : loopN >= 3 ? "it's giving fixation." : "twice is a pattern."}` });
   }
 
   /* you ghosted */
   const shortA = new Set((DATA.topArtists.short_term?.items || []).map(a => a.id));
   if (shortA.size) {
     const ghost = (DATA.topArtists.long_term?.items || []).slice(0, 10).find(a => a.id && !shortA.has(a.id));
-    if (ghost?.name) q.push({ label: "you ghosted", value: ghost.name, flair: "an all-time favorite with zero recent presence. do they know?" });
+    if (ghost?.name) q.push({ label: "you ghosted", value: ghost.name, img: ghost.images?.[1]?.url || ghost.images?.[0]?.url, emoji: "👻", flair: "an all-time favorite with zero recent presence. do they know?" });
   }
 
   /* forever song */
@@ -698,7 +740,7 @@ function sideQuests() {
   });
   if (fBest) {
     const t = (DATA.topTracks.short_term?.items || []).find(x => x.id === fBest);
-    if (t) q.push({ label: "your forever song", value: t.name, flair: "top-ranked in every single timeline. married." });
+    if (t) q.push({ label: "your forever song", value: t.name, img: t.album?.images?.[1]?.url || t.album?.images?.[0]?.url, emoji: "💍", flair: "top-ranked in every single timeline. married." });
   }
 
   /* 3am confession */
@@ -709,7 +751,7 @@ function sideQuests() {
     late.sort((a, b) => Math.abs(a.d.getHours() - 3) - Math.abs(b.d.getHours() - 3));
     const p = late[0];
     const hh = p.d.getHours() === 0 ? 12 : p.d.getHours();
-    if (p.i.track?.name) q.push({ label: "3am confession", value: p.i.track.name, flair: `caught at ${hh}:${String(p.d.getMinutes()).padStart(2, "0")}am. no judgment. some judgment.` });
+    if (p.i.track?.name) q.push({ label: "3am confession", value: p.i.track.name, img: p.i.track.album?.images?.[1]?.url || p.i.track.album?.images?.[0]?.url, emoji: "🌙", flair: `caught at ${hh}:${String(p.d.getMinutes()).padStart(2, "0")}am. no judgment. some judgment.` });
   }
 
   /* main character */
@@ -719,7 +761,10 @@ function sideQuests() {
     const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
     if (top) {
       const pct = Math.round(top[1] / pool.length * 100);
-      if (pct >= 15) q.push({ label: "main character", value: top[0], flair: `${pct}% of your rotation is one artist. it's giving era.` });
+      if (pct >= 15) {
+        const aObj = bestArtists().find(a => a.name === top[0]);
+        q.push({ label: "main character", value: top[0], img: aObj?.images?.[1]?.url || aObj?.images?.[0]?.url, emoji: "🎬", flair: `${pct}% of your rotation is one artist. it's giving era.` });
+      }
     }
   }
 
@@ -727,24 +772,70 @@ function sideQuests() {
   const sIds = new Set((DATA.topTracks.short_term?.items || []).map(t => t.id));
   const mIds = new Set((DATA.topTracks.medium_term?.items || []).map(t => t.id));
   const away = (DATA.topTracks.long_term?.items || []).find(t => t.id && !sIds.has(t.id) && !mIds.has(t.id));
-  if (away?.name) q.push({ label: "the one that got away", value: away.name, flair: "an all-time favorite you haven't touched in months. what happened?" });
+  if (away?.name) q.push({ label: "the one that got away", value: away.name, img: away.album?.images?.[1]?.url || away.album?.images?.[0]?.url, emoji: "🥀", flair: "an all-time favorite you haven't touched in months. what happened?" });
 
   /* attention span check */
   const longest = pool.reduce((best, t) => ((t.duration_ms || 0) > (best?.duration_ms || 0) ? t : best), null);
   if (longest && longest.duration_ms > 300000) {
     const mm = Math.floor(longest.duration_ms / 60000);
     const ss = String(Math.floor((longest.duration_ms % 60000) / 1000)).padStart(2, "0");
-    q.push({ label: "attention span check", value: longest.name, flair: `you sit through ${mm}:${ss} of this. voluntarily.` });
+    q.push({ label: "attention span check", value: longest.name, img: longest.album?.images?.[1]?.url || longest.album?.images?.[0]?.url, emoji: "⏳", flair: `you sit through ${mm}:${ss} of this. voluntarily.` });
   }
 
   /* library span */
   const yrs = pool.map(t => parseInt((t.album?.release_date || "").slice(0, 4))).filter(Boolean);
   if (yrs.length >= 5) {
     const a = Math.min(...yrs), b = Math.max(...yrs);
-    if (b - a >= 10) q.push({ label: "library span", value: `${a} → ${b}`, flair: `${b - a} years of range. musically well-traveled.` });
+    if (b - a >= 10) q.push({ label: "library span", value: `${a} → ${b}`, emoji: "📼", flair: `${b - a} years of range. musically well-traveled.` });
   }
 
   return q.slice(0, 6);
+}
+
+/* what your song titles are about — token match, no regex drama */
+function titleThemes() {
+  const cats = [
+    ["yearning", ["love", "heart", "miss", "need", "want", "hold", "stay", "forever", "kiss", "baby", "beautiful"]],
+    ["crying", ["cry", "crying", "tears", "sad", "hurt", "sorry", "alone", "lonely", "broken", "blue", "pain", "goodbye"]],
+    ["the club", ["dance", "party", "club", "move", "body", "floor", "shake", "bounce", "dancing"]],
+    ["money", ["money", "rich", "gold", "cash", "diamond", "diamonds", "expensive", "paid", "million"]],
+    ["god???", ["god", "heaven", "hell", "angel", "angels", "devil", "pray", "holy", "saint", "soul", "sin", "church", "gospel", "communion"]],
+    ["being unwell", ["crazy", "mad", "insane", "sick", "fever", "high", "smoke", "drunk", "toxic", "haunted", "cursed", "dead", "ghost", "funeral"]],
+    ["the night", ["night", "midnight", "moon", "dark", "3am", "2am", "late", "nocturnal"]],
+  ];
+  const pool = analysisPool();
+  return cats.map(([label, words]) => {
+    const n = pool.filter(t => {
+      const tokens = " " + (t.name || "").toLowerCase().replace(/[^a-z0-9']+/g, " ") + " ";
+      return words.some(w => tokens.includes(" " + w + " "));
+    }).length;
+    return [label, n];
+  }).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).slice(0, 6);
+}
+function chartTitleThemes() {
+  const rows = titleThemes();
+  if (!rows.length) return `<div class="empty-note">your song titles are about nothing in particular. minimalist king.</div>`;
+  const max = rows[0][1];
+  return `<div class="hbars">${rows.map(([label, c]) => `
+    <div class="hbar-row"><span class="hbar-label">${esc(label)}</span><div class="hbar-track"><div class="hbar-fill" style="width:${Math.max(c / max * 100, 6)}%"></div></div><span class="hbar-count">${c}</span></div>`).join("")}</div>
+  <div class="chart-note"><span class="day-hero">main theme: ${esc(rows[0][0])}</span><span class="caption">songs in your charts mentioning each theme</span></div>`;
+}
+/* attention span spectrum — track lengths, judged */
+function chartAttention() {
+  const durs = analysisPool().map(t => t.duration_ms).filter(Boolean);
+  if (durs.length < 5) return `<div class="empty-note">not enough track data yet.</div>`;
+  const defs = [
+    ["under 2:30", "tiktok core", d => d < 150000],
+    ["2:30–3:30", "radio brain", d => d >= 150000 && d < 210000],
+    ["3:30–5:00", "album cut appreciator", d => d >= 210000 && d < 300000],
+    ["5:00+", "prog tendencies", d => d >= 300000],
+  ];
+  const rows = defs.map(([range, nick, fn]) => [range, nick, durs.filter(fn).length]);
+  const max = Math.max(...rows.map(r => r[2]), 1);
+  const win = rows.reduce((a, b) => (b[2] > a[2] ? b : a));
+  return `<div class="hbars">${rows.map(([range, nick, c]) => `
+    <div class="hbar-row"><span class="hbar-label">${esc(range)}</span><div class="hbar-track"><div class="hbar-fill alt" style="width:${Math.max(c / max * 100, 4)}%"></div></div><span class="hbar-count">${c}</span></div>`).join("")}</div>
+  <div class="chart-note"><span class="day-hero">verdict: ${esc(win[1])}</span><span class="caption">your top songs by how long they dare to be</span></div>`;
 }
 
 /* the roast — four data-backed insults, lovingly */
@@ -1191,7 +1282,7 @@ function viewDash() {
         <div class="kicker">extremely specific data</div>
         <h2>Side quests</h2>
         <div class="sub">Stats nobody asked for. That's the point.</div>
-        <div class="stats">${quests.map(s => `<div class="stat"><span class="s-label">${esc(s.label)}</span><span class="s-value txt">${esc(s.value)}</span><span class="s-flair">${esc(s.flair)}</span></div>`).join("")}</div>
+        <div class="quest-grid">${quests.map(s => `<div class="quest-card"><div class="q-art">${s.img ? `<img src="${esc(s.img)}" alt="" loading="lazy">` : `<span>${s.emoji || "✦"}</span>`}</div><div class="q-body"><span class="q-label">${esc(s.label)}</span><span class="q-value">${esc(s.value)}</span><span class="q-flair">${esc(s.flair)}</span></div></div>`).join("")}</div>
       </div>` : ""}
 
       <div class="ad-slot mid" aria-hidden="true"><span>ad space · 728×90</span></div>
@@ -1223,7 +1314,7 @@ function viewDash() {
           <div class="glass pane">
             <div class="kicker">the schedule</div>
             <h2>Weekly summary</h2>
-            <div class="sub">Which day of the week actually runs on music — median minutes per day.</div>
+            <div class="sub">Where your listening hours actually pile up, day of the week by day of the week.</div>
             <div class="pills" id="weeklyPills">
               <button class="pill" data-scale="two" aria-pressed="${state.weeklyScale === "two"}" onclick="setWeeklyScale('two')">2 weeks</button>
               <button class="pill" data-scale="eight" aria-pressed="${state.weeklyScale === "eight"}" onclick="setWeeklyScale('eight')">8 weeks</button>
@@ -1252,6 +1343,22 @@ function viewDash() {
             <h2>What you're into</h2>
             <div class="chips">${m.genres.slice(0, 8).map(([g, n]) => `<span class="chip">${esc(g)}<span class="c-count">×${n}</span></span>`).join("")}</div>
           </div>` : ""}
+        </div>
+      </div>
+
+      <div class="glass pane">
+        <div class="kicker">unnecessary analysis</div>
+        <div class="lore-grid">
+          <div class="lore-col">
+            <h3>What your song titles are about</h3>
+            <div class="caption">a word-by-word audit of your top songs</div>
+            ${chartTitleThemes()}
+          </div>
+          <div class="lore-col">
+            <h3>Attention span spectrum</h3>
+            <div class="caption">judged entirely by song length</div>
+            ${chartAttention()}
+          </div>
         </div>
       </div>
     </div>`;
@@ -1427,17 +1534,19 @@ function chartWeekly() {
   }
   const order = [1, 2, 3, 4, 5, 6, 0];
   const labels = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-  const meds = order.map(w => median(buckets[w]));
-  const top = Math.max(...meds);
+  const totals = order.map(w => buckets[w].reduce((s, v) => s + v, 0));
+  const top = Math.max(...totals);
   const max = Math.max(top, 1);
-  const big = top > 0 ? labels[meds.indexOf(top)] : null;
+  const big = top > 0 ? labels[totals.indexOf(top)] : null;
+  const grand = totals.reduce((s, v) => s + v, 0);
   const daysCovered = Object.keys(perDate).length;
+  const fmtDur = v => v >= 60 ? (v / 60).toFixed(1).replace(".0", "") + "h" : Math.round(v) + "m";
   return `
-    <div class="bars">${meds.map(v => `
-      <div class="bar-col"><span class="bar-val">${v > 0 ? Math.round(v) + "m" : ""}</span><div class="bar ${v > 0 ? "on" : ""} ${top > 0 && v === top ? "peak" : ""}" style="height:${Math.max(v / max * 100, 3)}%"></div></div>`).join("")}
+    <div class="bars">${totals.map(v => `
+      <div class="bar-col"><span class="bar-val">${v > 0 ? fmtDur(v) : ""}</span><div class="bar ${v > 0 ? "on" : ""} ${top > 0 && v === top ? "peak" : ""}" style="height:${Math.max(v / max * 100, 3)}%"></div></div>`).join("")}
     </div>
     <div class="bar-labels">${labels.map(l => `<span>${l}</span>`).join("")}</div>
-    <div class="chart-note">${big ? `<span class="day-hero">your big day: ${big}</span>` : ""}<span class="caption">median minutes per day · ${daysCovered} day${daysCovered === 1 ? "" : "s"} logged</span></div>`;
+    <div class="chart-note">${big ? `<span class="day-hero">your big day: ${big}</span>` : ""}<span class="caption">${fmtDur(grand)} total in this window · ${daysCovered} day${daysCovered === 1 ? "" : "s"} logged</span></div>`;
 }
 function chartClock() {
   const log = playLog();
@@ -1467,7 +1576,12 @@ function chartClock() {
   }
   const peakX = Math.min(Math.max(peakH * bw + bw / 2, 46), W - 46);
   const peakY = HH - pb - (plays[peakH] / maxP) * gh;
+  let hoverSvg = "";
+  for (let h = 0; h < 24; h++) {
+    hoverSvg += `<rect x="${(h * bw).toFixed(1)}" y="0" width="${bw.toFixed(1)}" height="${HH - pb}" fill="transparent" data-hour="${hourLabel(h)}" data-plays="${plays[h]}" data-mins="${Math.round(mins[h])}" onmouseover="clockTip(event, true)" onmouseout="clockTip(event, false)" style="cursor: crosshair;"/>`;
+  }
   return `
+    <div class="chart-tip" id="clockTip"></div>
     <svg viewBox="0 0 ${W} ${HH}" style="width:100%; height:auto; display:block; overflow:visible;">
       <line x1="0" y1="${HH - pb}" x2="${W}" y2="${HH - pb}" stroke="rgba(12,15,13,0.08)" stroke-width="1"/>
       ${barsSvg}
@@ -1475,8 +1589,21 @@ function chartClock() {
       <circle cx="${(peakH * bw + bw / 2).toFixed(1)}" cy="${peakY.toFixed(1)}" r="4.5" fill="#1DB954" stroke="#FFFFFF" stroke-width="2"/>
       <text x="${peakX.toFixed(1)}" y="${Math.max(peakY - 12, 12).toFixed(1)}" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="600" fill="#0E5A2B">peak ${hourLabel(peakH)}</text>
       ${labelsSvg}
+      ${hoverSvg}
     </svg>
-    <div class="chart-note"><span class="caption">bars = plays by hour · line = minutes · ${log.length} plays logged</span></div>`;
+    <div class="chart-note"><span class="caption">bars = plays by hour · line = minutes · hover for exact numbers · ${log.length} plays logged</span></div>`;
+}
+function clockTip(evt, on) {
+  const tip = document.getElementById("clockTip");
+  if (!tip) return;
+  if (!on) { tip.style.opacity = "0"; return; }
+  const d = evt.target.dataset;
+  tip.textContent = `${d.hour} — ${d.plays} play${d.plays === "1" ? "" : "s"} · ${d.mins} min`;
+  const box = tip.parentElement.getBoundingClientRect();
+  const r = evt.target.getBoundingClientRect();
+  tip.style.left = Math.max(4, Math.min(r.left - box.left + r.width / 2 - 62, box.width - 150)) + "px";
+  tip.style.top = Math.max(2, r.top - box.top - 6) + "px";
+  tip.style.opacity = "1";
 }
 function chartDecades() {
   const pool = analysisPool();
