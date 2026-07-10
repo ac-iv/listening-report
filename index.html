@@ -70,24 +70,33 @@ body {
 }
 .glass > * { position: relative; }
 
-/* ---------- header: floating liquid glass bar ---------- */
-.top {
-  position: sticky; top: 10px; z-index: 90;
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(30px) saturate(190%); -webkit-backdrop-filter: blur(30px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 40px; padding: 11px 20px; margin-bottom: 22px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 0 rgba(12, 15, 13, 0.04),
-    0 10px 32px rgba(14, 24, 18, 0.10);
+/* ---------- masthead: no box, just type ---------- */
+.masthead {
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap;
+  padding: 20px 6px 28px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; letter-spacing: -0.02em; text-transform: lowercase; color: var(--ink); }
-.brand .ai { color: var(--green-deep); }
-.user-chip { display: flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 11px; color: var(--muted); background: rgba(12, 15, 13, 0.05); border: 1px solid rgba(255, 255, 255, 0.6); padding: 5px 13px 5px 6px; border-radius: 30px; }
+.mast-kicker { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.mast-brand { font-size: clamp(27px, 4.4vw, 42px); font-weight: 900; letter-spacing: -0.045em; line-height: 1; text-transform: lowercase; color: var(--ink); }
+.mast-brand em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--green); letter-spacing: -0.01em; }
+.mast-right { display: flex; align-items: center; gap: 10px; padding-bottom: 8px; }
+.user-chip {
+  display: flex; align-items: center; gap: 9px; font-family: var(--mono); font-size: 11px; color: var(--muted);
+  background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.75); padding: 5px 13px 5px 6px; border-radius: 30px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 14px rgba(14, 24, 18, 0.07);
+}
 .user-chip img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
 .user-chip.no-img { padding-left: 13px; }
+
+/* ---------- ad slots: reserved, empty, honest ---------- */
+.ad-slot {
+  width: 100%; max-width: 728px; height: 90px; margin: 0 auto 30px;
+  background: rgba(12, 15, 13, 0.055); border: 1px dashed rgba(12, 15, 13, 0.14);
+  border-radius: var(--r-md); display: flex; align-items: center; justify-content: center;
+}
+.ad-slot.mid { margin: 0 auto; }
+.ad-slot span { font-family: var(--mono); font-size: 9.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+@media (max-width: 640px) { .ad-slot { height: 60px; } }
 
 /* ---------- tab nav ---------- */
 .tabs {
@@ -309,7 +318,7 @@ body {
 .hero p { font-size: 16.5px; color: var(--muted); max-width: 54ch; }
 .hero .fine { font-family: var(--mono); font-size: 10.5px; color: var(--faint); }
 .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; width: 100%; margin-top: 14px; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; width: 100%; margin-top: 30px; }
 .feature { background: var(--card-solid); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; display: flex; flex-direction: column; gap: 7px; }
 .feature .f-emoji { font-size: 20px; }
 .feature .f-name { font-weight: 750; font-size: 15px; letter-spacing: -0.01em; }
@@ -738,6 +747,27 @@ function sideQuests() {
   return q.slice(0, 6);
 }
 
+/* the roast — four data-backed insults, lovingly */
+function roastLines() {
+  const m = getMetrics();
+  const lines = [];
+  if (m.peak && m.night >= 0.35) lines.push(`${m.nightPct}% of your listening happens after 10pm. the sun has filed a missing person report.`);
+  else if (m.peak) lines.push(`peak listening hour: ${m.peak}. aggressively well-adjusted. suspicious, honestly.`);
+  if (m.explicit >= 45) lines.push(`${m.explicit}% of your top songs are explicit. your speakers need legal representation.`);
+  else if (m.explicit <= 12) lines.push(`${m.explicit}% explicit. your queue is church-adjacent. bless.`);
+  else lines.push(`${m.explicit}% explicit. edgy enough to feel something, clean enough for the car with mom.`);
+  if (m.tasteAge >= 15) lines.push(`your average song came out in ${m.avgYear}. your playlists qualify for anniversary reissues.`);
+  else if (m.tasteAge <= 4) lines.push(`average song from ${m.avgYear}. no memories, just release radar. goldfish behavior.`);
+  else lines.push(`taste age: ${m.tasteAge} years. living comfortably in the recent past, rent-free.`);
+  if (m.obscurity >= 52) lines.push(`obscurity ${m.obscurity}/100. you'd rather explain the artist than enjoy the party.`);
+  else if (m.obscurity < 25) lines.push(`obscurity ${m.obscurity}/100. the billboard charts could subpoena your account.`);
+  else lines.push(`obscurity ${m.obscurity}/100. underground at brunch, top 40 by midnight.`);
+  if (m.variety <= 0.45 && m.topArtist) lines.push(`and ${m.topArtist}? that's not a top artist, that's a hostage situation.`);
+  else if (m.consistency >= 0.45) lines.push(`same top songs all year. musically, you live in one room of a very big house.`);
+  else if (m.variety >= 0.78) lines.push(`almost every song in your top 50 is a different artist. commitment is not your genre.`);
+  return lines.slice(0, 4);
+}
+
 /* ============================================================
    the read — persona + summary engine
    ============================================================ */
@@ -1029,9 +1059,12 @@ function renderLogin() {
   state.tab = "dash";
   state.demo = false;
   app.innerHTML = `
-    <div class="top">
-      <div class="brand">yourmusicstats<span class="ai">.ai</span></div>
-    </div>
+    <header class="masthead">
+      <div>
+        <div class="mast-kicker">your listening, decoded</div>
+        <div class="mast-brand">yourmusicstats<em>.ai</em></div>
+      </div>
+    </header>
     <div class="glass hero">
       <div class="hero-tag">✦ your listening, decoded</div>
       <h1>Your Spotify, but make it <em>interesting</em>.</h1>
@@ -1041,12 +1074,14 @@ function renderLogin() {
         <button class="btn btn-ghost" id="demoBtn">just looking — show me a demo</button>
       </div>
       <div class="fine">runs entirely in your browser · nothing leaves your device</div>
-      <div class="feature-grid">
-        <div class="feature"><span class="f-emoji">🔮</span><span class="f-name">the read</span><span class="f-desc">Your listener archetype plus a summary generated from your actual data. It will be accurate. It might be rude.</span></div>
-        <div class="feature"><span class="f-emoji">🕳️</span><span class="f-name">certified deep cuts</span><span class="f-desc">The 5 songs in your rotation nobody else has found, with the receipts to prove it.</span></div>
-        <div class="feature"><span class="f-emoji">📲</span><span class="f-name">story cards</span><span class="f-desc">Every stat exports as a 1080×1920 card made for stories. Post your obscurity score. Start drama.</span></div>
-      </div>
-    </div>`;
+    </div>
+    <div class="ad-slot" id="adLandingTop" aria-hidden="true" style="margin-top:30px;"><span>ad space · 728×90</span></div>
+    <div class="feature-grid">
+      <div class="feature"><span class="f-emoji">🔮</span><span class="f-name">the read</span><span class="f-desc">Your listener archetype plus a summary generated from your actual data. It will be accurate. It might be rude.</span></div>
+      <div class="feature"><span class="f-emoji">🕳️</span><span class="f-name">certified deep cuts</span><span class="f-desc">The 5 songs in your rotation nobody else has found, with the receipts to prove it.</span></div>
+      <div class="feature"><span class="f-emoji">📲</span><span class="f-name">story cards</span><span class="f-desc">Every stat exports as a 1080×1920 card made for stories. Post your obscurity score. Start drama.</span></div>
+    </div>
+    <div class="ad-slot" id="adLandingBottom" aria-hidden="true" style="margin-top:30px;"><span>ad space · 728×90</span></div>`;
   document.getElementById("loginBtn").onclick = () => login();
   document.getElementById("demoBtn").onclick = () => enterDemo();
 }
@@ -1055,13 +1090,16 @@ function renderShell() {
   const me = DATA.me || {};
   const avatar = me.images?.[0]?.url;
   app.innerHTML = `
-    <div class="top">
-      <div class="brand">yourmusicstats<span class="ai">.ai</span></div>
-      <div style="display:flex; align-items:center; gap:10px;">
+    <header class="masthead">
+      <div>
+        <div class="mast-kicker">your listening, decoded</div>
+        <div class="mast-brand">yourmusicstats<em>.ai</em></div>
+      </div>
+      <div class="mast-right">
         ${state.demo ? `<button class="btn btn-green" style="padding:8px 16px;" onclick="login()">connect for real</button>` : ""}
         <div class="user-chip ${avatar ? "" : "no-img"}">${avatar ? `<img src="${esc(avatar)}" alt="">` : ""}${state.demo ? "demo mode" : esc((me.display_name || "you").toLowerCase())}</div>
       </div>
-    </div>
+    </header>
     <nav class="tabs glass" aria-label="Sections">
       <button class="tab-btn" data-tab="dash">dashboard</button>
       <button class="tab-btn" data-tab="tracks">top tracks</button>
@@ -1069,7 +1107,9 @@ function renderShell() {
       <button class="tab-btn" data-tab="playlists">playlist studio</button>
       <button class="tab-btn" data-tab="story">story cards</button>
     </nav>
+    <div class="ad-slot" id="adTop" aria-hidden="true"><span>ad space · 728×90</span></div>
     <div id="tabContent"></div>
+    <div class="ad-slot" id="adBottom" aria-hidden="true" style="margin-top:40px;"><span>ad space · 728×90</span></div>
     <footer>
       <span>yourmusicstats.ai — not affiliated with spotify, obviously</span>
       <button class="logout" onclick="store.del('token'); location.reload();">disconnect</button>
@@ -1153,6 +1193,8 @@ function viewDash() {
         <div class="sub">Stats nobody asked for. That's the point.</div>
         <div class="stats">${quests.map(s => `<div class="stat"><span class="s-label">${esc(s.label)}</span><span class="s-value txt">${esc(s.value)}</span><span class="s-flair">${esc(s.flair)}</span></div>`).join("")}</div>
       </div>` : ""}
+
+      <div class="ad-slot mid" aria-hidden="true"><span>ad space · 728×90</span></div>
 
       <div class="grid-2">
         <div class="stack">
@@ -1714,7 +1756,7 @@ const STORY_THEMES = {
     ],
   },
 };
-const STORY_TEMPLATES = { read: "the read", receipts: "receipts", obscurity: "obscurity", deepcuts: "deep cuts", tracks: "top tracks", artists: "top artists" };
+const STORY_TEMPLATES = { read: "the read", roast: "the roast", receipts: "receipts", sidequests: "side quests", obscurity: "obscurity", deepcuts: "deep cuts", tracks: "top tracks", artists: "top artists" };
 
 function viewStory() {
   const rangeMatters = ["tracks", "artists", "deepcuts"].includes(state.storyTemplate);
@@ -1859,7 +1901,7 @@ async function renderStoryCard() {
   ctx.stroke();
 
   /* header label */
-  const labels = { read: "THE READ", receipts: "THE RECEIPTS", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_SHORT[state.storyRange], tracks: "TOP TRACKS · " + RANGE_SHORT[state.storyRange], artists: "TOP ARTISTS · " + RANGE_SHORT[state.storyRange] };
+  const labels = { read: "THE READ", roast: "THE ROAST", receipts: "THE RECEIPTS", sidequests: "SIDE QUESTS", obscurity: "OBSCURITY REPORT", deepcuts: "DEEP CUTS · " + RANGE_SHORT[state.storyRange], tracks: "TOP TRACKS · " + RANGE_SHORT[state.storyRange], artists: "TOP ARTISTS · " + RANGE_SHORT[state.storyRange] };
   ctx.textBaseline = "alphabetic";
   ctx.textAlign = "left";
   try { ctx.letterSpacing = "4px"; } catch (e) {}
@@ -1869,6 +1911,8 @@ async function renderStoryCard() {
   try { ctx.letterSpacing = "0px"; } catch (e) {}
 
   if (tpl === "read") await storyRead(ctx, theme, cx, cy, cw, ch);
+  else if (tpl === "roast") await storyRoast(ctx, theme, cx, cy, cw, ch);
+  else if (tpl === "sidequests") await storySideQuests(ctx, theme, cx, cy, cw, ch);
   else if (tpl === "receipts") await storyReceipts(ctx, theme, cx, cy, cw, ch);
   else if (tpl === "obscurity") await storyObscurity(ctx, theme, cx, cy, cw, ch);
   else await storyList(ctx, theme, cx, cy, cw, ch, tpl);
@@ -1942,6 +1986,72 @@ async function storyRead(ctx, theme, cx, cy, cw, ch) {
     ctx.font = "800 38px Archivo, sans-serif";
     ctx.fillStyle = theme.ink;
     ctx.fillText(clipText(ctx, String(val), colW - 34), sx, stripY + 54);
+  });
+}
+
+async function storyRoast(ctx, theme, cx, cy, cw, ch) {
+  drawMixedTitle(ctx, cx + 74, cy + 256, "the", "roast", 104, theme.ink);
+  ctx.font = "500 34px Archivo, sans-serif";
+  ctx.fillStyle = theme.muted;
+  ctx.fillText("generated from my actual data. rude.", cx + 74, cy + 318);
+
+  const lines = roastLines();
+  let y = cy + 456;
+  lines.forEach((line, i) => {
+    if (i > 0) {
+      ctx.strokeStyle = theme.divider;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx + 74, y - 66);
+      ctx.lineTo(cx + cw - 74, y - 66);
+      ctx.stroke();
+    }
+    ctx.font = '600 30px "IBM Plex Mono", monospace';
+    ctx.fillStyle = "#1DB954";
+    ctx.fillText("0" + (i + 1), cx + 74, y);
+    ctx.font = "600 40px Archivo, sans-serif";
+    ctx.fillStyle = theme.ink;
+    const wrapped = wrapLines(ctx, line, cw - 280, 3);
+    wrapped.forEach((w, j) => ctx.fillText(w, cx + 156, y + j * 54));
+    y += wrapped.length * 54 + 78;
+  });
+}
+
+async function storySideQuests(ctx, theme, cx, cy, cw, ch) {
+  drawMixedTitle(ctx, cx + 74, cy + 256, "side", "quests", 104, theme.ink);
+  ctx.font = "500 34px Archivo, sans-serif";
+  ctx.fillStyle = theme.muted;
+  ctx.fillText("extremely specific stats nobody asked for", cx + 74, cy + 318);
+
+  const qs = sideQuests().slice(0, 4);
+  if (!qs.length) {
+    ctx.font = "500 34px Archivo, sans-serif";
+    ctx.fillStyle = theme.faint;
+    ctx.fillText("not enough listening history yet", cx + 74, cy + 480);
+    return;
+  }
+  const y0 = cy + 452;
+  const rowH = 262;
+  qs.forEach((q, i) => {
+    const y = y0 + i * rowH;
+    if (i > 0) {
+      ctx.strokeStyle = theme.divider;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx + 74, y - 52);
+      ctx.lineTo(cx + cw - 74, y - 52);
+      ctx.stroke();
+    }
+    ctx.font = '600 24px "IBM Plex Mono", monospace';
+    ctx.fillStyle = "#1DB954";
+    ctx.fillText(q.label.toUpperCase(), cx + 74, y);
+    ctx.font = "800 46px Archivo, sans-serif";
+    ctx.fillStyle = theme.ink;
+    ctx.fillText(clipText(ctx, q.value, cw - 148), cx + 74, y + 64);
+    ctx.font = 'italic 400 32px "Instrument Serif", serif';
+    ctx.fillStyle = theme.muted;
+    const flairLines = wrapLines(ctx, q.flair, cw - 148, 2);
+    flairLines.forEach((f, j) => ctx.fillText(f, cx + 74, y + 122 + j * 42));
   });
 }
 
