@@ -287,6 +287,7 @@ body {
 .bar-col .bar { width: 100%; max-width: 34px; border-radius: 5px 5px 2px 2px; background: rgba(12,15,13,0.06); min-height: 4px; transition: height 0.4s ease; }
 .bar-col .bar.on { background: var(--green); }
 .bar-col .bar.peak { background: var(--green-deep); }
+.bar-col .bar.ghost { background: transparent; border: 1.5px dashed rgba(12, 15, 13, 0.18); min-height: 26px; }
 .chart-note { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
 .day-hero { font-family: var(--mono); font-size: 10px; font-weight: 600; text-transform: lowercase; color: var(--green-deep); background: var(--green-soft); padding: 5px 12px; border-radius: 30px; }
 .bar-labels { display: flex; gap: 6px; margin-top: 8px; }
@@ -1327,7 +1328,7 @@ function viewDash() {
             <div class="kicker">the clock</div>
             <h2>When you listen</h2>
             <div class="sub">Every logged play mapped across the day — plays and minutes together.</div>
-            <div class="chart-box">${chartClock()}</div>
+            <div class="chart-box" id="clockChartTarget">${chartClock()}</div>
           </div>
           <div class="glass pane">
             <div class="kicker">the eras</div>
@@ -1534,19 +1535,22 @@ function chartWeekly() {
   }
   const order = [1, 2, 3, 4, 5, 6, 0];
   const labels = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+  const observed = order.map(w => buckets[w].length > 0);
   const totals = order.map(w => buckets[w].reduce((s, v) => s + v, 0));
   const top = Math.max(...totals);
   const max = Math.max(top, 1);
   const big = top > 0 ? labels[totals.indexOf(top)] : null;
   const grand = totals.reduce((s, v) => s + v, 0);
   const daysCovered = Object.keys(perDate).length;
+  const spanDays = Math.round((today.getTime() - startMs) / 86400000) + 1;
   const fmtDur = v => v >= 60 ? (v / 60).toFixed(1).replace(".0", "") + "h" : Math.round(v) + "m";
   return `
-    <div class="bars">${totals.map(v => `
-      <div class="bar-col"><span class="bar-val">${v > 0 ? fmtDur(v) : ""}</span><div class="bar ${v > 0 ? "on" : ""} ${top > 0 && v === top ? "peak" : ""}" style="height:${Math.max(v / max * 100, 3)}%"></div></div>`).join("")}
+    <div class="bars">${totals.map((v, i) => observed[i] ? `
+      <div class="bar-col" title="${labels[i]} · ${fmtDur(v)}"><span class="bar-val">${fmtDur(v)}</span><div class="bar ${v > 0 ? "on" : ""} ${top > 0 && v === top ? "peak" : ""}" style="height:${Math.max(v / max * 100, 3)}%"></div></div>` : `
+      <div class="bar-col" title="${labels[i]} · not in your log yet"><span class="bar-val">–</span><div class="bar ghost" style="height:16%"></div></div>`).join("")}
     </div>
     <div class="bar-labels">${labels.map(l => `<span>${l}</span>`).join("")}</div>
-    <div class="chart-note">${big ? `<span class="day-hero">your big day: ${big}</span>` : ""}<span class="caption">${fmtDur(grand)} total in this window · ${daysCovered} day${daysCovered === 1 ? "" : "s"} logged</span></div>`;
+    <div class="chart-note">${big ? `<span class="day-hero">your big day: ${big}</span>` : ""}<span class="caption">${fmtDur(grand)} total in this window · ${daysCovered} day${daysCovered === 1 ? "" : "s"} logged${spanDays < 7 ? " · dashes fill in as your log grows — check back this week" : ""}</span></div>`;
 }
 function chartClock() {
   const log = playLog();
@@ -2379,6 +2383,29 @@ function downloadStory() {
     toast("Couldn't export — some album art blocked it. Try a different template or window.");
   }
 }
+
+/* ============================================================
+   background sync — bank fresh plays whenever the tab wakes up,
+   so weekday coverage builds without the user doing anything
+   ============================================================ */
+let lastRecentSync = Date.now();
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible") return;
+  if (state.demo || !DATA || !store.get("token")) return;
+  if (Date.now() - lastRecentSync < 10 * 60 * 1000) return;
+  lastRecentSync = Date.now();
+  try {
+    const recent = await apiStrict("/me/player/recently-played?limit=50");
+    if (recent?.items?.length) {
+      DATA.recent = recent;
+      mergePlayLog(recent.items);
+      const wk = document.getElementById("weeklyChartTarget");
+      if (wk) wk.innerHTML = chartWeekly();
+      const ck = document.getElementById("clockChartTarget");
+      if (ck) ck.innerHTML = chartClock();
+    }
+  } catch (e) { /* silent — next wake retries */ }
+});
 
 /* ============================================================
    boot
